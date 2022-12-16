@@ -4,8 +4,11 @@ import morgan from "morgan";
 import debug from "debug";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import userRoutes from "./routes/userRoutes.js";
+import connectDB from "./config/db.js";
 
 dotenv.config();
+
+connectDB();
 
 const app = express();
 const logger = debug("diamond-den:server");
