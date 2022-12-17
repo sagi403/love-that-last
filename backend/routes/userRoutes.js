@@ -7,17 +7,26 @@ import {
   updateUserProfile,
 } from "../controllers/userControllers.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
-import { loginUserValidation } from "../validation/userValidation.js";
+import {
+  loginUserValidation,
+  registerUserValidation,
+  updateUserProfileValidation,
+} from "../validation/userValidation.js";
 import validateRequest from "../middleware/validateRequest.js";
 
 const router = express.Router();
 
-router.post("/register", registerUser);
+router.post("/register", registerUserValidation, validateRequest, registerUser);
 router.route("/login").post(loginUserValidation, validateRequest, loginUser);
 router
   .route("/profile")
   .get(protect, getUserProfile)
-  .put(protect, updateUserProfile);
+  .put(
+    protect,
+    updateUserProfileValidation,
+    validateRequest,
+    updateUserProfile
+  );
 router.get("/", protect, admin, getAllUsers);
 
 export default router;
