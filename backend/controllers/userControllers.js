@@ -11,7 +11,9 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    res.json({ token: generateToken(user) });
+    req.session = { jwt: generateToken(user) };
+
+    res.json({ success: true });
   } else {
     res.status(401);
     throw new Error("Invalid email or password");
@@ -37,61 +39,48 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
   });
 
-  if (user) {
-    res.status(201).json({
-      token: generateToken(user),
-    });
-  } else {
-    res.status(400);
-    throw new Error("Invalid user data");
-  }
+  req.session = { jwt: generateToken(user) };
+
+  res.status(201).json({ success: true });
 });
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
+  const { id, name, email, isAdmin } = req.user;
 
-  if (user) {
-    res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
-  }
+  res.json({ id, name, email, isAdmin });
 });
 
 // @desc    Update user profile
 // @route   PUT /api/users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
+  req.user.name = req.body.name || req.user.name;
 
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    if (req.body.password) {
-      user.password = req.body.password;
+  if (req.body.email) {
+    const emailExist = await User.findOne({ email: req.body.email });
+
+    if (emailExist) {
+      res.status(400);
+      throw new Error("Email already exists");
     }
 
-    const updatedUser = await user.save();
-
-    res.json({
-      id: updatedUser.id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser),
-    });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
+    req.user.email = req.body.email;
   }
+
+  if (req.body.password) {
+    req.user.password = req.body.password;
+  }
+
+  const updatedUser = await req.user.save();
+
+  req.session = { jwt: generateToken(req.user) };
+
+  const { id, name, email, isAdmin } = updatedUser;
+
+  res.json({ id, name, email, isAdmin });
 });
 
 // @desc    Get all users
