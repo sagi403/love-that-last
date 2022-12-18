@@ -14,11 +14,12 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.set("trust proxy", true);
 app.use(express.json());
 app.use(
   cookieSession({
     signed: false,
-    secure: false,
+    secure: process.env.NODE_ENV !== "test",
   })
 );
 

@@ -1,9 +1,5 @@
 import request from "supertest";
-import { app } from "../../app.js";
-
-// @desc    Register a new user
-// @route   POST /api/users/register
-// @access  Public
+import { app } from "../../../app.js";
 
 it("returns a 201 on successful register", async () => {
   return request(app)
@@ -56,4 +52,22 @@ it("disallows duplicate emails", async () => {
     .post("/api/users/register")
     .send({ email: "test@test.com", password: "asdASD123!", name: "test" })
     .expect(400);
+});
+
+it("sets a cookie after successful signup", async () => {
+  const response = await request(app)
+    .post("/api/users/register")
+    .send({ email: "test@test.com", password: "asdASD123!", name: "test" })
+    .expect(201);
+
+  expect(response.get("Set-Cookie")).toBeDefined();
+});
+
+it("cookie contain jwt", async () => {
+  const response = await request(app)
+    .post("/api/users/register")
+    .send({ email: "test@test.com", password: "asdASD123!", name: "test" })
+    .expect(201);
+
+  expect(response.get("Set-Cookie")[0].split("=")[0]).toEqual("session");
 });
