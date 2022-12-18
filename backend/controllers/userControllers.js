@@ -44,6 +44,15 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Logout user
+// @route   POST /api/users/logout
+// @access  Public
+const logoutUser = asyncHandler(async (req, res) => {
+  req.session = null;
+
+  res.send({ success: true });
+});
+
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
@@ -100,6 +109,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 export {
   loginUser,
   registerUser,
+  logoutUser,
   getUserProfile,
   updateUserProfile,
   getAllUsers,

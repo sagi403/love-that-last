@@ -63,5 +63,5 @@ it("responds with a cookie when given valid credentials", async () => {
     .expect(200);
 
   expect(response.get("Set-Cookie")).toBeDefined();
-  expect(response.get("Set-Cookie")[0].split("=")[0]).toEqual("session");
+  expect(response.get("Set-Cookie")[0].split(";")[0]).not.toEqual("session=");
 });
