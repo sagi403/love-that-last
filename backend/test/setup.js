@@ -2,6 +2,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../app.js";
+import User from "../models/userModel.js";
 
 let mongo;
 beforeAll(async () => {
@@ -38,6 +39,10 @@ global.getCookie = async () => {
     .post("/api/users/register")
     .send({ email, password, name })
     .expect(201);
+
+  const user = await User.findOne({ email });
+  user.isAdmin = true;
+  await user.save();
 
   const cookie = response.get("Set-Cookie");
 

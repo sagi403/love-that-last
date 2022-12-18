@@ -66,30 +66,40 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  req.user.name = req.body.name || req.user.name;
+  const { email, password, name } = req.body;
 
-  if (req.body.email) {
-    const emailExist = await User.findOne({ email: req.body.email });
+  if (!email && !password && !name) {
+    res.status(400);
+    throw new Error("No data provided");
+  }
+
+  req.user.name = name || req.user.name;
+
+  if (email) {
+    const emailExist = await User.findOne({ email });
 
     if (emailExist) {
       res.status(400);
       throw new Error("Email already exists");
     }
 
-    req.user.email = req.body.email;
+    req.user.email = email;
   }
 
-  if (req.body.password) {
-    req.user.password = req.body.password;
+  if (password) {
+    req.user.password = password;
   }
 
   const updatedUser = await req.user.save();
 
   req.session = { jwt: generateToken(req.user) };
 
-  const { id, name, email, isAdmin } = updatedUser;
-
-  res.json({ id, name, email, isAdmin });
+  res.json({
+    id: updatedUser.id,
+    name: updatedUser.name,
+    email: updatedUser.email,
+    isAdmin: updatedUser.isAdmin,
+  });
 });
 
 // @desc    Get all users
@@ -98,12 +108,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
 
-  if (users) {
-    res.json(users);
-  } else {
-    res.status(404);
-    throw new Error("There is not any user");
-  }
+  res.json(users);
 });
 
 export {

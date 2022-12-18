@@ -13,6 +13,6 @@ it("responds with details about the current user", async () => {
   expect(response.body.email).toEqual("test@test.com");
 });
 
-it("response with 401 if not authenticated", async () => {
+it("responds with 401 if not authenticated", async () => {
   return request(app).get("/api/users/profile").send().expect(401);
 });
