@@ -41,7 +41,7 @@ it("returns a 400 with a missing field", async () => {
     .send({ email: "test@test.com", password: "asdASD123!" })
     .expect(400);
 
-  await request(app).post("/api/users/register").expect(400);
+  await request(app).post("/api/users/register").send().expect(400);
 });
 
 it("disallows duplicate emails", async () => {

@@ -41,7 +41,7 @@ it("returns a 400 with a missing field", async () => {
     .send({ password: "asdASD123!" })
     .expect(400);
 
-  await request(app).post("/api/users/login").expect(400);
+  await request(app).post("/api/users/login").send().expect(400);
 });
 
 it("responds with a cookie when given valid credentials", async () => {

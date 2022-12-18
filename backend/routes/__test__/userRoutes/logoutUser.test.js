@@ -13,7 +13,7 @@ it("clears the cookie after logging out", async () => {
 
   const response = await request(app)
     .post("/api/users/logout")
-    .send({})
+    .send()
     .expect(200);
 
   expect(response.get("Set-Cookie")[0].split(";")[0]).toEqual("session=");

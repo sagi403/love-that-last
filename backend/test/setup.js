@@ -1,5 +1,6 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
+import request from "supertest";
 import { app } from "../app.js";
 
 let mongo;
@@ -27,3 +28,18 @@ afterAll(async () => {
 
   await mongoose.connection.close();
 });
+
+global.getCookie = async () => {
+  const email = "test@test.com";
+  const password = "asdASD123!";
+  const name = "test";
+
+  const response = await request(app)
+    .post("/api/users/register")
+    .send({ email, password, name })
+    .expect(201);
+
+  const cookie = response.get("Set-Cookie");
+
+  return cookie;
+};
