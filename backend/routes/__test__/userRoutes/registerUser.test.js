@@ -40,6 +40,8 @@ it("returns a 400 with a missing field", async () => {
     .post("/api/users/register")
     .send({ email: "test@test.com", password: "asdASD123!" })
     .expect(400);
+
+  await request(app).post("/api/users/register").expect(400);
 });
 
 it("disallows duplicate emails", async () => {
@@ -61,13 +63,5 @@ it("sets a cookie after successful signup", async () => {
     .expect(201);
 
   expect(response.get("Set-Cookie")).toBeDefined();
-});
-
-it("cookie contain jwt", async () => {
-  const response = await request(app)
-    .post("/api/users/register")
-    .send({ email: "test@test.com", password: "asdASD123!", name: "test" })
-    .expect(201);
-
   expect(response.get("Set-Cookie")[0].split("=")[0]).toEqual("session");
 });

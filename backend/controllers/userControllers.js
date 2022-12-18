@@ -39,7 +39,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     res.json({ success: true });
   } else {
-    res.status(401);
+    res.status(400);
     throw new Error("Invalid email or password");
   }
 });
