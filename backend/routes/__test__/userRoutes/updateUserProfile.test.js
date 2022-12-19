@@ -7,16 +7,17 @@ it("response with 401 if not authenticated", async () => {
 
 it("responds with 400 if email already exist", async () => {
   const cookie = await global.getCookie();
+  const email = "test1@test.com";
 
   await request(app)
     .post("/api/users/register")
-    .send({ email: "test1@test.com", password: "asdASD123!", name: "test" })
+    .send({ email, password: "asdASD123!", name: "test" })
     .expect(201);
 
   await request(app)
     .put("/api/users/profile")
     .set("Cookie", cookie)
-    .send({ email: "test1@test.com" })
+    .send({ email })
     .expect(400);
 });
 
@@ -42,14 +43,15 @@ it("responds with 400 for trying to change the admin status", async () => {
 
 it("responds with 200 for changing the email successfully", async () => {
   const cookie = await global.getCookie();
+  const email = "test1@test.com";
 
   const response = await request(app)
     .put("/api/users/profile")
     .set("Cookie", cookie)
-    .send({ email: "test1@test.com" })
+    .send({ email })
     .expect(200);
 
-  expect(response.body.email).toEqual("test1@test.com");
+  expect(response.body.email).toEqual(email);
 });
 
 it("responds with 200 for changing the password successfully", async () => {
@@ -64,29 +66,29 @@ it("responds with 200 for changing the password successfully", async () => {
 
 it("responds with 200 for changing the name successfully", async () => {
   const cookie = await global.getCookie();
+  const name = "new name";
 
   const response = await request(app)
     .put("/api/users/profile")
     .set("Cookie", cookie)
-    .send({ name: "new name" })
+    .send({ name })
     .expect(200);
 
-  expect(response.body.name).toEqual("new name");
+  expect(response.body.name).toEqual(name);
 });
 
 it("responds with 200 for changing all the fields successfully", async () => {
   const cookie = await global.getCookie();
+  const email = "test1@test.com";
+  const password = "newPASSWORD123!";
+  const name = "new name";
 
   const response = await request(app)
     .put("/api/users/profile")
     .set("Cookie", cookie)
-    .send({
-      email: "test1@test.com",
-      password: "newPASSWORD123!",
-      name: "new name",
-    })
+    .send({ email, password, name })
     .expect(200);
 
-  expect(response.body.email).toEqual("test1@test.com");
-  expect(response.body.name).toEqual("new name");
+  expect(response.body.email).toEqual(email);
+  expect(response.body.name).toEqual(name);
 });

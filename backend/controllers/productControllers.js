@@ -7,11 +7,11 @@ import Product from "../models/productModel.js";
 const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({});
 
-  if (products) {
+  if (products.length !== 0) {
     res.json(products);
   } else {
     res.status(404);
-    throw new Error("There is no product available");
+    throw new Error("There are no products available");
   }
 });
 
@@ -29,4 +29,25 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getProducts, getProductById };
+// @desc    Create a product
+// @route   POST /api/products
+// @access  Private/Admin
+const createProduct = asyncHandler(async (req, res) => {
+  const product = new Product({
+    name: "Sample name",
+    price: 0,
+    user: req.user.id,
+    image: "/images/sample.jpg",
+    brand: "Sample brand",
+    category: "Sample category",
+    countInStock: 0,
+    numReviews: 0,
+    description: "Sample description",
+    longDescription: "Sample long description",
+  });
+
+  const createdProduct = await product.save();
+  res.status(201).json(createdProduct);
+});
+
+export { getProducts, getProductById, createProduct };
