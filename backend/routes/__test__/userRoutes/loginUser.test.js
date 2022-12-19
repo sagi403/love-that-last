@@ -30,7 +30,7 @@ it("fails when an incorrect password is supplied", async () => {
     .expect(400);
 });
 
-it("returns a 400 with a missing field", async () => {
+it("returns a 400 for missing a field", async () => {
   await request(app)
     .post("/api/users/login")
     .send({ email: "test@test.com" })
@@ -42,6 +42,13 @@ it("returns a 400 with a missing field", async () => {
     .expect(400);
 
   await request(app).post("/api/users/login").send().expect(400);
+});
+
+it("returns a 400 if the email is not validated", async () => {
+  return request(app)
+    .post("/api/users/login")
+    .send({ email: "test@test" })
+    .expect(400);
 });
 
 it("responds with a cookie when given valid credentials", async () => {

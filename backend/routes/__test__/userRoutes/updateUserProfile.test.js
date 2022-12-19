@@ -41,6 +41,28 @@ it("responds with 400 for trying to change the admin status", async () => {
     .expect(400);
 });
 
+it("responds with 400 for providing invalidated data to change", async () => {
+  const cookie = await global.getCookie();
+
+  await request(app)
+    .put("/api/users/profile")
+    .set("Cookie", cookie)
+    .send({ name: "t" })
+    .expect(400);
+
+  await request(app)
+    .put("/api/users/profile")
+    .set("Cookie", cookie)
+    .send({ email: "test@test" })
+    .expect(400);
+
+  await request(app)
+    .put("/api/users/profile")
+    .set("Cookie", cookie)
+    .send({ password: "123456" })
+    .expect(400);
+});
+
 it("responds with 200 for changing the email successfully", async () => {
   const cookie = await global.getCookie();
   const email = "test1@test.com";
