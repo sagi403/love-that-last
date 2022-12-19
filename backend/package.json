@@ -7,7 +7,9 @@
   "scripts": {
     "start": "set DEBUG=diamond-den:* & node server.js",
     "server": "set DEBUG=diamond-den:* & nodemon server.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
+    "data:import": "set DEBUG=diamond-den:* & node seeder",
+    "data:destroy": "set DEBUG=diamond-den:* & node seeder -d"
   },
   "jest": {
     "setupFilesAfterEnv": [
