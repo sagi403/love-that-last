@@ -23,7 +23,7 @@ router.post("/logout", logoutUser);
 router
   .route("/profile")
   .get(protect, getUserProfile)
-  .put(
+  .patch(
     protect,
     updateUserProfileValidation,
     validateRequest,
