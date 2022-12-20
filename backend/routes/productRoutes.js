@@ -4,11 +4,13 @@ import {
   deleteProduct,
   getProductById,
   getProducts,
+  updateProduct,
 } from "../controllers/productControllers.js";
 import { admin, protect } from "../middleware/authMiddleware.js";
 import {
   deleteProductValidation,
   getProductByIdValidation,
+  updateProductValidation,
 } from "../validation/productValidation.js";
 import validateRequest from "../middleware/validateRequest.js";
 
@@ -19,11 +21,12 @@ router.route("/").get(getProducts).post(protect, admin, createProduct);
 router
   .route("/:id")
   .get(getProductByIdValidation, validateRequest, getProductById)
+  .put(protect, admin, updateProductValidation, validateRequest, updateProduct)
   .delete(
-    deleteProductValidation,
-    validateRequest,
     protect,
     admin,
+    deleteProductValidation,
+    validateRequest,
     deleteProduct
   );
 
