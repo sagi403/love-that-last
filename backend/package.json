@@ -7,6 +7,8 @@
   "scripts": {
     "start": "set DEBUG=diamond-den:* & node server.js",
     "server": "set DEBUG=diamond-den:* & nodemon server.js",
+    "client": "npm start --prefix ../frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
     "data:import": "set DEBUG=diamond-den:* & node seeder",
     "data:destroy": "set DEBUG=diamond-den:* & node seeder -d"
