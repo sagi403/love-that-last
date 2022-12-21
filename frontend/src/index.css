@@ -24,3 +24,20 @@
   top: 0;
   right: 0;
 }
+
+.newsletter-container {
+  background-color: black;
+  padding: 7rem;
+  text-align: center;
+}
+
+.newsletter-input {
+  color: white;
+  border: 1px solid white;
+  background-color: black;
+  padding: 0.6rem;
+  font-size: 1.2rem;
+}
+.newsletter-input::placeholder {
+  color: white;
+}
