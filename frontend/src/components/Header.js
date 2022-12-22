@@ -17,12 +17,12 @@ const Header = () => {
             </LinkContainer>
             <LinkContainer to="/search" className="mx-3 fs-3">
               <Nav.Link>
-                <i class="bi bi-search"></i>
+                <i className="bi bi-search"></i>
               </Nav.Link>
             </LinkContainer>
             <LinkContainer to="/cart" className="mx-3 fs-3">
               <Nav.Link>
-                <i class="bi bi-cart"></i>
+                <i className="bi bi-cart"></i>
               </Nav.Link>
             </LinkContainer>
           </Navbar>
