@@ -5,13 +5,13 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "set DEBUG=diamond-den:* & node server.js",
-    "server": "set DEBUG=diamond-den:* & nodemon server.js",
+    "start": "set DEBUG=ltl:* & node server.js",
+    "server": "set DEBUG=ltl:* & nodemon server.js",
     "client": "npm start --prefix ../frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
-    "data:import": "set DEBUG=diamond-den:* & node seeder",
-    "data:destroy": "set DEBUG=diamond-den:* & node seeder -d"
+    "data:import": "set DEBUG=ltl:* & node seeder",
+    "data:destroy": "set DEBUG=ltl:* & node seeder -d"
   },
   "jest": {
     "setupFilesAfterEnv": [

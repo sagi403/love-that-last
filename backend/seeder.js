@@ -6,7 +6,7 @@ import Product from "./models/productModel.js";
 import connectDB from "./config/db.js";
 import debug from "debug";
 
-const logger = debug("diamond-den:seeder");
+const logger = debug("ltl:seeder");
 
 dotenv.config();
 

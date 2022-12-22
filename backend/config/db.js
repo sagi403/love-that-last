@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import debug from "debug";
 
-const logger = debug("diamond-den:database");
+const logger = debug("ltl:database");
 
 const connectDB = async () => {
   try {

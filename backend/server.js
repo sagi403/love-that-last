@@ -7,7 +7,7 @@ dotenv.config();
 
 connectDB();
 
-const logger = debug("diamond-den:server");
+const logger = debug("ltl:server");
 
 const PORT = process.env.PORT || 5000;
 

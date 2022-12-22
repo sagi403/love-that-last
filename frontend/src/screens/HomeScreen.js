@@ -13,7 +13,7 @@ const HomeScreen = () => {
       <Container className="py-5">
         <div className="text-center py-5">
           <h1 className="mx-auto">
-            Here At Diamond Den, Our Customers Are Our #1 Priority
+            Here At LTL, Our Customers Are Our #1 Priority
           </h1>
           <p className="mx-auto">
             Yes: We love our customers more than anything! And that's saying
@@ -73,7 +73,7 @@ const HomeScreen = () => {
       </div>
       <Container className="py-5">
         <div className="py-5 text-center">
-          <h2>WHY DIAMOND DEN?</h2>
+          <h2>WHY LTL?</h2>
           <Row className="py-5">
             <Col sm={12} md={4}>
               <div>
@@ -84,9 +84,9 @@ const HomeScreen = () => {
                 />
                 <h4>Secure Shopping</h4>
                 <p className="d-inline">
-                  When it comes to security, SLEEGG uses best in class
-                  technology so you can rest easy. Your personal details are
-                  never shared, sold or rented to anyone.
+                  When it comes to security, LTL uses best in class technology
+                  so you can rest easy. Your personal details are never shared,
+                  sold or rented to anyone.
                 </p>
               </div>
             </Col>
@@ -110,7 +110,7 @@ const HomeScreen = () => {
               />
               <h4>Unique Everything</h4>
               <p className="d-inline">
-                Here at SLEEGG, All of our items are designed, personalized and
+                Here at LTL, All of our items are designed, personalized and
                 fulfilled with love.
               </p>
             </Col>

@@ -11,7 +11,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -30,7 +30,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -49,7 +49,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -68,7 +68,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -87,7 +87,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -106,7 +106,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -125,7 +125,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -144,7 +144,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -163,7 +163,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -182,7 +182,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -201,7 +201,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -220,7 +220,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -239,7 +239,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -258,7 +258,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -277,7 +277,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -297,7 +297,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -316,7 +316,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -335,7 +335,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
@@ -354,7 +354,7 @@ const products = [
       A wife who will stay with you through thick and thin, through good times and bad, is a wife that should be treasured every day.
       These quotes that come with the necklace will bring a smile to her face and loving feelings to her heart so you can let her know how much she means to you.
       `,
-    brand: "SLEEGG",
+    brand: "LTL",
     category: "Jewelry",
     price: 49.95,
     countInStock: 5,
