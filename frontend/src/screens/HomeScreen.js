@@ -74,7 +74,7 @@ const HomeScreen = () => {
       <Container className="py-5">
         <div className="py-5 text-center">
           <h2>WHY LTL?</h2>
-          <Row className="py-5">
+          <Row className="py-4">
             <Col sm={12} md={4}>
               <div>
                 <img
