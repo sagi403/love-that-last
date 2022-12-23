@@ -17,7 +17,6 @@ const LoginScreen = () => {
   });
 
   const location = useLocation();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

@@ -9,8 +9,7 @@ const initialState = {
 
 export const login = createAsyncThunk("user/login", async (user, thunkApi) => {
   try {
-    const config = { headers: { "Content-Type": "application/json" } };
-    const { data } = await axios.post("/api/users/login", user, config);
+    const { data } = await axios.post("/api/users/login", user);
 
     return data.success;
   } catch (error) {
@@ -22,6 +21,24 @@ export const login = createAsyncThunk("user/login", async (user, thunkApi) => {
     return thunkApi.rejectWithValue(err);
   }
 });
+
+export const register = createAsyncThunk(
+  "user/register",
+  async (user, thunkApi) => {
+    try {
+      const { data } = await axios.post("/api/users/register", user);
+
+      return data.success;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -41,6 +58,17 @@ const userSlice = createSlice({
         state.loggedIn = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(register.pending, state => {
+        state.loading = true;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.loading = false;
+        state.loggedIn = action.payload;
+      })
+      .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
