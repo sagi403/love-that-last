@@ -5,10 +5,17 @@ import FormContainer from "../components/FormContainer";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import { login, resetError } from "../store/userSlice";
 import Message from "../components/Message";
+import validateLogin from "../validation/loginValidation";
+import FormItem from "../components/FormItem";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorsMessage, setErrorsMessage] = useState({
+    email: null,
+    password: null,
+  });
+
   const location = useLocation();
 
   const dispatch = useDispatch();
@@ -27,9 +34,25 @@ const LoginScreen = () => {
     return () => dispatch(resetError());
   }, [loggedIn]);
 
-  const submitHandler = e => {
+  const submitHandler = async e => {
     e.preventDefault();
+    dispatch(resetError());
 
+    const errors = {};
+    const { error } = validateLogin({ email, password });
+
+    if (error) {
+      for (let errorItem of error.details) {
+        const { context, message } = errorItem;
+
+        errors[context.key] = [message];
+      }
+
+      setErrorsMessage(errors);
+      return;
+    }
+
+    setErrorsMessage({ email: null, password: null });
     dispatch(login({ email, password }));
   };
 
@@ -38,25 +61,25 @@ const LoginScreen = () => {
       <h1>Login</h1>
       {error && <Message variant="danger">{error}</Message>}
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId="email" className="mb-3">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+        <FormItem
+          controlId="email"
+          label="Email Address"
+          type="email"
+          placeholder="Enter email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          message={errorsMessage && errorsMessage.email}
+        />
 
-        <Form.Group controlId="password" className="mb-3">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+        <FormItem
+          controlId="password"
+          label="Password"
+          type="password"
+          placeholder="Enter password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          message={errorsMessage && errorsMessage.password}
+        />
 
         <Button type="submit" variant="primary">
           Login
