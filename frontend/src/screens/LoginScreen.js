@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import { Form, Button, Col, Row } from "react-bootstrap";
-import { login } from "../store/userSlice";
+import { login, resetError } from "../store/userSlice";
+import Message from "../components/Message";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -22,6 +23,8 @@ const LoginScreen = () => {
     if (loggedIn) {
       navigate(from, { replace: true });
     }
+
+    return () => dispatch(resetError());
   }, [loggedIn]);
 
   const submitHandler = e => {
@@ -33,6 +36,7 @@ const LoginScreen = () => {
   return (
     <FormContainer>
       <h1>Login</h1>
+      {error && <Message variant="danger">{error}</Message>}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="email" className="mb-3">
           <Form.Label>Email Address</Form.Label>

@@ -26,7 +26,11 @@ export const login = createAsyncThunk("user/login", async (user, thunkApi) => {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    resetError: state => {
+      state.error = null;
+    },
+  },
   extraReducers: {
     [login.pending]: state => {
       state.loading = true;
@@ -41,5 +45,7 @@ const userSlice = createSlice({
     },
   },
 });
+
+export const { resetError } = userSlice.actions;
 
 export default userSlice.reducer;
