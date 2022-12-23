@@ -26,6 +26,8 @@ const ProductScreen = () => {
   const location = useLocation();
   // const navigate = useNavigate();
 
+  const from = location.state?.from?.pathname || "/";
+
   const {
     loadingProduct: loading,
     error,
@@ -33,7 +35,6 @@ const ProductScreen = () => {
   } = useSelector(state => state.product);
 
   useEffect(() => {
-    console.log(location);
     dispatch(getProductById(params.id));
 
     return () => dispatch(resetError());
@@ -41,7 +42,7 @@ const ProductScreen = () => {
 
   return (
     <Container>
-      <Link className="btn btn-light my-3" to="/">
+      <Link className="btn btn-light my-3" to={from}>
         Go Back
       </Link>
       {loading ? (
