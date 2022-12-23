@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
@@ -14,18 +14,30 @@ import {
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { getProductById } from "../store/productSlice";
+import { resetError } from "../store/productSlice";
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
+  // const [rating, setRating] = useState(0);
+  // const [comment, setComment] = useState("");
 
   const params = useParams();
   const dispatch = useDispatch();
+  const location = useLocation();
+  // const navigate = useNavigate();
 
-  const { loading, error, product } = useSelector(state => state.product);
+  const {
+    loadingProduct: loading,
+    error,
+    product,
+  } = useSelector(state => state.product);
 
   useEffect(() => {
+    console.log(location);
     dispatch(getProductById(params.id));
-  }, [dispatch, params.id]);
+
+    return () => dispatch(resetError());
+  }, []);
 
   return (
     <Container>
@@ -38,6 +50,7 @@ const ProductScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          {/* <Meta title={product.name} /> */}
           <Row className="mb-4">
             <Col md={6}>
               <Image
@@ -51,7 +64,12 @@ const ProductScreen = () => {
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
                 </ListGroup.Item>
-                <ListGroup.Item></ListGroup.Item>
+                <ListGroup.Item>
+                  {/* <Rating
+                    value={product.rating}
+                    text={`${product.numReviews} reviews`}
+                  /> */}
+                </ListGroup.Item>
                 <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
                 <ListGroup.Item>{product.description}</ListGroup.Item>
               </ListGroup>
@@ -99,6 +117,7 @@ const ProductScreen = () => {
 
                   <ListGroup.Item>
                     <Button
+                      // onClick={addToCartHandler}
                       className="w-100"
                       type="button"
                       disabled={product.countInStock === 0}
@@ -126,7 +145,7 @@ const ProductScreen = () => {
                 {product.reviews.map(review => (
                   <ListGroup.Item key={review._id}>
                     <strong>{review.name}</strong>
-
+                    {/* <Rating value={review.rating} /> */}
                     <p>
                       {review.createdAt.split("T")[0]}{" "}
                       {review.createdAt.split("T")[1].split(".")[0]}
@@ -136,6 +155,44 @@ const ProductScreen = () => {
                 ))}
                 <ListGroup.Item>
                   <h2>Write a Customer Review</h2>
+                  {/* {errorProductReview && (
+                    <Message variant="danger">{errorProductReview}</Message>
+                  )}
+                  {userInfo ? (
+                    <Form onSubmit={submitHandler}>
+                      <Form.Group controlId="rating" className="mb-3">
+                        <Form.Label>Rating</Form.Label>
+                        <Form.Control
+                          as="select"
+                          value={rating}
+                          onChange={e => setRating(e.target.value)}
+                        >
+                          <option value="">Select...</option>
+                          <option value="1">1 - Poor</option>
+                          <option value="2">2 - Fair</option>
+                          <option value="3">3 - Good</option>
+                          <option value="4">4 - Very Good</option>
+                          <option value="5">5 - Excellent</option>
+                        </Form.Control>
+                      </Form.Group>
+                      <Form.Group controlId="comment" className="mb-3">
+                        <Form.Label>Comment</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          row="3"
+                          value={comment}
+                          onChange={e => setComment(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Button type="submit" variant="primary">
+                        Submit
+                      </Button>
+                    </Form>
+                  ) : (
+                    <Message>
+                      Please <Link to="/login">sign in</Link> to write a review
+                    </Message>
+                  )} */}
                 </ListGroup.Item>
               </ListGroup>
             </Col>

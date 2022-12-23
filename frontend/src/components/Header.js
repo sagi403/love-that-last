@@ -9,6 +9,11 @@ const Header = () => {
           <LinkContainer to="/">
             <Navbar.Brand>LTL</Navbar.Brand>
           </LinkContainer>
+          <Nav className="me-auto">
+            <LinkContainer to="/products" className="mx-3 fs-3">
+              <Nav.Link>Necklaces</Nav.Link>
+            </LinkContainer>
+          </Nav>
           <Navbar>
             <LinkContainer to="/login" className="mx-3 fs-3">
               <Nav.Link>
