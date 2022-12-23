@@ -17,12 +17,10 @@ const AllProductsScreen = () => {
   } = useSelector(state => state.product);
 
   useEffect(() => {
-    if (!products) {
-      dispatch(getAllProducts());
-    }
+    dispatch(getAllProducts());
 
     return () => dispatch(resetError());
-  }, [dispatch, products]);
+  }, []);
 
   return (
     <Container>

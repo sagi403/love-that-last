@@ -1,6 +1,7 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import products from "../data/products";
 import Product from "../components/Product";
+import { Link } from "react-router-dom";
 
 const HomeScreen = () => {
   return (
@@ -46,9 +47,11 @@ const HomeScreen = () => {
         </Row>
         <div className="text-center py-5">
           <h2>Find Something Special</h2>
-          <Button variant="outline-dark" className="my-3 py-1">
-            VIEW ALL
-          </Button>
+          <Link to="/products">
+            <Button variant="outline-dark" className="my-3 py-1">
+              VIEW ALL
+            </Button>
+          </Link>
           <Row className="py-4">
             {products.map(product => (
               <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
