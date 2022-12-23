@@ -31,18 +31,19 @@ const userSlice = createSlice({
       state.error = null;
     },
   },
-  extraReducers: {
-    [login.pending]: state => {
-      state.loading = true;
-    },
-    [login.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.loggedIn = action.payload;
-    },
-    [login.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(login.pending, state => {
+        state.loading = true;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.loading = false;
+        state.loggedIn = action.payload;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
