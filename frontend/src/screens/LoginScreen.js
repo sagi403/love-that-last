@@ -1,17 +1,33 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import { Form, Button, Col, Row } from "react-bootstrap";
+import { login } from "../store/userSlice";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const location = useLocation();
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { error, loggedIn } = useSelector(state => state.user);
+
   const redirect = location.search ? location.search.split("=")[1] : "/";
+  const from = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate(from, { replace: true });
+    }
+  }, [loggedIn]);
 
   const submitHandler = e => {
     e.preventDefault();
+
+    dispatch(login({ email, password }));
   };
 
   return (
