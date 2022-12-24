@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 const productSample = {
   name: "test",
   image: "/test/test.jpg",
-  description: `test test test test`,
-  longDescription: `test test test test test test test test test test test test`,
+  description: `test test test`,
+  longDescription: `test test test test test`,
   brand: "test",
   category: "test",
   price: 49.95,
@@ -183,9 +183,18 @@ it("responds with 200 for updating the product successfully", async () => {
 
   const id = response.body.id;
 
-  await request(app)
+  const res = await request(app)
     .put(`/api/products/${id}`)
     .set("Cookie", cookie)
     .send(productSample)
     .expect(200);
+
+  expect(res.body.name).toEqual("test");
+  expect(res.body.image).toEqual("/test/test.jpg");
+  expect(res.body.description).toEqual("test test test");
+  expect(res.body.longDescription).toEqual("test test test test test");
+  expect(res.body.brand).toEqual("test");
+  expect(res.body.category).toEqual("test");
+  expect(res.body.price).toEqual(49.95);
+  expect(res.body.countInStock).toEqual(5);
 });

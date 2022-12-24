@@ -4,6 +4,7 @@ import {
   deleteProduct,
   getProductById,
   getProducts,
+  getTop4Products,
   updateProduct,
 } from "../controllers/productControllers.js";
 import { admin, protect } from "../middleware/authMiddleware.js";
@@ -17,7 +18,7 @@ import validateRequest from "../middleware/validateRequest.js";
 const router = express.Router();
 
 router.route("/").get(getProducts).post(protect, admin, createProduct);
-
+router.get("/top4", getTop4Products);
 router
   .route("/:id")
   .get(getProductByIdValidation, validateRequest, getProductById)

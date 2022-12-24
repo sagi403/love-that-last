@@ -100,10 +100,25 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Fetch top 4 rated products
+// @route   GET /api/products/top4
+// @access  Public
+const getTop4Products = asyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(4);
+
+  if (products.length !== 0) {
+    res.json(products);
+  } else {
+    res.status(404);
+    throw new Error("There are no products available");
+  }
+});
+
 export {
   getProducts,
   getProductById,
   createProduct,
   deleteProduct,
   updateProduct,
+  getTop4Products,
 };
