@@ -8,10 +8,18 @@ const HomeScreen = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      const { data } = await axios.get("/api/products/top4");
-      setProducts(data);
-    })();
+    const productsStored = JSON.parse(sessionStorage.getItem("products"));
+
+    if (productsStored) {
+      setProducts(productsStored);
+    } else {
+      (async () => {
+        const { data } = await axios.get("/api/products/top4");
+        setProducts(data);
+
+        sessionStorage.setItem("products", JSON.stringify(data));
+      })();
+    }
   }, []);
 
   return (
