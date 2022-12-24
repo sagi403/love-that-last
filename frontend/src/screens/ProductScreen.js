@@ -15,16 +15,19 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { getProductById } from "../store/productSlice";
 import { resetError } from "../store/productSlice";
+import Rating from "../components/Rating";
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
-  // const [rating, setRating] = useState(0);
-  // const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
 
   const params = useParams();
   const dispatch = useDispatch();
   const location = useLocation();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const { loggedIn } = useSelector(state => state.user);
 
   const from = location.state?.from?.pathname || "/";
 
@@ -39,6 +42,10 @@ const ProductScreen = () => {
 
     return () => dispatch(resetError());
   }, []);
+
+  const submitHandler = e => {
+    e.preventDefault();
+  };
 
   return (
     <Container>
@@ -66,10 +73,10 @@ const ProductScreen = () => {
                   <h3>{product.name}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  {/* <Rating
+                  <Rating
                     value={product.rating}
                     text={`${product.numReviews} reviews`}
-                  /> */}
+                  />
                 </ListGroup.Item>
                 <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
                 <ListGroup.Item>{product.description}</ListGroup.Item>
@@ -144,9 +151,9 @@ const ProductScreen = () => {
               {product.reviews.length === 0 && <Message>No Reviews</Message>}
               <ListGroup variant="flush">
                 {product.reviews.map(review => (
-                  <ListGroup.Item key={review._id}>
+                  <ListGroup.Item key={review.id}>
                     <strong>{review.name}</strong>
-                    {/* <Rating value={review.rating} /> */}
+                    <Rating value={review.rating} />
                     <p>
                       {review.createdAt.split("T")[0]}{" "}
                       {review.createdAt.split("T")[1].split(".")[0]}
@@ -154,12 +161,12 @@ const ProductScreen = () => {
                     <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}
-                <ListGroup.Item>
+                <ListGroup>
                   <h2>Write a Customer Review</h2>
                   {/* {errorProductReview && (
                     <Message variant="danger">{errorProductReview}</Message>
-                  )}
-                  {userInfo ? (
+                  )} */}
+                  {loggedIn ? (
                     <Form onSubmit={submitHandler}>
                       <Form.Group controlId="rating" className="mb-3">
                         <Form.Label>Rating</Form.Label>
@@ -191,10 +198,14 @@ const ProductScreen = () => {
                     </Form>
                   ) : (
                     <Message>
-                      Please <Link to="/login">sign in</Link> to write a review
+                      Please{" "}
+                      <Link to="/login" state={{ from: location }}>
+                        sign in
+                      </Link>{" "}
+                      to write a review
                     </Message>
-                  )} */}
-                </ListGroup.Item>
+                  )}
+                </ListGroup>
               </ListGroup>
             </Col>
           </Row>
