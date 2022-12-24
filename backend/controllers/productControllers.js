@@ -78,6 +78,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     countInStock,
     description,
     longDescription,
+    beforeSalePrice,
   } = req.body;
 
   const product = await Product.findById(req.params.id);
@@ -91,6 +92,9 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.countInStock = countInStock;
     product.description = description;
     product.longDescription = longDescription;
+    beforeSalePrice
+      ? (product.beforeSalePrice = beforeSalePrice)
+      : (product.beforeSalePrice = null);
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);

@@ -15,6 +15,7 @@ export const deleteProductValidation = [
 export const updateProductValidation = [
   body("name").isString().isLength({ min: 2, max: 255 }),
   body("price").isNumeric(),
+  body("beforeSalePrice").isNumeric().optional(),
   body("image").trim().isString().isLength({ min: 2, max: 255 }),
   body("brand").trim().isString().isLength({ min: 2, max: 255 }),
   body("category").trim().isString().isLength({ min: 2, max: 255 }),

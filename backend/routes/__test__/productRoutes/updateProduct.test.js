@@ -10,6 +10,7 @@ const productSample = {
   brand: "test",
   category: "test",
   price: 49.95,
+  beforeSalePrice: 69.95,
   countInStock: 5,
   rating: 5,
   numReviews: 10,
@@ -196,5 +197,6 @@ it("responds with 200 for updating the product successfully", async () => {
   expect(res.body.brand).toEqual("test");
   expect(res.body.category).toEqual("test");
   expect(res.body.price).toEqual(49.95);
+  expect(res.body.beforeSalePrice).toEqual(69.95);
   expect(res.body.countInStock).toEqual(5);
 });
