@@ -1,9 +1,19 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import products from "../data/products";
+import axios from "axios";
 import Product from "../components/Product";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const HomeScreen = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get("/api/products/top4");
+      setProducts(data);
+    })();
+  }, []);
+
   return (
     <>
       <img
