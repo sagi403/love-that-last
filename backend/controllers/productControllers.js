@@ -156,7 +156,7 @@ const createProductReview = asyncHandler(async (req, res) => {
     product.numReviews;
 
   await product.save();
-  res.status(201).json({ message: "Review added" });
+  res.status(201).json({ message: "Review created successfully" });
 });
 
 export {

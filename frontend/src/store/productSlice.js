@@ -4,11 +4,8 @@ import axios from "axios";
 const initialState = {
   loadingProduct: true,
   loadingProducts: true,
-  loadingReview: false,
   product: null,
-  successProductReview: false,
   error: null,
-  errorProductReview: null,
   products: null,
 };
 
@@ -37,29 +34,6 @@ export const getAllProducts = createAsyncThunk(
       const { data } = await axios.get("/api/products");
 
       return data;
-    } catch (error) {
-      const err =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-
-      return thunkApi.rejectWithValue(err);
-    }
-  }
-);
-
-export const createProductReview = createAsyncThunk(
-  "product/createProductReview",
-  async (data, thunkApi) => {
-    try {
-      const { id, rating, comment } = data;
-      const config = { headers: { "Content-Type": "application/json" } };
-
-      await axios.post(
-        `/api/products/${id}/reviews`,
-        { rating, comment },
-        config
-      );
     } catch (error) {
       const err =
         error.response && error.response.data.message
@@ -102,17 +76,6 @@ const productSlice = createSlice({
       .addCase(getAllProducts.rejected, (state, action) => {
         state.loadingProducts = false;
         state.error = action.payload;
-      })
-      .addCase(createProductReview.pending, state => {
-        state.loadingReview = true;
-      })
-      .addCase(createProductReview.fulfilled, (state, action) => {
-        state.loadingReview = false;
-        state.successProductReview = true;
-      })
-      .addCase(createProductReview.rejected, (state, action) => {
-        state.loadingReview = false;
-        state.errorProductReview = action.payload;
       });
   },
 });

@@ -13,16 +13,19 @@ import {
 } from "react-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { createProductReview, getProductById } from "../store/productSlice";
+import { getProductById } from "../store/productSlice";
 import { resetError } from "../store/productSlice";
 import Rating from "../components/Rating";
+import axios from "axios";
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [errorProductReview, setErrorProductReview] = useState(null);
+  const [successProductReview, setSuccessProductReview] = useState(null);
 
-  const params = useParams();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,21 +37,41 @@ const ProductScreen = () => {
   const {
     loadingProduct: loading,
     error,
-    errorProductReview,
-    successProductReview,
     product,
   } = useSelector(state => state.product);
 
   useEffect(() => {
-    dispatch(getProductById(params.id));
+    if (successProductReview) {
+      setRating(0);
+      setComment("");
+    }
+
+    dispatch(getProductById(id));
 
     return () => dispatch(resetError());
-  }, [dispatch, params]);
+  }, [successProductReview]);
 
-  const submitHandler = e => {
+  const submitHandler = async e => {
     e.preventDefault();
+    const config = { headers: { "Content-Type": "application/json" } };
 
-    dispatch(createProductReview({ id: params.id, rating, comment }));
+    try {
+      const { data } = await axios.post(
+        `/api/products/${id}/reviews`,
+        { rating, comment },
+        config
+      );
+      console.log(data);
+
+      setSuccessProductReview(data.message);
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      setErrorProductReview(err);
+    }
   };
 
   return (
@@ -169,6 +192,9 @@ const ProductScreen = () => {
                   <h2>Write a Customer Review</h2>
                   {errorProductReview && (
                     <Message variant="danger">{errorProductReview}</Message>
+                  )}
+                  {successProductReview && (
+                    <Message variant="success">{successProductReview}</Message>
                   )}
                   {loggedIn ? (
                     <Form onSubmit={submitHandler}>

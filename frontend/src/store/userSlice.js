@@ -3,8 +3,10 @@ import axios from "axios";
 
 const initialState = {
   loading: false,
+  loadingAutoLogin: false,
   loggedIn: false,
   error: null,
+  userInfo: null,
 };
 
 export const login = createAsyncThunk("user/login", async (user, thunkApi) => {
@@ -42,6 +44,19 @@ export const register = createAsyncThunk(
   }
 );
 
+export const autoLogin = createAsyncThunk(
+  "user/autoLogin",
+  async (_, thunkApi) => {
+    try {
+      const { data } = await axios.get("/api/users/profile");
+
+      return data;
+    } catch (error) {
+      return thunkApi.rejectWithValue(false);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -72,6 +87,18 @@ const userSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(autoLogin.pending, state => {
+        state.loadingAutoLogin = true;
+      })
+      .addCase(autoLogin.fulfilled, (state, action) => {
+        state.loadingAutoLogin = false;
+        state.userInfo = action.payload;
+        state.loggedIn = true;
+      })
+      .addCase(autoLogin.rejected, (state, action) => {
+        state.loadingAutoLogin = false;
         state.error = action.payload;
       });
   },
