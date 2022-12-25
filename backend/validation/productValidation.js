@@ -23,3 +23,11 @@ export const updateProductValidation = [
   body("description").trim().isString().isLength({ min: 2, max: 1000 }),
   body("longDescription").trim().isString().isLength({ min: 2 }),
 ];
+
+export const createProductReviewValidation = [
+  body("rating").isNumeric(),
+  body("comment").trim().isString().isLength({ min: 2, max: 1000 }),
+  param("id")
+    .matches(/^[a-fA-F0-9]{24}$/)
+    .trim(),
+];
