@@ -49,7 +49,7 @@ const ProductScreen = () => {
     dispatch(getProductById(id));
 
     return () => dispatch(resetError());
-  }, [successProductReview]);
+  }, [successProductReview, id]);
 
   const submitHandler = async e => {
     e.preventDefault();
@@ -61,7 +61,6 @@ const ProductScreen = () => {
         { rating, comment },
         config
       );
-      console.log(data);
 
       setSuccessProductReview(data.message);
     } catch (error) {
@@ -72,6 +71,12 @@ const ProductScreen = () => {
 
       setErrorProductReview(err);
     }
+  };
+
+  const addToCart = () => {
+    navigate(`/cart/${id}?qty=${qty}`, {
+      state: { from: location },
+    });
   };
 
   return (
@@ -152,7 +157,7 @@ const ProductScreen = () => {
 
                   <ListGroup.Item>
                     <Button
-                      // onClick={addToCartHandler}
+                      onClick={addToCart}
                       className="w-100"
                       type="button"
                       disabled={product.countInStock === 0}

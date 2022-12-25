@@ -8,6 +8,7 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProductScreen from "./screens/ProductScreen";
 import AllProductsScreen from "./screens/AllProductsScreen";
+import CartScreen from "./screens/CartScreen";
 import { autoLogin } from "./store/userSlice";
 
 const App = () => {
@@ -24,8 +25,10 @@ const App = () => {
   return (
     <Router>
       <Header />
-      <main>
+      <main className="py-3">
         <Routes>
+          <Route path="/cart/:id" element={<CartScreen />} />
+          <Route path="/cart" element={<CartScreen />} />
           <Route path="/products" element={<AllProductsScreen />} />
           <Route path="/product/:id" element={<ProductScreen />} />
           <Route path="/login" element={<LoginScreen />} />
