@@ -13,7 +13,7 @@ import {
 } from "react-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getProductById } from "../store/productSlice";
+import { createProductReview, getProductById } from "../store/productSlice";
 import { resetError } from "../store/productSlice";
 import Rating from "../components/Rating";
 
@@ -34,6 +34,8 @@ const ProductScreen = () => {
   const {
     loadingProduct: loading,
     error,
+    errorProductReview,
+    successProductReview,
     product,
   } = useSelector(state => state.product);
 
@@ -41,10 +43,12 @@ const ProductScreen = () => {
     dispatch(getProductById(params.id));
 
     return () => dispatch(resetError());
-  }, []);
+  }, [dispatch, params]);
 
   const submitHandler = e => {
     e.preventDefault();
+
+    dispatch(createProductReview({ id: params.id, rating, comment }));
   };
 
   return (
@@ -163,9 +167,9 @@ const ProductScreen = () => {
                 ))}
                 <ListGroup>
                   <h2>Write a Customer Review</h2>
-                  {/* {errorProductReview && (
+                  {errorProductReview && (
                     <Message variant="danger">{errorProductReview}</Message>
-                  )} */}
+                  )}
                   {loggedIn ? (
                     <Form onSubmit={submitHandler}>
                       <Form.Group controlId="rating" className="mb-3">
