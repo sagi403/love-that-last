@@ -19,6 +19,7 @@ const CartScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const { product } = useSelector(state => state.product);
   const { cartItems } = useSelector(state => state.cart);
@@ -37,6 +38,10 @@ const CartScreen = () => {
       dispatch(addToCart({ ...product, qty }));
     }
   }, [id]);
+
+  const checkoutHandler = () => {
+    navigate("/login?redirect=/shipping");
+  };
 
   return (
     <Container>
@@ -113,7 +118,7 @@ const CartScreen = () => {
                   type="button"
                   className="w-100"
                   disabled={cartItems.length === 0}
-                  // onClick={checkoutHandler}
+                  onClick={checkoutHandler}
                 >
                   Proceed To Checkout
                 </Button>

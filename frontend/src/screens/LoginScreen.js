@@ -23,11 +23,10 @@ const LoginScreen = () => {
   const { error, loggedIn } = useSelector(state => state.user);
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
-  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     if (loggedIn) {
-      navigate(from, { replace: true });
+      navigate(redirect, { replace: true });
     }
 
     return () => dispatch(resetError());

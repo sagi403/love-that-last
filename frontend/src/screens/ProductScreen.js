@@ -234,9 +234,7 @@ const ProductScreen = () => {
                   ) : (
                     <Message>
                       Please{" "}
-                      <Link to="/login" state={{ from: location }}>
-                        sign in
-                      </Link>{" "}
+                      <Link to={`/login?redirect=/product/${id}`}>sign in</Link>{" "}
                       to write a review
                     </Message>
                   )}
