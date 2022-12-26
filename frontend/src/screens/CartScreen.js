@@ -12,7 +12,7 @@ import {
   Container,
 } from "react-bootstrap";
 import Message from "../components/Message";
-import { addToCart } from "../store/cartSlice";
+import { addToCart, removeFromCart } from "../store/cartSlice";
 import { getProductById } from "../store/productSlice";
 
 const CartScreen = () => {
@@ -84,7 +84,7 @@ const CartScreen = () => {
                       <Button
                         type="button"
                         variant="light"
-                        // onClick={() => removeFromCartHandler(item.product)}
+                        onClick={() => dispatch(removeFromCart(item.id))}
                       >
                         <i className="bi bi-trash"></i>
                       </Button>
