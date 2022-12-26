@@ -4,6 +4,9 @@ const initialState = {
   cartItems: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [],
+  shippingAddress: sessionStorage.getItem("shippingAddress")
+    ? JSON.parse(sessionStorage.getItem("shippingAddress"))
+    : [],
   error: null,
 };
 
@@ -36,9 +39,18 @@ const cartSlice = createSlice({
 
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
+    saveShippingAddress: (state, action) => {
+      state.shippingAddress = action.payload;
+
+      sessionStorage.setItem(
+        "shippingAddress",
+        JSON.stringify(state.shippingAddress)
+      );
+    },
   },
 });
 
-export const { resetError, addToCart, removeFromCart } = cartSlice.actions;
+export const { resetError, addToCart, removeFromCart, saveShippingAddress } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
