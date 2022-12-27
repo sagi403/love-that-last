@@ -4,6 +4,7 @@ import {
   addOrderItems,
   getMyOrders,
   getOrderById,
+  getOrders,
   updateOrderToDelivered,
   updateOrderToPaid,
 } from "../controllers/orderControllers.js";
@@ -19,7 +20,8 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(protect, addOrderItemsValidation, validateRequest, addOrderItems);
+  .post(protect, addOrderItemsValidation, validateRequest, addOrderItems)
+  .get(protect, admin, getOrders);
 router.route("/myorders").get(protect, getMyOrders);
 router
   .route("/:id")
