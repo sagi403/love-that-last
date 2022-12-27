@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 const regex = /^[a-fA-F0-9]{24}$/;
 
@@ -34,4 +34,10 @@ export const addOrderItemsValidation = [
   body("taxPrice").isNumeric(),
   body("shippingPrice").isNumeric(),
   body("totalPrice").isNumeric(),
+];
+
+export const getOrderByIdValidation = [
+  param("id")
+    .matches(/^[a-fA-F0-9]{24}$/)
+    .trim(),
 ];
