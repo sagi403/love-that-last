@@ -1,20 +1,7 @@
 import request from "supertest";
 import { app } from "../../../app.js";
 import mongoose from "mongoose";
-
-const productSample = {
-  name: "test",
-  image: "/test/test.jpg",
-  description: `test test test`,
-  longDescription: `test test test test test`,
-  brand: "test",
-  category: "test",
-  price: 49.95,
-  beforeSalePrice: 69.95,
-  countInStock: 5,
-  rating: 5,
-  numReviews: 10,
-};
+import { productSample } from "../../../test/samples.js";
 
 it("response with 401 if not authenticated", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();

@@ -1,28 +1,6 @@
 import request from "supertest";
 import { app } from "../../../app.js";
-
-const orderSample = {
-  orderItems: [
-    {
-      name: "To My Wife - Blessing In My Life - Necklace",
-      qty: 1,
-      image: "/images/collection/Blessing_In_My_Life_AB.jpg",
-      price: 49.95,
-      product: "63a6f1c6ec738ad2f77d8aaa",
-    },
-  ],
-  shippingAddress: {
-    address: "Gordon",
-    city: "Tel-Aviv",
-    postalCode: "541362",
-    country: "Israel",
-  },
-  paymentMethod: "PayPal",
-  itemsPrice: 49.95,
-  taxPrice: 0,
-  shippingPrice: 0,
-  totalPrice: 49.95,
-};
+import { orderSample } from "../../../test/samples.js";
 
 it("responds with 401 if not authenticated", async () => {
   return request(app).post(`/api/orders`).send().expect(401);
