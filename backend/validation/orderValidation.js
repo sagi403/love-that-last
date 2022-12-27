@@ -51,3 +51,9 @@ export const updateOrderToPaidValidation = [
   body("update_time").isString().trim(),
   body("email_address").isString().trim(),
 ];
+
+export const updateOrderToDeliveredValidation = [
+  param("id")
+    .matches(/^[a-fA-F0-9]{24}$/)
+    .trim(),
+];

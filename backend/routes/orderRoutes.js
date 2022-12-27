@@ -3,11 +3,13 @@ import { protect, admin } from "../middleware/authMiddleware.js";
 import {
   addOrderItems,
   getOrderById,
+  updateOrderToDelivered,
   updateOrderToPaid,
 } from "../controllers/orderControllers.js";
 import {
   addOrderItemsValidation,
   getOrderByIdValidation,
+  updateOrderToDeliveredValidation,
   updateOrderToPaidValidation,
 } from "../validation/orderValidation.js";
 import validateRequest from "../middleware/validateRequest.js";
@@ -27,6 +29,15 @@ router
     updateOrderToPaidValidation,
     validateRequest,
     updateOrderToPaid
+  );
+router
+  .route("/:id/deliver")
+  .put(
+    protect,
+    admin,
+    updateOrderToDeliveredValidation,
+    validateRequest,
+    updateOrderToDelivered
   );
 
 export default router;
