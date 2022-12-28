@@ -31,14 +31,13 @@ const CartScreen = () => {
     : 1;
 
   useEffect(() => {
-    if (!product) {
+    if (!product && id) {
       dispatch(getProductById(id));
-      return;
     }
 
-    const { name, image, price, id: productId, countInStock } = product;
-
     if (id && product) {
+      const { name, image, price, id: productId, countInStock } = product;
+
       dispatch(
         addToCart({ name, qty, image, price, product: productId, countInStock })
       );
@@ -46,7 +45,7 @@ const CartScreen = () => {
   }, [id]);
 
   const checkoutHandler = () => {
-    navigate("/login?redirect=/shipping");
+    navigate("/shipping");
   };
 
   return (

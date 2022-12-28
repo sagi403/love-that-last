@@ -26,7 +26,6 @@ const RegisterScreen = () => {
 
   const { error, loggedIn } = useSelector(state => state.user);
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
   const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
@@ -124,10 +123,7 @@ const RegisterScreen = () => {
 
       <Row className="py-3">
         <Col>
-          Have an Account?{" "}
-          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
-            Login
-          </Link>
+          Have an Account? <Link to="/login">Login</Link>
         </Col>
       </Row>
     </FormContainer>

@@ -13,6 +13,7 @@ import { autoLogin } from "./store/userSlice";
 import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
+import RequireAuth from "./components/RequireAuth";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,24 +27,28 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
-      <Header />
-      <main className="py-3">
-        <Routes>
-          <Route path="/placeorder" element={<PlaceOrderScreen />} />
-          <Route path="/payment" element={<PaymentScreen />} />
-          <Route path="/shipping" element={<ShippingScreen />} />
-          <Route path="/cart/:id" element={<CartScreen />} />
-          <Route path="/cart" element={<CartScreen />} />
-          <Route path="/products" element={<AllProductsScreen />} />
-          <Route path="/product/:id" element={<ProductScreen />} />
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/register" element={<RegisterScreen />} />
-          <Route path="/" element={<HomeScreen />} />
-        </Routes>
-      </main>
-      <Footer />
-    </Router>
+    !loadingAutoLogin && (
+      <Router>
+        <Header />
+        <main className="py-3">
+          <Routes>
+            <Route element={<RequireAuth />}>
+              <Route path="/placeorder" element={<PlaceOrderScreen />} />
+              <Route path="/payment" element={<PaymentScreen />} />
+              <Route path="/shipping" element={<ShippingScreen />} />
+            </Route>
+            <Route path="/cart/:id" element={<CartScreen />} />
+            <Route path="/cart" element={<CartScreen />} />
+            <Route path="/products" element={<AllProductsScreen />} />
+            <Route path="/product/:id" element={<ProductScreen />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/" element={<HomeScreen />} />
+          </Routes>
+        </main>
+        <Footer />
+      </Router>
+    )
   );
 };
 
