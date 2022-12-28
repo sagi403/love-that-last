@@ -33,9 +33,15 @@ const CartScreen = () => {
   useEffect(() => {
     if (!product) {
       dispatch(getProductById(id));
+      return;
     }
+
+    const { name, image, price, id: productId, countInStock } = product;
+
     if (id && product) {
-      dispatch(addToCart({ ...product, qty }));
+      dispatch(
+        addToCart({ name, qty, image, price, product: productId, countInStock })
+      );
     }
   }, [id]);
 
@@ -55,14 +61,14 @@ const CartScreen = () => {
           ) : (
             <ListGroup variant="flush">
               {cartItems.map(item => (
-                <ListGroup.Item key={item.id}>
+                <ListGroup.Item key={item.product}>
                   <Row>
                     <Col md={2}>
                       <Image src={item.image} alt={item.name} fluid rounded />
                     </Col>
                     <Col md={3}>
                       <Link
-                        to={`/product/${item.id}`}
+                        to={`/product/${item.product}`}
                         state={{ from: location }}
                       >
                         {item.name}
@@ -89,7 +95,7 @@ const CartScreen = () => {
                       <Button
                         type="button"
                         variant="light"
-                        onClick={() => dispatch(removeFromCart(item.id))}
+                        onClick={() => dispatch(removeFromCart(item.product))}
                       >
                         <i className="bi bi-trash"></i>
                       </Button>

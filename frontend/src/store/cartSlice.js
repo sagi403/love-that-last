@@ -23,11 +23,13 @@ const cartSlice = createSlice({
     addToCart: (state, action) => {
       const newItem = action.payload;
 
-      const existItem = state.cartItems.find(item => item.id === newItem.id);
+      const existItem = state.cartItems.find(
+        item => item.product === newItem.product
+      );
 
       if (existItem) {
         state.cartItems = state.cartItems.map(item =>
-          item.id === existItem.id ? newItem : item
+          item.product === existItem.product ? newItem : item
         );
       } else {
         state.cartItems = [...state.cartItems, newItem];
@@ -37,7 +39,7 @@ const cartSlice = createSlice({
     },
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter(
-        item => item.id !== action.payload
+        item => item.product !== action.payload
       );
 
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));

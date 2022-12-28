@@ -13,6 +13,7 @@ import {
   Row,
 } from "react-bootstrap";
 import Message from "../components/Message";
+import { createOrder, resetError } from "../store/orderSlice";
 
 const PlaceOrderScreen = () => {
   const [itemsPrice, setItemsPrice] = useState(0);
@@ -27,6 +28,16 @@ const PlaceOrderScreen = () => {
   const { cartItems, shippingAddress, paymentMethod } = useSelector(
     state => state.cart
   );
+
+  const { success, error } = useSelector(state => state.order);
+
+  useEffect(() => {
+    if (success) {
+      console.log("ok");
+    }
+
+    return () => dispatch(resetError());
+  }, [success]);
 
   useEffect(() => {
     if (shippingAddress.length === 0) {
@@ -57,8 +68,18 @@ const PlaceOrderScreen = () => {
     setTotalPrice(cartTotalPrice);
   }, []);
 
-  const placeOrderHandler = e => {
-    e.preventDefault();
+  const placeOrderHandler = () => {
+    dispatch(
+      createOrder({
+        orderItems: cartItems,
+        shippingAddress,
+        paymentMethod,
+        itemsPrice: +itemsPrice,
+        taxPrice: +taxPrice,
+        shippingPrice: +shippingPrice,
+        totalPrice: +totalPrice,
+      })
+    );
   };
 
   return (
@@ -89,7 +110,7 @@ const PlaceOrderScreen = () => {
               ) : (
                 <ListGroup variant="flush">
                   {cartItems.map(item => (
-                    <ListGroup.Item key={item.id}>
+                    <ListGroup.Item key={item.product}>
                       <Row>
                         <Col md={1}>
                           <Image
@@ -101,7 +122,7 @@ const PlaceOrderScreen = () => {
                         </Col>
                         <Col>
                           <Link
-                            to={`/product/${item.id}`}
+                            to={`/product/${item.product}`}
                             state={{ from: location }}
                           >
                             {item.name}
@@ -149,6 +170,10 @@ const PlaceOrderScreen = () => {
                   <Col>Total</Col>
                   <Col>${totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
 
               <ListGroup.Item>
