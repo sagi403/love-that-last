@@ -7,6 +7,9 @@ const initialState = {
   shippingAddress: sessionStorage.getItem("shippingAddress")
     ? JSON.parse(sessionStorage.getItem("shippingAddress"))
     : [],
+  paymentMethod: sessionStorage.getItem("paymentMethod")
+    ? JSON.parse(sessionStorage.getItem("paymentMethod"))
+    : [],
   error: null,
 };
 
@@ -47,10 +50,23 @@ const cartSlice = createSlice({
         JSON.stringify(state.shippingAddress)
       );
     },
+    savePaymentMethod: (state, action) => {
+      state.paymentMethod = action.payload;
+
+      sessionStorage.setItem(
+        "paymentMethod",
+        JSON.stringify(state.paymentMethod)
+      );
+    },
   },
 });
 
-export const { resetError, addToCart, removeFromCart, saveShippingAddress } =
-  cartSlice.actions;
+export const {
+  resetError,
+  addToCart,
+  removeFromCart,
+  saveShippingAddress,
+  savePaymentMethod,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

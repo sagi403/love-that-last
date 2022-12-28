@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Col, Form } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
+import { savePaymentMethod } from "../store/cartSlice";
 
 const PaymentScreen = () => {
   const [paymentMethod, setPaymentMethod] = useState("PayPal");
@@ -21,6 +22,8 @@ const PaymentScreen = () => {
 
   const submitHandler = e => {
     e.preventDefault();
+
+    dispatch(savePaymentMethod(paymentMethod));
   };
 
   return (
