@@ -51,6 +51,7 @@ const ShippingScreen = () => {
       country: null,
     });
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    navigate("/payment");
   };
 
   return (
