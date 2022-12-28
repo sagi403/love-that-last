@@ -12,6 +12,7 @@ import CartScreen from "./screens/CartScreen";
 import { autoLogin } from "./store/userSlice";
 import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const App = () => {
       <Header />
       <main className="py-3">
         <Routes>
+          <Route path="/placeorder" element={<PlaceOrderScreen />} />
           <Route path="/payment" element={<PaymentScreen />} />
           <Route path="/shipping" element={<ShippingScreen />} />
           <Route path="/cart/:id" element={<CartScreen />} />
