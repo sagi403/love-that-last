@@ -69,6 +69,24 @@ export const deliverOrder = createAsyncThunk(
   }
 );
 
+export const payOrder = createAsyncThunk(
+  "order/payOrder",
+  async (id, thunkApi) => {
+    try {
+      const { data } = await axios.put(`/api/orders/${id}/pay`);
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -112,6 +130,17 @@ const orderSlice = createSlice({
       .addCase(deliverOrder.rejected, (state, action) => {
         state.loadingDeliver = false;
         state.errorDeliver = action.payload;
+      })
+      .addCase(payOrder.pending, state => {
+        state.loadingPay = true;
+      })
+      .addCase(payOrder.fulfilled, (state, action) => {
+        state.loadingPay = false;
+        state.order = action.payload;
+      })
+      .addCase(payOrder.rejected, (state, action) => {
+        state.loadingPay = false;
+        state.errorPay = action.payload;
       });
   },
 });
