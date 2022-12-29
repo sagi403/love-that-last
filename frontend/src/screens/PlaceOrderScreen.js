@@ -29,11 +29,11 @@ const PlaceOrderScreen = () => {
     state => state.cart
   );
 
-  const { success, error } = useSelector(state => state.order);
+  const { order, success, error } = useSelector(state => state.order);
 
   useEffect(() => {
     if (success) {
-      console.log("ok");
+      navigate(`/order/${order.id}`);
     }
 
     return () => dispatch(resetError());

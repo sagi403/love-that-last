@@ -14,6 +14,7 @@ import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import RequireAuth from "./components/RequireAuth";
+import OrderScreen from "./screens/OrderScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const App = () => {
         <main className="py-3">
           <Routes>
             <Route element={<RequireAuth />}>
+              <Route path="/order/:id" element={<OrderScreen />} />
               <Route path="/placeorder" element={<PlaceOrderScreen />} />
               <Route path="/payment" element={<PaymentScreen />} />
               <Route path="/shipping" element={<ShippingScreen />} />

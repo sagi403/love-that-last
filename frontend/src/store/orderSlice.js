@@ -5,7 +5,13 @@ const initialState = {
   order: null,
   success: false,
   loading: true,
+  loadingOrder: true,
+  loadingDeliver: true,
+  loadingPay: true,
   error: null,
+  errorOrder: null,
+  errorDeliver: null,
+  errorPay: null,
 };
 
 export const createOrder = createAsyncThunk(
@@ -14,6 +20,42 @@ export const createOrder = createAsyncThunk(
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.post("/api/orders", order, config);
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const getOrderDetails = createAsyncThunk(
+  "order/getOrderDetails",
+  async (id, thunkApi) => {
+    try {
+      const { data } = await axios.get(`/api/orders/${id}`);
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const deliverOrder = createAsyncThunk(
+  "order/deliverOrder",
+  async (id, thunkApi) => {
+    try {
+      const { data } = await axios.put(`/api/orders/${id}/deliver`);
 
       return data;
     } catch (error) {
@@ -48,6 +90,28 @@ const orderSlice = createSlice({
       .addCase(createOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(getOrderDetails.pending, state => {
+        state.loadingOrder = true;
+      })
+      .addCase(getOrderDetails.fulfilled, (state, action) => {
+        state.loadingOrder = false;
+        state.order = action.payload;
+      })
+      .addCase(getOrderDetails.rejected, (state, action) => {
+        state.loadingOrder = false;
+        state.errorOrder = action.payload;
+      })
+      .addCase(deliverOrder.pending, state => {
+        state.loadingDeliver = true;
+      })
+      .addCase(deliverOrder.fulfilled, (state, action) => {
+        state.loadingDeliver = false;
+        state.order = action.payload;
+      })
+      .addCase(deliverOrder.rejected, (state, action) => {
+        state.loadingDeliver = false;
+        state.errorDeliver = action.payload;
       });
   },
 });
