@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { deliverOrder, getOrderDetails } from "../store/orderSlice";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { deliverOrder, getOrderDetails, payOrder } from "../store/orderSlice";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import {
@@ -13,29 +14,47 @@ import {
   ListGroup,
   Row,
 } from "react-bootstrap";
+import PaypalCheckoutButton from "../components/PaypalCheckoutButton";
 
 const OrderScreen = () => {
+  const [paypalError, setPaypalError] = useState(null);
+
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
-  const { order, loadingOrder, errorOrder } = useSelector(state => state.order);
+  const { order, loading, errorOrder } = useSelector(state => state.order);
   const { userInfo } = useSelector(state => state.user);
+
+  const [{ isPending }, dispatchPaypal] = usePayPalScriptReducer();
 
   const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     if (!order) {
       dispatch(getOrderDetails(id));
+    } else if (!order.isPaid && !window.paypal) {
+      dispatchPaypal({
+        type: "setLoadingStatus",
+        value: "pending",
+      });
+    } else if (order.isPaid) {
+      dispatchPaypal({
+        type: "setLoadingStatus",
+        value: "initial",
+      });
     }
-  }, []);
+  }, [order]);
+
+  const successPaymentHandler = paymentDetails => {
+    dispatch(payOrder({ orderId: order.id, paymentDetails }));
+  };
 
   const deliverHandler = () => {
     dispatch(deliverOrder(order.id));
   };
 
-  return loadingOrder ? (
+  return loading ? (
     <Loader />
   ) : errorOrder ? (
     <Message variant="danger">{errorOrder}</Message>
@@ -53,11 +72,11 @@ const OrderScreen = () => {
               <h2>Shipping</h2>
               <p>
                 <strong>Name: </strong>
-                {order.user.name}
+                {userInfo.name}
               </p>
               <p>
                 <strong>Email: </strong>
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                <a href={`mailto:${userInfo.email}`}>{userInfo.email}</a>
               </p>
               <p>
                 <strong>Address: </strong>
@@ -156,7 +175,17 @@ const OrderScreen = () => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-
+              <ListGroup.Item>
+                {isPending && <Loader />}
+                {paypalError && (
+                  <Message variant="danger">{paypalError}</Message>
+                )}
+                <PaypalCheckoutButton
+                  price={order.totalPrice}
+                  error={err => setPaypalError(err)}
+                  success={order => successPaymentHandler(order)}
+                />
+              </ListGroup.Item>
               {userInfo &&
                 userInfo.isAdmin &&
                 order.isPaid &&

@@ -5,7 +5,6 @@ const initialState = {
   order: null,
   success: false,
   loading: true,
-  loadingOrder: true,
   loadingDeliver: true,
   loadingPay: true,
   error: null,
@@ -71,9 +70,21 @@ export const deliverOrder = createAsyncThunk(
 
 export const payOrder = createAsyncThunk(
   "order/payOrder",
-  async (id, thunkApi) => {
+  async ({ orderId, paymentDetails }, thunkApi) => {
+    const {
+      id,
+      status,
+      update_time,
+      payer: { email_address },
+    } = paymentDetails;
+
     try {
-      const { data } = await axios.put(`/api/orders/${id}/pay`);
+      const { data } = await axios.put(`/api/orders/${orderId}/pay`, {
+        id,
+        status,
+        update_time,
+        email_address,
+      });
 
       return data;
     } catch (error) {
@@ -110,14 +121,14 @@ const orderSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(getOrderDetails.pending, state => {
-        state.loadingOrder = true;
+        state.loading = true;
       })
       .addCase(getOrderDetails.fulfilled, (state, action) => {
-        state.loadingOrder = false;
+        state.loading = false;
         state.order = action.payload;
       })
       .addCase(getOrderDetails.rejected, (state, action) => {
-        state.loadingOrder = false;
+        state.loading = false;
         state.errorOrder = action.payload;
       })
       .addCase(deliverOrder.pending, state => {

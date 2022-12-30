@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
@@ -19,37 +20,44 @@ import OrderScreen from "./screens/OrderScreen";
 const App = () => {
   const dispatch = useDispatch();
 
-  const { userInfo, loadingAutoLogin } = useSelector(state => state.user);
+  const { userInfo, loadingAutoLogin, loggedIn } = useSelector(
+    state => state.user
+  );
 
   useEffect(() => {
-    if (!userInfo) {
+    if (!userInfo && loggedIn) {
       dispatch(autoLogin());
     }
-  }, []);
+  }, [loggedIn]);
 
   return (
     !loadingAutoLogin && (
-      <Router>
-        <Header />
-        <main className="py-3">
-          <Routes>
-            <Route element={<RequireAuth />}>
-              <Route path="/order/:id" element={<OrderScreen />} />
-              <Route path="/placeorder" element={<PlaceOrderScreen />} />
-              <Route path="/payment" element={<PaymentScreen />} />
-              <Route path="/shipping" element={<ShippingScreen />} />
-            </Route>
-            <Route path="/cart/:id" element={<CartScreen />} />
-            <Route path="/cart" element={<CartScreen />} />
-            <Route path="/products" element={<AllProductsScreen />} />
-            <Route path="/product/:id" element={<ProductScreen />} />
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/register" element={<RegisterScreen />} />
-            <Route path="/" element={<HomeScreen />} />
-          </Routes>
-        </main>
-        <Footer />
-      </Router>
+      <PayPalScriptProvider
+        deferLoading={true}
+        options={{ "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID }}
+      >
+        <Router>
+          <Header />
+          <main className="py-3">
+            <Routes>
+              <Route element={<RequireAuth />}>
+                <Route path="/order/:id" element={<OrderScreen />} />
+                <Route path="/placeorder" element={<PlaceOrderScreen />} />
+                <Route path="/payment" element={<PaymentScreen />} />
+                <Route path="/shipping" element={<ShippingScreen />} />
+              </Route>
+              <Route path="/cart/:id" element={<CartScreen />} />
+              <Route path="/cart" element={<CartScreen />} />
+              <Route path="/products" element={<AllProductsScreen />} />
+              <Route path="/product/:id" element={<ProductScreen />} />
+              <Route path="/login" element={<LoginScreen />} />
+              <Route path="/register" element={<RegisterScreen />} />
+              <Route path="/" element={<HomeScreen />} />
+            </Routes>
+          </main>
+          <Footer />
+        </Router>
+      </PayPalScriptProvider>
     )
   );
 };
