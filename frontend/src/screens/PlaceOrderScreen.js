@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import Message from "../components/Message";
 import { createOrder, resetError } from "../store/orderSlice";
+import { clearCart } from "../store/cartSlice";
 
 const PlaceOrderScreen = () => {
   const [itemsPrice, setItemsPrice] = useState(0);
@@ -36,7 +37,10 @@ const PlaceOrderScreen = () => {
       navigate(`/order/${order.id}`);
     }
 
-    return () => dispatch(resetError());
+    return () => {
+      dispatch(resetError());
+      dispatch(clearCart());
+    };
   }, [success]);
 
   useEffect(() => {
