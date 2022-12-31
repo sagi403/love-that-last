@@ -40,7 +40,10 @@ const getOrderById = asyncHandler(async (req, res) => {
     "name email"
   );
 
-  if (order) {
+  if (
+    req.user.id === order?.user.id.toString() ||
+    (req.user.isAdmin && order)
+  ) {
     res.json(order);
   } else {
     res.status(404);
@@ -53,7 +56,10 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const { id, status, update_time, email_address } = req.body;
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
 
   if (order) {
     order.isPaid = true;
@@ -72,7 +78,10 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 // @route   PUT /api/orders/:id/deliver
 // @access  Private/Admin
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
 
   if (order) {
     order.isDelivered = true;

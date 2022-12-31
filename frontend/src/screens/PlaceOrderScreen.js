@@ -35,12 +35,10 @@ const PlaceOrderScreen = () => {
   useEffect(() => {
     if (success) {
       navigate(`/order/${order.id}`);
+      dispatch(clearCart());
     }
 
-    return () => {
-      dispatch(resetError());
-      dispatch(clearCart());
-    };
+    return () => dispatch(resetError());
   }, [success]);
 
   useEffect(() => {

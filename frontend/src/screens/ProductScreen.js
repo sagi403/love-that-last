@@ -235,7 +235,7 @@ const ProductScreen = () => {
                     <Message>
                       Please{" "}
                       <Link to="/login" state={{ from: location }}>
-                        sign in
+                        login
                       </Link>{" "}
                       to write a review
                     </Message>

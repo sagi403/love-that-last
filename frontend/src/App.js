@@ -25,7 +25,7 @@ const App = () => {
   );
 
   useEffect(() => {
-    if (!userInfo && loggedIn) {
+    if (!userInfo) {
       dispatch(autoLogin());
     }
   }, [loggedIn]);

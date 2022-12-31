@@ -25,6 +25,34 @@ it("responds with 404 if order not found", async () => {
   await request(app).get(`/api/orders/${id}`).set("Cookie", cookie).expect(404);
 });
 
+it("responds with 404 if order id different from user id", async () => {
+  const cookie = await global.getCookie();
+
+  const response = await request(app)
+    .post(`/api/orders`)
+    .set("Cookie", cookie)
+    .send(orderSample)
+    .expect(201);
+
+  const id = response.body.id;
+
+  const email = "test2@test.com";
+  const password = "asdASD123!";
+  const name = "test2";
+
+  const res = await request(app)
+    .post("/api/users/register")
+    .send({ email, password, name })
+    .expect(201);
+
+  const newUserCookie = res.get("Set-Cookie");
+
+  await request(app)
+    .get(`/api/orders/${id}`)
+    .set("Cookie", newUserCookie)
+    .expect(404);
+});
+
 it("responds with 200 for getting the order", async () => {
   const cookie = await global.getCookie();
 
@@ -59,6 +87,4 @@ it("responds with 200 for getting the order", async () => {
   expect(res.body.taxPrice).toEqual(0);
   expect(res.body.shippingPrice).toEqual(0);
   expect(res.body.totalPrice).toEqual(49.95);
-  expect(res.body.user.name).toEqual("test");
-  expect(res.body.user.email).toEqual("test@test.com");
 });

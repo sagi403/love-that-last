@@ -28,17 +28,17 @@ const OrderScreen = () => {
 
   const [{ isPending }, dispatchPaypal] = usePayPalScriptReducer();
 
-  const from = location.state?.from?.pathname || "/";
+  useEffect(() => {
+    dispatch(getOrderDetails(id));
+  }, []);
 
   useEffect(() => {
-    if (!order) {
-      dispatch(getOrderDetails(id));
-    } else if (!order.isPaid && !window.paypal) {
+    if (!order?.isPaid && !window.paypal) {
       dispatchPaypal({
         type: "setLoadingStatus",
         value: "pending",
       });
-    } else if (order.isPaid) {
+    } else if (order?.isPaid) {
       dispatchPaypal({
         type: "setLoadingStatus",
         value: "initial",
@@ -60,11 +60,13 @@ const OrderScreen = () => {
     <Message variant="danger">{errorOrder}</Message>
   ) : (
     <Container>
-      <Link to={from} className="btn btn-light my-3">
-        Go Back
-      </Link>
+      {userInfo.isAdmin && (
+        <Link to="/admin/orderlist" className="btn btn-light my-3">
+          Go Back
+        </Link>
+      )}
 
-      <h1>Order {order._id}</h1>
+      <h1>Order {order.id}</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
@@ -72,11 +74,11 @@ const OrderScreen = () => {
               <h2>Shipping</h2>
               <p>
                 <strong>Name: </strong>
-                {userInfo.name}
+                {order.user.name}
               </p>
               <p>
                 <strong>Email: </strong>
-                <a href={`mailto:${userInfo.email}`}>{userInfo.email}</a>
+                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
               </p>
               <p>
                 <strong>Address: </strong>
@@ -128,7 +130,10 @@ const OrderScreen = () => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
+                          <Link
+                            to={`/product/${item.product}`}
+                            state={{ from: location }}
+                          >
                             {item.name}
                           </Link>
                         </Col>
