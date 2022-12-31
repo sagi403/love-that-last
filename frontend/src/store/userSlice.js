@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { resetAllCart } from "./cartSlice";
+import { resetAllOrders } from "./orderSlice";
+import { resetAllProducts } from "./productSlice";
 
 const initialState = {
   loading: false,
@@ -57,6 +60,27 @@ export const autoLogin = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk("user/logout", async (_, thunkApi) => {
+  try {
+    localStorage.removeItem("cartItems");
+    sessionStorage.removeItem("shippingAddress");
+    sessionStorage.removeItem("paymentMethod");
+
+    await axios.post("/api/users/logout");
+
+    thunkApi.dispatch(resetAllCart());
+    thunkApi.dispatch(resetAllOrders());
+    thunkApi.dispatch(resetAllProducts());
+  } catch (error) {
+    const err =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    return thunkApi.rejectWithValue(err);
+  }
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -64,6 +88,7 @@ const userSlice = createSlice({
     resetError: state => {
       state.error = null;
     },
+    resetAllUser: () => initialState,
   },
   extraReducers: builder => {
     builder
@@ -100,10 +125,20 @@ const userSlice = createSlice({
       .addCase(autoLogin.rejected, (state, action) => {
         state.loadingAutoLogin = false;
         state.error = action.payload;
+      })
+      .addCase(logout.pending, state => {
+        state.loading = true;
+      })
+      .addCase(logout.fulfilled, state => {
+        return initialState;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { resetError } = userSlice.actions;
+export const { resetError, resetAllUser } = userSlice.actions;
 
 export default userSlice.reducer;

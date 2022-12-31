@@ -20,6 +20,7 @@ const cartSlice = createSlice({
     resetError: state => {
       state.error = null;
     },
+    resetAllCart: () => initialState,
     addToCart: (state, action) => {
       const newItem = action.payload;
 
@@ -69,6 +70,7 @@ const cartSlice = createSlice({
 
 export const {
   resetError,
+  resetAllCart,
   addToCart,
   removeFromCart,
   saveShippingAddress,

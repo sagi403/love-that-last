@@ -52,6 +52,7 @@ const productSlice = createSlice({
     resetError: state => {
       state.error = null;
     },
+    resetAllProducts: () => initialState,
   },
   extraReducers: builder => {
     builder
@@ -80,6 +81,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { resetError } = productSlice.actions;
+export const { resetError, resetAllProducts } = productSlice.actions;
 
 export default productSlice.reducer;

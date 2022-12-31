@@ -1,7 +1,17 @@
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
+import { logout } from "../store/userSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const { loggedIn, userInfo } = useSelector(state => state.user);
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   return (
     <header>
       <Navbar bg="light" className="p-2" collapseOnSelect>
@@ -15,11 +25,22 @@ const Header = () => {
             </LinkContainer>
           </Nav>
           <Navbar>
-            <LinkContainer to="/login" className="mx-3 fs-3">
-              <Nav.Link>
-                <i className="bi bi-person"></i>
-              </Nav.Link>
-            </LinkContainer>
+            {loggedIn ? (
+              <NavDropdown title={userInfo?.name} id="adminmenu">
+                <LinkContainer to="/profile">
+                  <NavDropdown.Item>Profile</NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Item onClick={logoutHandler}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <LinkContainer to="/login" className="mx-3 fs-3">
+                <Nav.Link>
+                  <i className="bi bi-person"></i>
+                </Nav.Link>
+              </LinkContainer>
+            )}
             <LinkContainer to="/search" className="mx-3 fs-3">
               <Nav.Link>
                 <i className="bi bi-search"></i>
