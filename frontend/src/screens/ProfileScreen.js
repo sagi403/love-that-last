@@ -9,6 +9,7 @@ import { resetStatus, updateProfile } from "../store/userSlice";
 import FormItem from "../components/FormItem";
 import validateProfileUpdate from "../validation/profileUpdateValidation";
 import validatePasswordUpdate from "../validation/passwordUpdateValidation";
+import { useLocation } from "react-router-dom";
 
 const ProfileScreen = () => {
   const { userInfo, success, error } = useSelector(state => state.user);
@@ -26,15 +27,14 @@ const ProfileScreen = () => {
   });
 
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const { orders, loadingOrders, errorOrders } = useSelector(
     state => state.order
   );
 
   useEffect(() => {
-    if (!orders) {
-      dispatch(getUserOrders());
-    }
+    dispatch(getUserOrders());
 
     return () => dispatch(resetStatus());
   }, []);
@@ -188,7 +188,10 @@ const ProfileScreen = () => {
                       )}
                     </td>
                     <td>
-                      <LinkContainer to={`/order/${order.id}`}>
+                      <LinkContainer
+                        to={`/order/${order.id}`}
+                        state={{ from: location }}
+                      >
                         <Button className="btn-sm" variant="light">
                           Details
                         </Button>

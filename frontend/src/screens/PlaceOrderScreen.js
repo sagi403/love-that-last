@@ -13,7 +13,7 @@ import {
   Row,
 } from "react-bootstrap";
 import Message from "../components/Message";
-import { createOrder, resetError } from "../store/orderSlice";
+import { createOrder, resetError, resetStatus } from "../store/orderSlice";
 import { clearCart } from "../store/cartSlice";
 
 const PlaceOrderScreen = () => {
@@ -36,6 +36,7 @@ const PlaceOrderScreen = () => {
     if (success) {
       navigate(`/order/${order.id}`);
       dispatch(clearCart());
+      dispatch(resetStatus());
     }
 
     return () => dispatch(resetError());

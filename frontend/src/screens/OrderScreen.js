@@ -28,12 +28,14 @@ const OrderScreen = () => {
 
   const [{ isPending }, dispatchPaypal] = usePayPalScriptReducer();
 
+  const from = location.state?.from?.pathname || "/";
+
   useEffect(() => {
     dispatch(getOrderDetails(id));
   }, []);
 
   useEffect(() => {
-    if (!order?.isPaid && !window.paypal) {
+    if (!order?.isPaid) {
       dispatchPaypal({
         type: "setLoadingStatus",
         value: "pending",
@@ -60,8 +62,8 @@ const OrderScreen = () => {
     <Message variant="danger">{errorOrder}</Message>
   ) : (
     <Container>
-      {userInfo.isAdmin && (
-        <Link to="/admin/orderlist" className="btn btn-light my-3">
+      {(from === "/admin/orderlist" || from === "/profile") && (
+        <Link to={from} className="btn btn-light my-3">
           Go Back
         </Link>
       )}
