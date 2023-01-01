@@ -99,6 +99,21 @@ it("responds with 200 for changing the name successfully", async () => {
   expect(response.body.name).toEqual(name);
 });
 
+it("responds with 200 for changing the name successfully and providing the same email", async () => {
+  const cookie = await global.getCookie();
+  const name = "new name";
+  const email = "test@test.com";
+
+  const response = await request(app)
+    .patch("/api/users/profile")
+    .set("Cookie", cookie)
+    .send({ name, email })
+    .expect(200);
+
+  expect(response.body.name).toEqual(name);
+  expect(response.body.email).toEqual(email);
+});
+
 it("responds with 200 for changing all the fields successfully", async () => {
   const cookie = await global.getCookie();
   const email = "test1@test.com";
