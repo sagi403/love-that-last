@@ -62,7 +62,6 @@ export const autoLogin = createAsyncThunk(
 
 export const logout = createAsyncThunk("user/logout", async (_, thunkApi) => {
   try {
-    localStorage.removeItem("cartItems");
     sessionStorage.removeItem("shippingAddress");
     sessionStorage.removeItem("paymentMethod");
 

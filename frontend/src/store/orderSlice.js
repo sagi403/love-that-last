@@ -3,12 +3,15 @@ import axios from "axios";
 
 const initialState = {
   order: null,
+  orders: null,
   success: false,
   loading: true,
+  loadingOrders: true,
   loadingDeliver: true,
   loadingPay: true,
   error: null,
   errorOrder: null,
+  errorOrders: null,
   errorDeliver: null,
   errorPay: null,
 };
@@ -98,6 +101,24 @@ export const payOrder = createAsyncThunk(
   }
 );
 
+export const getUserOrders = createAsyncThunk(
+  "order/getUserOrders",
+  async (data, thunkApi) => {
+    try {
+      const { data } = await axios.get("/api/orders/myorders");
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -153,6 +174,17 @@ const orderSlice = createSlice({
       .addCase(payOrder.rejected, (state, action) => {
         state.loadingPay = false;
         state.errorPay = action.payload;
+      })
+      .addCase(getUserOrders.pending, state => {
+        state.loadingOrders = true;
+      })
+      .addCase(getUserOrders.fulfilled, (state, action) => {
+        state.loadingOrders = false;
+        state.orders = action.payload;
+      })
+      .addCase(getUserOrders.rejected, (state, action) => {
+        state.loadingOrders = false;
+        state.errorOrders = action.payload;
       });
   },
 });
