@@ -8,9 +8,11 @@ const initialState = {
   loading: false,
   loadingAutoLogin: false,
   loadingUpdates: false,
+  loadingUsers: false,
   loggedIn: false,
   error: null,
   userInfo: null,
+  users: [],
   success: false,
 };
 
@@ -101,6 +103,24 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
+export const usersList = createAsyncThunk(
+  "user/usersList",
+  async (_, thunkApi) => {
+    try {
+      const { data } = await axios.get("/api/users");
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -161,12 +181,23 @@ const userSlice = createSlice({
         state.loadingUpdates = true;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
-        state.loadingUpdates = true;
+        state.loadingUpdates = false;
         state.userInfo = action.payload;
         state.success = true;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loadingUpdates = false;
+        state.error = action.payload;
+      })
+      .addCase(usersList.pending, state => {
+        state.loadingUsers = true;
+      })
+      .addCase(usersList.fulfilled, (state, action) => {
+        state.loadingUsers = false;
+        state.users = action.payload;
+      })
+      .addCase(usersList.rejected, (state, action) => {
+        state.loadingUsers = false;
         state.error = action.payload;
       });
   },

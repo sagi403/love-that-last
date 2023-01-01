@@ -12,7 +12,9 @@ import validatePasswordUpdate from "../validation/passwordUpdateValidation";
 import { useLocation } from "react-router-dom";
 
 const ProfileScreen = () => {
-  const { userInfo, success, error } = useSelector(state => state.user);
+  const { userInfo, success, error, loadingUpdates } = useSelector(
+    state => state.user
+  );
 
   const [name, setName] = useState(userInfo.name || "");
   const [email, setEmail] = useState(userInfo.email || "");
@@ -91,6 +93,7 @@ const ProfileScreen = () => {
           <h2>User Profile</h2>
           {error && <Message variant="danger">{error}</Message>}
           {success && <Message variant="success">Profile Updated</Message>}
+          {loadingUpdates && <Loader />}
           <Form onSubmit={submitHandler}>
             {userDetailsForm ? (
               <div>
