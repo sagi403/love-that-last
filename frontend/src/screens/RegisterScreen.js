@@ -4,7 +4,7 @@ import FormContainer from "../components/FormContainer";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import FormItem from "../components/FormItem";
 import { useDispatch, useSelector } from "react-redux";
-import { register, resetError } from "../store/userSlice";
+import { register, resetStatus } from "../store/userSlice";
 import validateRegister from "../validation/registerValidation";
 import Message from "../components/Message";
 
@@ -33,12 +33,12 @@ const RegisterScreen = () => {
       navigate(from, { replace: true });
     }
 
-    return () => dispatch(resetError());
+    return () => dispatch(resetStatus());
   }, [loggedIn]);
 
   const submitHandler = e => {
     e.preventDefault();
-    dispatch(resetError());
+    dispatch(resetStatus());
 
     const errors = {};
     const { error } = validateRegister({

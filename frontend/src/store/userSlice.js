@@ -7,9 +7,11 @@ import { resetAllProducts } from "./productSlice";
 const initialState = {
   loading: false,
   loadingAutoLogin: false,
+  loadingUpdates: false,
   loggedIn: false,
   error: null,
   userInfo: null,
+  success: false,
 };
 
 export const login = createAsyncThunk("user/login", async (user, thunkApi) => {
@@ -80,12 +82,32 @@ export const logout = createAsyncThunk("user/logout", async (_, thunkApi) => {
   }
 });
 
+export const updateProfile = createAsyncThunk(
+  "user/updateProfile",
+  async (user, thunkApi) => {
+    try {
+      const config = { headers: { "Content-Type": "application/json" } };
+      const { data } = await axios.patch("/api/users/profile", user, config);
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    resetError: state => {
+    resetStatus: state => {
       state.error = null;
+      state.success = false;
     },
     resetAllUser: () => initialState,
   },
@@ -134,10 +156,22 @@ const userSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(updateProfile.pending, state => {
+        state.loadingUpdates = true;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loadingUpdates = true;
+        state.userInfo = action.payload;
+        state.success = true;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.loadingUpdates = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { resetError, resetAllUser } = userSlice.actions;
+export const { resetStatus, resetAllUser } = userSlice.actions;
 
 export default userSlice.reducer;

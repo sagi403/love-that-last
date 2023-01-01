@@ -1,22 +1,31 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { LinkContainer } from "react-router-bootstrap";
 import { getUserOrders } from "../store/orderSlice";
+import { resetStatus, updateProfile } from "../store/userSlice";
+import FormItem from "../components/FormItem";
+import validateProfileUpdate from "../validation/profileUpdateValidation";
+import validatePasswordUpdate from "../validation/passwordUpdateValidation";
 
 const ProfileScreen = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const { userInfo, success, error } = useSelector(state => state.user);
+
+  const [name, setName] = useState(userInfo.name || "");
+  const [email, setEmail] = useState(userInfo.email || "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState(null);
   const [userDetailsForm, setUserDetailsForm] = useState(true);
+  const [errorsMessage, setErrorsMessage] = useState({
+    name: null,
+    email: null,
+    password: null,
+    confirmPassword: null,
+  });
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const { orders, loadingOrders, errorOrders } = useSelector(
     state => state.order
@@ -26,10 +35,53 @@ const ProfileScreen = () => {
     if (!orders) {
       dispatch(getUserOrders());
     }
+
+    return () => dispatch(resetStatus());
   }, []);
 
   const submitHandler = e => {
     e.preventDefault();
+    dispatch(resetStatus());
+
+    let updateData = null;
+    userDetailsForm
+      ? (updateData = { name, email })
+      : (updateData = { password, confirmPassword });
+
+    const errors = {};
+    const { error } = userDetailsForm
+      ? validateProfileUpdate(updateData)
+      : validatePasswordUpdate(updateData);
+
+    if (error) {
+      for (let errorItem of error.details) {
+        const { context, message } = errorItem;
+
+        errors[context.key] = [message];
+      }
+
+      setErrorsMessage(errors);
+      return;
+    }
+
+    setErrorsMessage({
+      name: null,
+      email: null,
+      password: null,
+      confirmPassword: null,
+    });
+    dispatch(updateProfile(updateData));
+  };
+
+  const handleChangeForm = () => {
+    setUserDetailsForm(!userDetailsForm);
+    setErrorsMessage({
+      name: null,
+      email: null,
+      password: null,
+      confirmPassword: null,
+    });
+    dispatch(resetStatus());
   };
 
   return (
@@ -37,52 +89,50 @@ const ProfileScreen = () => {
       <Row>
         <Col md={3}>
           <h2>User Profile</h2>
-          {message && <Message variant="danger">{message}</Message>}
-
+          {error && <Message variant="danger">{error}</Message>}
+          {success && <Message variant="success">Profile Updated</Message>}
           <Form onSubmit={submitHandler}>
             {userDetailsForm ? (
               <div>
-                <Form.Group controlId="name" className="mb-3">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    type="name"
-                    placeholder="Enter name"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                  ></Form.Control>
-                </Form.Group>
-
-                <Form.Group controlId="email" className="mb-3">
-                  <Form.Label>Email Address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                  ></Form.Control>
-                </Form.Group>
+                <FormItem
+                  controlId="name"
+                  label="Name"
+                  type="text"
+                  placeholder="Enter name"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  message={errorsMessage && errorsMessage.name}
+                />
+                <FormItem
+                  controlId="email"
+                  label="Email Address"
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  message={errorsMessage && errorsMessage.email}
+                />
               </div>
             ) : (
               <div>
-                <Form.Group controlId="password" className="mb-3">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                  ></Form.Control>
-                </Form.Group>
-
-                <Form.Group controlId="confirmPassword" className="mb-3">
-                  <Form.Label>Confirm Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Confirm password"
-                    value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)}
-                  ></Form.Control>
-                </Form.Group>
+                <FormItem
+                  controlId="password"
+                  label="Password"
+                  type="password"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  message={errorsMessage && errorsMessage.password}
+                />
+                <FormItem
+                  controlId="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  placeholder="Confirm password"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  message={errorsMessage && errorsMessage.confirmPassword}
+                />
               </div>
             )}
             <div className="d-flex justify-content-around pb-3">
@@ -92,7 +142,7 @@ const ProfileScreen = () => {
               <Button
                 type="button"
                 variant="outline-dark"
-                onClick={() => setUserDetailsForm(!userDetailsForm)}
+                onClick={handleChangeForm}
               >
                 {userDetailsForm ? "Change Password" : "Change Profile"}
               </Button>

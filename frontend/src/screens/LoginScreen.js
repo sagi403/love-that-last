@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import { Form, Button, Col, Row } from "react-bootstrap";
-import { login, resetError } from "../store/userSlice";
+import { login, resetStatus } from "../store/userSlice";
 import Message from "../components/Message";
 import validateLogin from "../validation/loginValidation";
 import FormItem from "../components/FormItem";
@@ -29,12 +29,12 @@ const LoginScreen = () => {
       navigate(from, { replace: true });
     }
 
-    return () => dispatch(resetError());
+    return () => dispatch(resetStatus());
   }, [loggedIn]);
 
   const submitHandler = async e => {
     e.preventDefault();
-    dispatch(resetError());
+    dispatch(resetStatus());
 
     const errors = {};
     const { error } = validateLogin({ email, password });
