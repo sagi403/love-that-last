@@ -29,3 +29,12 @@ export const getUserByIdValidation = [
     .matches(/^[a-fA-F0-9]{24}$/)
     .trim(),
 ];
+
+export const updateUserAsAdminValidation = [
+  param("id")
+    .matches(/^[a-fA-F0-9]{24}$/)
+    .trim(),
+  body("name").isString().isLength({ min: 2 }),
+  body("email").isEmail(),
+  body("isAdmin").isBoolean(),
+];

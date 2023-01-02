@@ -6,6 +6,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  updateUserAsAdmin,
   updateUserProfile,
 } from "../controllers/userControllers.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -13,6 +14,7 @@ import {
   getUserByIdValidation,
   loginUserValidation,
   registerUserValidation,
+  updateUserAsAdminValidation,
   updateUserProfileValidation,
 } from "../validation/userValidation.js";
 import validateRequest from "../middleware/validateRequest.js";
@@ -33,7 +35,14 @@ router
   );
 router
   .route("/:id")
-  .get(protect, admin, getUserByIdValidation, validateRequest, getUserById);
+  .get(protect, admin, getUserByIdValidation, validateRequest, getUserById)
+  .put(
+    protect,
+    admin,
+    updateUserAsAdminValidation,
+    validateRequest,
+    updateUserAsAdmin
+  );
 router.get("/", protect, admin, getAllUsers);
 
 export default router;

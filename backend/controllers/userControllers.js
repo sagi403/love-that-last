@@ -125,6 +125,41 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Update user as admin
+// @route   PUT /api/users/:id
+// @access  Private/Admin
+const updateUserAsAdmin = asyncHandler(async (req, res) => {
+  const { name, email, isAdmin } = req.body;
+
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.name = name;
+    user.isAdmin = isAdmin;
+
+    const emailExist = await User.findOne({ email });
+
+    if (emailExist && emailExist.email !== user.email) {
+      res.status(400);
+      throw new Error("Email already exists");
+    }
+
+    user.email = email;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
 export {
   loginUser,
   registerUser,
@@ -133,4 +168,5 @@ export {
   updateUserProfile,
   getAllUsers,
   getUserById,
+  updateUserAsAdmin,
 };
