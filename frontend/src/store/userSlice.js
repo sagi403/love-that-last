@@ -12,10 +12,12 @@ const initialState = {
   loadingUserDetails: false,
   loggedIn: false,
   error: null,
+  errorUpdateUser: null,
   userInfo: null,
   users: [],
   userDetails: null,
   success: false,
+  successUpdateUser: false,
 };
 
 export const login = createAsyncThunk("user/login", async (user, thunkApi) => {
@@ -141,13 +143,37 @@ export const getUserDetails = createAsyncThunk(
   }
 );
 
+export const updateUserDetails = createAsyncThunk(
+  "user/updateUserDetails",
+  async ({ id, name, email, isAdmin }, thunkApi) => {
+    try {
+      const { data } = await axios.put(`/api/users/${id}`, {
+        name,
+        email,
+        isAdmin,
+      });
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     resetStatus: state => {
       state.error = null;
+      state.errorUpdateUser = null;
       state.success = false;
+      state.successUpdateUser = false;
     },
     resetAllUser: () => initialState,
   },
@@ -230,6 +256,18 @@ const userSlice = createSlice({
       .addCase(getUserDetails.rejected, (state, action) => {
         state.loadingUserDetails = false;
         state.error = action.payload;
+      })
+      .addCase(updateUserDetails.pending, state => {
+        state.loadingUserDetails = true;
+      })
+      .addCase(updateUserDetails.fulfilled, (state, action) => {
+        state.loadingUserDetails = false;
+        state.successUpdateUser = true;
+        state.userDetails = action.payload;
+      })
+      .addCase(updateUserDetails.rejected, (state, action) => {
+        state.loadingUserDetails = false;
+        state.errorUpdateUser = action.payload;
       });
   },
 });

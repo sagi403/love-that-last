@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
-import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Button, Container, Form } from "react-bootstrap";
-import { getUserDetails, resetStatus } from "../store/userSlice";
+import {
+  getUserDetails,
+  resetStatus,
+  updateUserDetails,
+} from "../store/userSlice";
 
 const UserEditScreen = () => {
   const [name, setName] = useState("");
@@ -17,24 +20,30 @@ const UserEditScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { userDetails } = useSelector(state => state.user);
+  const { userDetails, errorUpdateUser, successUpdateUser } = useSelector(
+    state => state.user
+  );
 
   useEffect(() => {
     dispatch(getUserDetails(id));
 
-    return () => resetStatus();
+    return () => dispatch(resetStatus());
   }, []);
 
   useEffect(() => {
+    if (successUpdateUser) {
+      navigate("/admin/userlist");
+    }
     if (userDetails) {
       setName(userDetails.name);
       setEmail(userDetails.email);
       setIsAdmin(userDetails.isAdmin);
     }
-  }, [userDetails]);
+  }, [userDetails, successUpdateUser]);
 
   const submitHandler = e => {
     e.preventDefault();
+    dispatch(updateUserDetails({ id, name, email, isAdmin }));
   };
 
   return (
@@ -44,7 +53,9 @@ const UserEditScreen = () => {
       </Link>
       <FormContainer>
         <h1>Edit User</h1>
-        {/* {errorUpdate && <Message variant="danger">{errorUpdate}</Message>} */}
+        {errorUpdateUser && (
+          <Message variant="danger">{errorUpdateUser}</Message>
+        )}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name" className="mb-3">
             <Form.Label>Name</Form.Label>
