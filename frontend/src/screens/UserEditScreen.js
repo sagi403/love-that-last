@@ -2,19 +2,25 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
+import { Button, Container, Form } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
-import { Button, Container, Form } from "react-bootstrap";
+import FormItem from "../components/FormItem";
 import {
   getUserDetails,
   resetStatus,
   updateUserDetails,
 } from "../store/userSlice";
+import validateUserUpdate from "../validation/userUpdateValidation";
 
 const UserEditScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [errorsMessage, setErrorsMessage] = useState({
+    name: null,
+    email: null,
+  });
 
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -43,6 +49,21 @@ const UserEditScreen = () => {
 
   const submitHandler = e => {
     e.preventDefault();
+    const errors = {};
+    const { error } = validateUserUpdate({ name, email });
+
+    if (error) {
+      for (let errorItem of error.details) {
+        const { context, message } = errorItem;
+
+        errors[context.key] = [message];
+      }
+
+      setErrorsMessage(errors);
+      return;
+    }
+
+    setErrorsMessage({ name: null, email: null });
     dispatch(updateUserDetails({ id, name, email, isAdmin }));
   };
 
@@ -57,25 +78,24 @@ const UserEditScreen = () => {
           <Message variant="danger">{errorUpdateUser}</Message>
         )}
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId="name" className="mb-3">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="name"
-              placeholder="Enter name"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="email" className="mb-3">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+          <FormItem
+            controlId="name"
+            label="Name"
+            type="text"
+            placeholder="Enter name"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            message={errorsMessage && errorsMessage.name}
+          />
+          <FormItem
+            controlId="email"
+            label="Email Address"
+            type="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            message={errorsMessage && errorsMessage.email}
+          />
 
           <Form.Group controlId="isAdmin" className="mb-3">
             <Form.Check
