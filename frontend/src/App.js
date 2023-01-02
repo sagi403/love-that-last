@@ -18,6 +18,8 @@ import RequireAuth from "./components/RequireAuth";
 import OrderScreen from "./screens/OrderScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import UserListScreen from "./screens/UserListScreen";
+import NotFoundScreen from "./screens/NotFoundScreen";
+import RequireAdminAuth from "./components/RequireAdminAuth";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -43,7 +45,9 @@ const App = () => {
           <main className="py-3">
             <Routes>
               <Route element={<RequireAuth />}>
-                <Route path="/admin/userlist" element={<UserListScreen />} />
+                <Route element={<RequireAdminAuth />}>
+                  <Route path="/admin/userlist" element={<UserListScreen />} />
+                </Route>
                 <Route path="/profile" element={<ProfileScreen />} />
                 <Route path="/order/:id" element={<OrderScreen />} />
                 <Route path="/placeorder" element={<PlaceOrderScreen />} />
@@ -57,6 +61,7 @@ const App = () => {
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
               <Route path="/" element={<HomeScreen />} />
+              <Route path="*" element={<NotFoundScreen />} />
             </Routes>
           </main>
           <Footer />
