@@ -38,3 +38,9 @@ export const updateUserAsAdminValidation = [
   body("email").isEmail(),
   body("isAdmin").isBoolean(),
 ];
+
+export const deleteUserValidation = [
+  param("id")
+    .matches(/^[a-fA-F0-9]{24}$/)
+    .trim(),
+];

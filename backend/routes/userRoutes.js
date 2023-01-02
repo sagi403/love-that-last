@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteUser,
   getAllUsers,
   getUserById,
   getUserProfile,
@@ -11,6 +12,7 @@ import {
 } from "../controllers/userControllers.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 import {
+  deleteUserValidation,
   getUserByIdValidation,
   loginUserValidation,
   registerUserValidation,
@@ -42,7 +44,8 @@ router
     updateUserAsAdminValidation,
     validateRequest,
     updateUserAsAdmin
-  );
+  )
+  .delete(protect, admin, deleteUserValidation, validateRequest, deleteUser);
 router.get("/", protect, admin, getAllUsers);
 
 export default router;
