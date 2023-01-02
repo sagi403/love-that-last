@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,17 +6,32 @@ import FormContainer from "../components/FormContainer";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Button, Container, Form } from "react-bootstrap";
+import { getUserDetails, resetStatus } from "../store/userSlice";
 
 const UserEditScreen = () => {
-  const { userInfo } = useSelector(state => state.user);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const [name, setName] = useState(userInfo.name || "");
-  const [email, setEmail] = useState(userInfo.email || "");
-  const [isAdmin, setIsAdmin] = useState(userInfo.isAdmin || false);
-
-  const { id } = useParams;
+  const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { userDetails } = useSelector(state => state.user);
+
+  useEffect(() => {
+    dispatch(getUserDetails(id));
+
+    return () => resetStatus();
+  }, []);
+
+  useEffect(() => {
+    if (userDetails) {
+      setName(userDetails.name);
+      setEmail(userDetails.email);
+      setIsAdmin(userDetails.isAdmin);
+    }
+  }, [userDetails]);
 
   const submitHandler = e => {
     e.preventDefault();

@@ -9,10 +9,12 @@ const initialState = {
   loadingAutoLogin: false,
   loadingUpdates: false,
   loadingUsers: false,
+  loadingUserDetails: false,
   loggedIn: false,
   error: null,
   userInfo: null,
   users: [],
+  userDetails: null,
   success: false,
 };
 
@@ -121,6 +123,24 @@ export const usersList = createAsyncThunk(
   }
 );
 
+export const getUserDetails = createAsyncThunk(
+  "user/getUserDetails",
+  async (id, thunkApi) => {
+    try {
+      const { data } = await axios.get(`/api/users/${id}`);
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -198,6 +218,17 @@ const userSlice = createSlice({
       })
       .addCase(usersList.rejected, (state, action) => {
         state.loadingUsers = false;
+        state.error = action.payload;
+      })
+      .addCase(getUserDetails.pending, state => {
+        state.loadingUserDetails = true;
+      })
+      .addCase(getUserDetails.fulfilled, (state, action) => {
+        state.loadingUserDetails = false;
+        state.userDetails = action.payload;
+      })
+      .addCase(getUserDetails.rejected, (state, action) => {
+        state.loadingUserDetails = false;
         state.error = action.payload;
       });
   },
