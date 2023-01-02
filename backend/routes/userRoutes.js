@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAllUsers,
+  getUserById,
   getUserProfile,
   loginUser,
   logoutUser,
@@ -9,6 +10,7 @@ import {
 } from "../controllers/userControllers.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 import {
+  getUserByIdValidation,
   loginUserValidation,
   registerUserValidation,
   updateUserProfileValidation,
@@ -29,6 +31,9 @@ router
     validateRequest,
     updateUserProfile
   );
+router
+  .route("/:id")
+  .get(protect, admin, getUserByIdValidation, validateRequest, getUserById);
 router.get("/", protect, admin, getAllUsers);
 
 export default router;

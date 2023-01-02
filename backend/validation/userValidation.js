@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 export const loginUserValidation = [
   body("email").isEmail(),
@@ -22,4 +22,10 @@ export const updateUserProfileValidation = [
     .isLength({ min: 6, max: 30 })
     .matches(/[a-z]{1,}[A-Z]{1,}[0-9]{1,}[!@#$%&*]{1,}/)
     .optional({ checkFalsy: true }),
+];
+
+export const getUserByIdValidation = [
+  param("id")
+    .matches(/^[a-fA-F0-9]{24}$/)
+    .trim(),
 ];
