@@ -5,25 +5,34 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useEffect } from "react";
-import { getAllProducts, resetStatus } from "../store/productSlice";
+import {
+  createProduct,
+  getAllProducts,
+  resetStatus,
+} from "../store/productSlice";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loadingProducts, products, error } = useSelector(
-    state => state.product
-  );
+  const { loadingProducts, products, error, successCreateProduct, productId } =
+    useSelector(state => state.product);
 
   useEffect(() => {
+    if (successCreateProduct) {
+      navigate(`/admin/product/${productId}/edit`);
+    }
+
     dispatch(getAllProducts());
-  }, []);
+  }, [successCreateProduct]);
 
   useEffect(() => {
     return () => dispatch(resetStatus());
   }, []);
 
-  const createProductHandler = () => {};
+  const createProductHandler = () => {
+    dispatch(createProduct());
+  };
 
   const deleteHandler = id => {};
 
@@ -39,7 +48,8 @@ const ProductListScreen = () => {
           </Button>
         </Col>
       </Row>
-
+      {/* {loadingDelete && <Loader />}
+    {errorDelete && <Message variant="danger">{errorDelete}</Message>} */}
       {loadingProducts ? (
         <Loader />
       ) : error ? (

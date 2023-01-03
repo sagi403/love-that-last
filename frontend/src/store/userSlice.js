@@ -149,11 +149,12 @@ export const updateUserDetails = createAsyncThunk(
   "user/updateUserDetails",
   async ({ id, name, email, isAdmin }, thunkApi) => {
     try {
-      const { data } = await axios.put(`/api/users/${id}`, {
-        name,
-        email,
-        isAdmin,
-      });
+      const config = { headers: { "Content-Type": "application/json" } };
+      const { data } = await axios.put(
+        `/api/users/${id}`,
+        { name, email, isAdmin },
+        config
+      );
 
       return data;
     } catch (error) {

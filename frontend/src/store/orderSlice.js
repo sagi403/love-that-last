@@ -80,14 +80,14 @@ export const payOrder = createAsyncThunk(
       update_time,
       payer: { email_address },
     } = paymentDetails;
+    const config = { headers: { "Content-Type": "application/json" } };
 
     try {
-      const { data } = await axios.put(`/api/orders/${orderId}/pay`, {
-        id,
-        status,
-        update_time,
-        email_address,
-      });
+      const { data } = await axios.put(
+        `/api/orders/${orderId}/pay`,
+        { id, status, update_time, email_address },
+        config
+      );
 
       return data;
     } catch (error) {
@@ -103,7 +103,7 @@ export const payOrder = createAsyncThunk(
 
 export const getUserOrders = createAsyncThunk(
   "order/getUserOrders",
-  async (data, thunkApi) => {
+  async (_, thunkApi) => {
     try {
       const { data } = await axios.get("/api/orders/myorders");
 
