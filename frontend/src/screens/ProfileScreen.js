@@ -50,18 +50,11 @@ const ProfileScreen = () => {
       ? (updateData = { name, email })
       : (updateData = { password, confirmPassword });
 
-    const errors = {};
-    const { error } = userDetailsForm
+    const errors = userDetailsForm
       ? validateProfileUpdate(updateData)
       : validatePasswordUpdate(updateData);
 
-    if (error) {
-      for (let errorItem of error.details) {
-        const { context, message } = errorItem;
-
-        errors[context.key] = [message];
-      }
-
+    if (Object.keys(errors).length !== 0) {
       setErrorsMessage(errors);
       return;
     }

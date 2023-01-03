@@ -9,7 +9,18 @@ const addressSchema = Joi.object({
 });
 
 const validateAddress = input => {
-  return validate(addressSchema, input);
+  const errors = {};
+
+  const { error } = validate(addressSchema, input);
+
+  if (error) {
+    for (let errorItem of error.details) {
+      const { context, message } = errorItem;
+
+      errors[context.key] = [message];
+    }
+  }
+  return errors;
 };
 
 export default validateAddress;

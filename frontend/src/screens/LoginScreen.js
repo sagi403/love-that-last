@@ -36,16 +36,9 @@ const LoginScreen = () => {
     e.preventDefault();
     dispatch(resetStatus());
 
-    const errors = {};
-    const { error } = validateLogin({ email, password });
+    const errors = validateLogin({ email, password });
 
-    if (error) {
-      for (let errorItem of error.details) {
-        const { context, message } = errorItem;
-
-        errors[context.key] = [message];
-      }
-
+    if (Object.keys(errors).length !== 0) {
       setErrorsMessage(errors);
       return;
     }
@@ -68,7 +61,6 @@ const LoginScreen = () => {
           onChange={e => setEmail(e.target.value)}
           message={errorsMessage && errorsMessage.email}
         />
-
         <FormItem
           controlId="password"
           label="Password"

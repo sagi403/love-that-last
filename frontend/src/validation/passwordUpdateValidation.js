@@ -43,7 +43,18 @@ const passwordUpdateSchema = Joi.object({
 });
 
 const validatePasswordUpdate = input => {
-  return validate(passwordUpdateSchema, input);
+  const errors = {};
+
+  const { error } = validate(passwordUpdateSchema, input);
+
+  if (error) {
+    for (let errorItem of error.details) {
+      const { context, message } = errorItem;
+
+      errors[context.key] = [message];
+    }
+  }
+  return errors;
 };
 
 export default validatePasswordUpdate;

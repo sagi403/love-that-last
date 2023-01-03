@@ -15,7 +15,18 @@ const profileUpdateSchema = Joi.object({
 });
 
 const validateProfileUpdate = input => {
-  return validate(profileUpdateSchema, input);
+  const errors = {};
+
+  const { error } = validate(profileUpdateSchema, input);
+
+  if (error) {
+    for (let errorItem of error.details) {
+      const { context, message } = errorItem;
+
+      errors[context.key] = [message];
+    }
+  }
+  return errors;
 };
 
 export default validateProfileUpdate;

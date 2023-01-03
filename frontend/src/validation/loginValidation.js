@@ -15,7 +15,18 @@ const loginSchema = Joi.object({
 });
 
 const validateLogin = input => {
-  return validate(loginSchema, input);
+  const errors = {};
+
+  const { error } = validate(loginSchema, input);
+
+  if (error) {
+    for (let errorItem of error.details) {
+      const { context, message } = errorItem;
+
+      errors[context.key] = [message];
+    }
+  }
+  return errors;
 };
 
 export default validateLogin;

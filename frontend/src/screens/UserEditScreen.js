@@ -49,16 +49,10 @@ const UserEditScreen = () => {
 
   const submitHandler = e => {
     e.preventDefault();
-    const errors = {};
-    const { error } = validateUserUpdate({ name, email });
 
-    if (error) {
-      for (let errorItem of error.details) {
-        const { context, message } = errorItem;
+    const errors = validateUserUpdate({ name, email });
 
-        errors[context.key] = [message];
-      }
-
+    if (Object.keys(errors).length !== 0) {
       setErrorsMessage(errors);
       return;
     }

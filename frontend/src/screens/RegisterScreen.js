@@ -40,25 +40,14 @@ const RegisterScreen = () => {
     e.preventDefault();
     dispatch(resetStatus());
 
-    const errors = {};
-    const { error } = validateRegister({
+    const errors = validateRegister({
       name,
       email,
       password,
       confirmPassword,
     });
 
-    if (error) {
-      for (let errorItem of error.details) {
-        const { context, message } = errorItem;
-
-        if (!errors[context.key]) {
-          errors[context.key] = [];
-        }
-
-        errors[context.key].push(message);
-      }
-
+    if (Object.keys(errors).length !== 0) {
       setErrorsMessage(errors);
       return;
     }
@@ -86,7 +75,6 @@ const RegisterScreen = () => {
           onChange={e => setName(e.target.value)}
           message={errorsMessage && errorsMessage.name}
         />
-
         <FormItem
           controlId="email"
           label="Email Address"
@@ -96,7 +84,6 @@ const RegisterScreen = () => {
           onChange={e => setEmail(e.target.value)}
           message={errorsMessage && errorsMessage.email}
         />
-
         <FormItem
           controlId="password"
           label="Password"
@@ -106,7 +93,6 @@ const RegisterScreen = () => {
           onChange={e => setPassword(e.target.value)}
           message={errorsMessage && errorsMessage.password}
         />
-
         <FormItem
           controlId="confirmPassword"
           label="Confirm Password"

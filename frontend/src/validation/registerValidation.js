@@ -53,7 +53,22 @@ const registerSchema = Joi.object({
 });
 
 const validateRegister = input => {
-  return validate(registerSchema, input);
+  const errors = {};
+
+  const { error } = validate(registerSchema, input);
+
+  if (error) {
+    for (let errorItem of error.details) {
+      const { context, message } = errorItem;
+
+      if (!errors[context.key]) {
+        errors[context.key] = [];
+      }
+
+      errors[context.key].push(message);
+    }
+  }
+  return errors;
 };
 
 export default validateRegister;

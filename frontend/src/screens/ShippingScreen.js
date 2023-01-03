@@ -30,16 +30,9 @@ const ShippingScreen = () => {
   const submitHandler = e => {
     e.preventDefault();
 
-    const errors = {};
-    const { error } = validateAddress({ address, city, postalCode, country });
+    const errors = validateAddress({ address, city, postalCode, country });
 
-    if (error) {
-      for (let errorItem of error.details) {
-        const { context, message } = errorItem;
-
-        errors[context.key] = [message];
-      }
-
+    if (Object.keys(errors).length !== 0) {
       setErrorsMessage(errors);
       return;
     }
