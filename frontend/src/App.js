@@ -21,6 +21,7 @@ import UserListScreen from "./screens/UserListScreen";
 import NotFoundScreen from "./screens/NotFoundScreen";
 import RequireAdminAuth from "./components/RequireAdminAuth";
 import UserEditScreen from "./screens/UserEditScreen";
+import ProductListScreen from "./screens/ProductListScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,10 @@ const App = () => {
             <Routes>
               <Route element={<RequireAuth />}>
                 <Route element={<RequireAdminAuth />}>
+                  <Route
+                    path="/admin/productlist"
+                    element={<ProductListScreen />}
+                  />
                   <Route path="/admin/userlist" element={<UserListScreen />} />
                   <Route
                     path="/admin/user/:id/edit"
