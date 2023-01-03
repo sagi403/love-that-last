@@ -13,17 +13,14 @@ import {
 } from "react-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getProductById } from "../store/productSlice";
-import { resetError } from "../store/productSlice";
+import { createReview, getProductById } from "../store/productSlice";
+import { resetStatus } from "../store/productSlice";
 import Rating from "../components/Rating";
-import axios from "axios";
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [errorProductReview, setErrorProductReview] = useState(null);
-  const [successProductReview, setSuccessProductReview] = useState(null);
 
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -31,6 +28,9 @@ const ProductScreen = () => {
   const navigate = useNavigate();
 
   const { loggedIn } = useSelector(state => state.user);
+  const { successProductReview, errorProductReview } = useSelector(
+    state => state.product
+  );
 
   const from = location.state?.from?.pathname || "/";
 
@@ -47,30 +47,16 @@ const ProductScreen = () => {
     }
 
     dispatch(getProductById(id));
-
-    return () => dispatch(resetError());
   }, [successProductReview, id]);
+
+  useEffect(() => {
+    return () => dispatch(resetStatus());
+  }, []);
 
   const submitHandler = async e => {
     e.preventDefault();
-    const config = { headers: { "Content-Type": "application/json" } };
-
-    try {
-      const { data } = await axios.post(
-        `/api/products/${id}/reviews`,
-        { rating, comment },
-        config
-      );
-
-      setSuccessProductReview(data.message);
-    } catch (error) {
-      const err =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-
-      setErrorProductReview(err);
-    }
+    dispatch(resetStatus());
+    dispatch(createReview({ id, rating, comment }));
   };
 
   const addToCart = () => {

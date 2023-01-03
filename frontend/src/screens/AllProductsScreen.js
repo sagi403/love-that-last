@@ -5,7 +5,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Col, Container, Row } from "react-bootstrap";
 import Product from "../components/Product";
-import { resetError } from "../store/productSlice";
+import { resetStatus } from "../store/productSlice";
 
 const AllProductsScreen = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const AllProductsScreen = () => {
   useEffect(() => {
     dispatch(getAllProducts());
 
-    return () => dispatch(resetError());
+    return () => dispatch(resetStatus());
   }, []);
 
   return (
