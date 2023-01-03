@@ -4,7 +4,7 @@ import validate from "./validate";
 const addressSchema = Joi.object({
   address: Joi.string().min(2).required().label("Address"),
   city: Joi.string().min(2).required().label("City"),
-  postalCode: Joi.string().min(2).required().label("PostalCode"),
+  postalCode: Joi.string().min(2).required().label("Postal Code"),
   country: Joi.string().min(2).required().label("Country"),
 });
 
