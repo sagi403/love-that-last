@@ -4,26 +4,35 @@ import { LinkContainer } from "react-router-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useEffect } from "react";
-import { usersList } from "../store/userSlice";
+import { deleteUser, resetStatus, usersList } from "../store/userSlice";
 
 const UserListScreen = () => {
   const dispatch = useDispatch();
 
-  const { users, loadingUsers, error } = useSelector(state => state.user);
+  const { users, loadingUsers, error, errorDeleting, successDeletingUser } =
+    useSelector(state => state.user);
 
   useEffect(() => {
     dispatch(usersList());
+  }, [successDeletingUser]);
+
+  useEffect(() => {
+    return () => dispatch(resetStatus());
   }, []);
 
   const deleteHandler = id => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      console.log(id);
+      dispatch(deleteUser(id));
     }
   };
 
   return (
     <Container>
       <h1>Users</h1>
+      {errorDeleting && <Message variant="danger">{errorDeleting}</Message>}
+      {successDeletingUser && (
+        <Message variant="success">{successDeletingUser}</Message>
+      )}
       {loadingUsers ? (
         <Loader />
       ) : error ? (

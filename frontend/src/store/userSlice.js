@@ -13,11 +13,13 @@ const initialState = {
   loggedIn: false,
   error: null,
   errorUpdateUser: null,
+  errorDeleting: null,
   userInfo: null,
   users: [],
   userDetails: null,
   success: false,
   successUpdateUser: false,
+  successDeletingUser: false,
 };
 
 export const login = createAsyncThunk("user/login", async (user, thunkApi) => {
@@ -165,6 +167,24 @@ export const updateUserDetails = createAsyncThunk(
   }
 );
 
+export const deleteUser = createAsyncThunk(
+  "user/deleteUser",
+  async (id, thunkApi) => {
+    try {
+      const { data } = await axios.delete(`/api/users/${id}`);
+
+      return data.message;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -172,8 +192,10 @@ const userSlice = createSlice({
     resetStatus: state => {
       state.error = null;
       state.errorUpdateUser = null;
+      state.errorDeleting = null;
       state.success = false;
       state.successUpdateUser = false;
+      state.successDeletingUser = false;
     },
     resetAllUser: () => initialState,
   },
@@ -268,6 +290,13 @@ const userSlice = createSlice({
       .addCase(updateUserDetails.rejected, (state, action) => {
         state.loadingUserDetails = false;
         state.errorUpdateUser = action.payload;
+      })
+      .addCase(deleteUser.pending, () => {})
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.successDeletingUser = action.payload;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.errorDeleting = action.payload;
       });
   },
 });
