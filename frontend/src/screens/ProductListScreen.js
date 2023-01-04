@@ -7,6 +7,7 @@ import Message from "../components/Message";
 import { useEffect } from "react";
 import {
   createProduct,
+  deleteProduct,
   getAllProducts,
   resetStatus,
 } from "../store/productSlice";
@@ -15,8 +16,14 @@ const ProductListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loadingProducts, products, error, successCreateProduct, productId } =
-    useSelector(state => state.product);
+  const {
+    loadingProducts,
+    products,
+    error,
+    successCreateProduct,
+    successDeleteProduct,
+    productId,
+  } = useSelector(state => state.product);
 
   useEffect(() => {
     if (successCreateProduct) {
@@ -24,7 +31,7 @@ const ProductListScreen = () => {
     }
 
     dispatch(getAllProducts());
-  }, [successCreateProduct]);
+  }, [successCreateProduct, successDeleteProduct]);
 
   useEffect(() => {
     return () => dispatch(resetStatus());
@@ -34,7 +41,13 @@ const ProductListScreen = () => {
     dispatch(createProduct());
   };
 
-  const deleteHandler = id => {};
+  const deleteHandler = id => {
+    dispatch(resetStatus());
+
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      dispatch(deleteProduct(id));
+    }
+  };
 
   return (
     <Container>
@@ -48,14 +61,16 @@ const ProductListScreen = () => {
           </Button>
         </Col>
       </Row>
-      {/* {loadingDelete && <Loader />}
-    {errorDelete && <Message variant="danger">{errorDelete}</Message>} */}
+      {error && <Message variant="danger">{error}</Message>}
       {loadingProducts ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          {successDeleteProduct && (
+            <Message variant="success">{successDeleteProduct}</Message>
+          )}
           <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
