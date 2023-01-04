@@ -13,7 +13,8 @@ const FormItem = ({
     <Form.Group controlId={controlId} className="mb-3">
       <Form.Label>{label}</Form.Label>
       <Form.Control
-        type={type}
+        type={type === "textarea" ? undefined : type}
+        as={type === "textarea" ? type : undefined}
         placeholder={placeholder}
         value={value}
         onChange={onChange}

@@ -6,14 +6,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getProductById, resetStatus } from "../store/productSlice";
+import {
+  getProductById,
+  resetStatus,
+  updateProductDetails,
+} from "../store/productSlice";
 import validateProductUpdate from "../validation/productUpdateValidation";
 import FormItem from "../components/FormItem";
 
 const ProductEditScreen = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
-  // const [beforeSalePrice, setBeforeSalePrice] = useState(0);
+  const [beforeSalePrice, setBeforeSalePrice] = useState(0);
   const [image, setImage] = useState("");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
@@ -21,10 +25,11 @@ const ProductEditScreen = () => {
   const [description, setDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [addSalePrice, setAddSalePrice] = useState(false);
   const [errorsMessage, setErrorsMessage] = useState({
     name: null,
     price: null,
-    // beforeSalePrice: null,
+    beforeSalePrice: null,
     image: null,
     brand: null,
     category: null,
@@ -37,9 +42,8 @@ const ProductEditScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { error, loadingEditProduct, product } = useSelector(
-    state => state.product
-  );
+  const { error, loadingEditProduct, product, successUpdateProduct } =
+    useSelector(state => state.product);
 
   useEffect(() => {
     dispatch(getProductById(id));
@@ -48,6 +52,9 @@ const ProductEditScreen = () => {
   }, []);
 
   useEffect(() => {
+    if (successUpdateProduct) {
+      navigate("/admin/productlist");
+    }
     if (product) {
       setName(product.name);
       setPrice(product.price);
@@ -57,26 +64,27 @@ const ProductEditScreen = () => {
       setCountInStock(product.countInStock);
       setDescription(product.description);
       setLongDescription(product.longDescription);
-      // product.beforeSalePrice && setBeforeSalePrice(product.beforeSalePrice);
+      product.beforeSalePrice && setBeforeSalePrice(product.beforeSalePrice);
     }
-  }, [product]);
+  }, [product, successUpdateProduct]);
 
   const uploadFileHandler = e => {};
 
   const submitHandler = e => {
     e.preventDefault();
-
-    const errors = validateProductUpdate({
+    const updatedProduct = {
       name,
       price,
-      // beforeSalePrice,
+      beforeSalePrice,
       image,
       brand,
       category,
       countInStock,
       description,
       longDescription,
-    });
+    };
+
+    const errors = validateProductUpdate(updatedProduct);
 
     if (Object.keys(errors).length !== 0) {
       setErrorsMessage(errors);
@@ -86,7 +94,7 @@ const ProductEditScreen = () => {
     setErrorsMessage({
       name: null,
       price: null,
-      // beforeSalePrice: null,
+      beforeSalePrice: null,
       image: null,
       brand: null,
       category: null,
@@ -94,6 +102,7 @@ const ProductEditScreen = () => {
       description: null,
       longDescription: null,
     });
+    dispatch(updateProductDetails({ id, ...updatedProduct }));
   };
 
   return (
@@ -119,16 +128,6 @@ const ProductEditScreen = () => {
               message={errorsMessage && errorsMessage.name}
             />
 
-            {/* <Form.Group controlId="beforeSalePrice" className="mb-3">
-              <Form.Label>Price Before Sale</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Enter price before sale"
-                value={beforeSalePrice}
-                onChange={e => setBeforeSalePrice(e.target.value)}
-              ></Form.Control>
-            </Form.Group> */}
-
             <FormItem
               controlId="price"
               label="Price"
@@ -139,14 +138,27 @@ const ProductEditScreen = () => {
               message={errorsMessage && errorsMessage.price}
             />
 
+            <Form.Check
+              type="switch"
+              id="custom-switch"
+              label="Add Sale Price"
+              className="mb-3"
+              onChange={e => setAddSalePrice(e.target.checked)}
+            />
+            {addSalePrice && (
+              <FormItem
+                controlId="beforeSalePrice"
+                label="Price Before Sale"
+                type="number"
+                placeholder="Enter price before sale"
+                value={beforeSalePrice}
+                onChange={e => setBeforeSalePrice(e.target.value)}
+                message={errorsMessage && errorsMessage.beforeSalePrice}
+              />
+            )}
+
             <Form.Group controlId="image" className="mb-3">
               <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter image url"
-                value={image}
-                onChange={e => setImage(e.target.value)}
-              ></Form.Control>
               <Form.Control
                 type="file"
                 label="Choose File"
@@ -191,18 +203,6 @@ const ProductEditScreen = () => {
               onChange={e => setDescription(e.target.value)}
               message={errorsMessage && errorsMessage.description}
             />
-
-            {/* <Form.Group controlId="description" className="mb-3">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                row="3"
-                placeholder="Enter description"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-              ></Form.Control>
-            </Form.Group> */}
-
             <FormItem
               controlId="longDescription"
               label="Long Description"
@@ -212,18 +212,6 @@ const ProductEditScreen = () => {
               onChange={e => setLongDescription(e.target.value)}
               message={errorsMessage && errorsMessage.longDescription}
             />
-
-            {/* <Form.Group controlId="longDescription" className="mb-3">
-              <Form.Label>Long Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                row="5"
-                placeholder="Enter description"
-                value={longDescription}
-                onChange={e => setLongDescription(e.target.value)}
-              ></Form.Control>
-            </Form.Group> */}
-
             <Button type="submit" variant="primary">
               Update
             </Button>

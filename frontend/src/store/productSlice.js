@@ -11,6 +11,7 @@ const initialState = {
   errorProductReview: null,
   successProductReview: null,
   successCreateProduct: false,
+  successUpdateProduct: false,
   products: null,
 };
 
@@ -80,6 +81,52 @@ export const createProduct = createAsyncThunk(
     try {
       const { data } = await axios.post(`/api/products`);
 
+      return data.id;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const updateProductDetails = createAsyncThunk(
+  "product/updateProductDetails",
+  async (input, thunkApi) => {
+    const {
+      id,
+      name,
+      price,
+      beforeSalePrice,
+      image,
+      brand,
+      category,
+      countInStock,
+      description,
+      longDescription,
+    } = input;
+    const config = { headers: { "Content-Type": "application/json" } };
+
+    try {
+      const { data } = await axios.put(
+        `/api/products/${id}`,
+        {
+          name,
+          price,
+          beforeSalePrice,
+          image,
+          brand,
+          category,
+          countInStock,
+          description,
+          longDescription,
+        },
+        config
+      );
+
       return data;
     } catch (error) {
       const err =
@@ -101,6 +148,7 @@ const productSlice = createSlice({
       state.errorProductReview = null;
       state.successProductReview = null;
       state.successCreateProduct = false;
+      state.successUpdateProduct = false;
     },
     resetAllProducts: () => initialState,
   },
@@ -148,6 +196,17 @@ const productSlice = createSlice({
         state.successCreateProduct = true;
       })
       .addCase(createProduct.rejected, (state, action) => {
+        state.loadingProduct = false;
+        state.error = action.payload;
+      })
+      .addCase(updateProductDetails.pending, state => {
+        state.loadingProduct = true;
+      })
+      .addCase(updateProductDetails.fulfilled, (state, action) => {
+        state.loadingProduct = false;
+        state.successUpdateProduct = true;
+      })
+      .addCase(updateProductDetails.rejected, (state, action) => {
         state.loadingProduct = false;
         state.error = action.payload;
       });
