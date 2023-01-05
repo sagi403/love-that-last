@@ -5,10 +5,13 @@ const initialState = {
   loadingProduct: true,
   loadingProducts: true,
   loadingReview: true,
+  loadingUpload: false,
   product: null,
   productId: null,
+  productImage: null,
   error: null,
   errorProductReview: null,
+  errorUpload: null,
   successProductReview: null,
   successCreateProduct: false,
   successUpdateProduct: false,
@@ -158,6 +161,25 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+export const uploadImage = createAsyncThunk(
+  "product/uploadImage",
+  async (file, thunkApi) => {
+    try {
+      const config = { headers: { "Content-Type": "multipart/form-data" } };
+      const { data } = await axios.post(`/api/upload`, file, config);
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState,
@@ -165,6 +187,7 @@ const productSlice = createSlice({
     resetStatus: state => {
       state.error = null;
       state.errorProductReview = null;
+      state.errorUpload = null;
       state.successProductReview = null;
       state.successCreateProduct = false;
       state.successUpdateProduct = false;
@@ -240,6 +263,17 @@ const productSlice = createSlice({
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loadingProducts = false;
         state.error = action.payload;
+      })
+      .addCase(uploadImage.pending, state => {
+        state.loadingUpload = true;
+      })
+      .addCase(uploadImage.fulfilled, (state, action) => {
+        state.loadingUpload = false;
+        state.productImage = action.payload;
+      })
+      .addCase(uploadImage.rejected, (state, action) => {
+        state.loadingUpload = false;
+        state.errorUpload = action.payload;
       });
   },
 });

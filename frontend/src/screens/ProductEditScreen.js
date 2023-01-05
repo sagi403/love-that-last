@@ -10,6 +10,7 @@ import {
   getProductById,
   resetStatus,
   updateProductDetails,
+  uploadImage,
 } from "../store/productSlice";
 import validateProductUpdate from "../validation/productUpdateValidation";
 import FormItem from "../components/FormItem";
@@ -24,13 +25,12 @@ const ProductEditScreen = () => {
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
-  const [uploading, setUploading] = useState(false);
   const [addSalePrice, setAddSalePrice] = useState(false);
+  const [imageError, setImageError] = useState("");
   const [errorsMessage, setErrorsMessage] = useState({
     name: null,
     price: null,
     beforeSalePrice: null,
-    image: null,
     brand: null,
     category: null,
     countInStock: null,
@@ -42,8 +42,15 @@ const ProductEditScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { error, loadingEditProduct, product, successUpdateProduct } =
-    useSelector(state => state.product);
+  const {
+    error,
+    loadingEditProduct,
+    product,
+    successUpdateProduct,
+    productImage,
+    loadingUpload,
+    errorUpload,
+  } = useSelector(state => state.product);
 
   useEffect(() => {
     dispatch(getProductById(id));
@@ -55,10 +62,12 @@ const ProductEditScreen = () => {
     if (successUpdateProduct) {
       navigate("/admin/productlist");
     }
+  }, [successUpdateProduct]);
+
+  useEffect(() => {
     if (product) {
       setName(product.name);
       setPrice(product.price);
-      setImage(product.image);
       setBrand(product.brand);
       setCategory(product.category);
       setCountInStock(product.countInStock);
@@ -66,17 +75,39 @@ const ProductEditScreen = () => {
       setLongDescription(product.longDescription);
       product.beforeSalePrice && setBeforeSalePrice(product.beforeSalePrice);
     }
-  }, [product, successUpdateProduct]);
+  }, [product]);
 
-  const uploadFileHandler = e => {};
+  useEffect(() => {
+    if (productImage) {
+      setImage(productImage);
+    }
+  }, [productImage]);
+
+  const uploadFileHandler = e => {
+    const filetypes = /jpg|jpeg|png/;
+    const file = e.target.files[0];
+    const splitFile = file.name.split(".");
+    const filetype = splitFile[splitFile.length - 1].toLowerCase();
+    const extname = filetypes.test(filetype);
+
+    if (!extname) {
+      setImageError("You can only upload images");
+      return;
+    }
+
+    setImageError("");
+    const formData = new FormData();
+    formData.append("image", file);
+    dispatch(uploadImage(formData));
+  };
 
   const submitHandler = e => {
     e.preventDefault();
+
     const updatedProduct = {
       name,
       price,
       beforeSalePrice,
-      image,
       brand,
       category,
       countInStock,
@@ -90,19 +121,19 @@ const ProductEditScreen = () => {
       setErrorsMessage(errors);
       return;
     }
+    if (imageError || !productImage) return;
 
     setErrorsMessage({
       name: null,
       price: null,
       beforeSalePrice: null,
-      image: null,
       brand: null,
       category: null,
       countInStock: null,
       description: null,
       longDescription: null,
     });
-    dispatch(updateProductDetails({ id, ...updatedProduct }));
+    dispatch(updateProductDetails({ id, ...updatedProduct, image }));
   };
 
   return (
@@ -112,6 +143,7 @@ const ProductEditScreen = () => {
       </Link>
       <FormContainer>
         <h1>Edit Product</h1>
+        {errorUpload && <Message variant="danger">{errorUpload}</Message>}
         {loadingEditProduct ? (
           <Loader />
         ) : error ? (
@@ -163,8 +195,12 @@ const ProductEditScreen = () => {
                 type="file"
                 label="Choose File"
                 onChange={uploadFileHandler}
+                isInvalid={imageError}
               ></Form.Control>
-              {uploading && <Loader />}
+              <Form.Control.Feedback type="invalid">
+                {imageError}
+              </Form.Control.Feedback>
+              {loadingUpload && <Loader />}
             </Form.Group>
 
             <FormItem
@@ -172,7 +208,7 @@ const ProductEditScreen = () => {
               label="Brand"
               type="text"
               placeholder="Enter brand"
-              value={price}
+              value={brand}
               onChange={e => setBrand(e.target.value)}
               message={errorsMessage && errorsMessage.brand}
             />

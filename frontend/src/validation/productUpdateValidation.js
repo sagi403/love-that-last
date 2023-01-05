@@ -5,7 +5,6 @@ const productUpdateSchema = Joi.object({
   name: Joi.string().min(2).max(255).required().label("Name"),
   price: Joi.number().required().label("Price"),
   beforeSalePrice: Joi.number().label("Before Sale Price"),
-  image: Joi.string().min(2).max(255).required().label("Image"),
   brand: Joi.string().min(2).max(255).required().label("Brand"),
   category: Joi.string().min(2).max(255).required().label("Category"),
   countInStock: Joi.number().required().label("Count In Stock"),
