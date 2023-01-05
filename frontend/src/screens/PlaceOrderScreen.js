@@ -34,7 +34,10 @@ const PlaceOrderScreen = () => {
 
   useEffect(() => {
     if (success) {
-      navigate(`/order/${order.id}`);
+      navigate(`/order/${order.id}`, {
+        replace: true,
+        state: { from: location },
+      });
       dispatch(clearCart());
       dispatch(resetStatus());
     }
@@ -112,7 +115,7 @@ const PlaceOrderScreen = () => {
                 <Message>Your cart is empty</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {cartItems.map(item => (
+                  {cartItems?.map(item => (
                     <ListGroup.Item key={item.product}>
                       <Row>
                         <Col md={1}>

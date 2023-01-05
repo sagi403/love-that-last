@@ -62,7 +62,7 @@ const OrderScreen = () => {
     <Message variant="danger">{errorOrder}</Message>
   ) : (
     <Container>
-      {(from === "/admin/orderlist" || from === "/profile") && (
+      {from !== "/placeorder" && (
         <Link to={from} className="btn btn-light my-3">
           Go Back
         </Link>
@@ -120,7 +120,7 @@ const OrderScreen = () => {
                 <Message>Order is empty</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {order.orderItems.map(item => (
+                  {order?.orderItems.map(item => (
                     <ListGroup.Item key={item.product}>
                       <Row>
                         <Col md={1}>

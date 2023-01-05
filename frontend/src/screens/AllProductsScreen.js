@@ -31,7 +31,7 @@ const AllProductsScreen = () => {
       ) : (
         <>
           <Row>
-            {products.map(product => (
+            {products?.map(product => (
               <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />
               </Col>

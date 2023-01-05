@@ -164,7 +164,7 @@ const ProfileScreen = () => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map(order => (
+                {orders?.map(order => (
                   <tr key={order.id}>
                     <td>{order.id}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>

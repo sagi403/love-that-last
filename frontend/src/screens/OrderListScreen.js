@@ -5,9 +5,11 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useEffect } from "react";
 import { getAllOrders, resetStatus } from "../store/orderSlice";
+import { useLocation } from "react-router-dom";
 
 const OrderListScreen = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const { ordersAll, loadingOrders, errorOrders } = useSelector(
     state => state.order
@@ -40,7 +42,7 @@ const OrderListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {ordersAll.map(order => (
+            {ordersAll?.map(order => (
               <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>{order.user && order.user.name}</td>
@@ -61,7 +63,10 @@ const OrderListScreen = () => {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/order/${order.id}`}>
+                  <LinkContainer
+                    to={`/order/${order.id}`}
+                    state={{ from: location }}
+                  >
                     <Button variant="light" className="btn-sm">
                       Details
                     </Button>
