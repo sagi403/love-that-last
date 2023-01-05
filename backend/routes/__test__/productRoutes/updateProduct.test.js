@@ -187,3 +187,30 @@ it("responds with 200 for updating the product successfully", async () => {
   expect(res.body.beforeSalePrice).toEqual(69.95);
   expect(res.body.countInStock).toEqual(5);
 });
+
+it("responds with 200 for updating the product successfully without beforeSalePrice property", async () => {
+  const cookie = await global.getCookie();
+
+  const response = await request(app)
+    .post("/api/products")
+    .set("Cookie", cookie)
+    .expect(201);
+
+  const id = response.body.id;
+
+  const res = await request(app)
+    .put(`/api/products/${id}`)
+    .set("Cookie", cookie)
+    .send({ ...productSample, beforeSalePrice: undefined })
+    .expect(200);
+
+  expect(res.body.name).toEqual("test");
+  expect(res.body.image).toEqual("/test/test.jpg");
+  expect(res.body.description).toEqual("test test test");
+  expect(res.body.longDescription).toEqual("test test test test test");
+  expect(res.body.brand).toEqual("test");
+  expect(res.body.category).toEqual("test");
+  expect(res.body.price).toEqual(49.95);
+  expect(res.body.countInStock).toEqual(5);
+  expect(res.body.beforeSalePrice).toBeNull();
+});
