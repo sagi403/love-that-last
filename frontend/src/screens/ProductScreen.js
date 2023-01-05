@@ -78,14 +78,14 @@ const ProductScreen = () => {
         <>
           {/* <Meta title={product.name} /> */}
           <Row className="mb-4">
-            <Col md={6}>
+            <Col lg={6} md={8}>
               <Image
                 src={product.image}
                 alt={product.name}
                 className="image-size"
               />
             </Col>
-            <Col md={3}>
+            <Col lg={3} md={4}>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
@@ -100,7 +100,7 @@ const ProductScreen = () => {
                 <ListGroup.Item>{product.description}</ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={3}>
+            <Col lg={3} md={12}>
               <Card>
                 <ListGroup variant="flush">
                   <ListGroup.Item>
