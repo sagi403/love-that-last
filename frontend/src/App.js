@@ -23,6 +23,7 @@ import RequireAdminAuth from "./components/RequireAdminAuth";
 import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
+import OrderListScreen from "./screens/OrderListScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,10 @@ const App = () => {
             <Routes>
               <Route element={<RequireAuth />}>
                 <Route element={<RequireAdminAuth />}>
+                  <Route
+                    path="/admin/orderlist"
+                    element={<OrderListScreen />}
+                  />
                   <Route
                     path="/admin/productlist"
                     element={<ProductListScreen />}

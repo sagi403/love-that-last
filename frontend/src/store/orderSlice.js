@@ -4,6 +4,7 @@ import axios from "axios";
 const initialState = {
   order: null,
   orders: null,
+  ordersAll: null,
   success: false,
   loading: true,
   loadingOrders: true,
@@ -119,15 +120,34 @@ export const getUserOrders = createAsyncThunk(
   }
 );
 
+export const getAllOrders = createAsyncThunk(
+  "order/getAllOrders",
+  async (_, thunkApi) => {
+    try {
+      const { data } = await axios.get("/api/orders");
+
+      return data;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    resetError: state => {
-      state.error = null;
-    },
     resetStatus: state => {
       state.error = null;
+      state.errorOrder = null;
+      state.errorOrders = null;
+      state.errorDeliver = null;
+      state.errorPay = null;
       state.success = false;
     },
     resetAllOrders: () => initialState,
@@ -189,10 +209,21 @@ const orderSlice = createSlice({
       .addCase(getUserOrders.rejected, (state, action) => {
         state.loadingOrders = false;
         state.errorOrders = action.payload;
+      })
+      .addCase(getAllOrders.pending, state => {
+        state.loadingOrders = true;
+      })
+      .addCase(getAllOrders.fulfilled, (state, action) => {
+        state.loadingOrders = false;
+        state.ordersAll = action.payload;
+      })
+      .addCase(getAllOrders.rejected, (state, action) => {
+        state.loadingOrders = false;
+        state.errorOrders = action.payload;
       });
   },
 });
 
-export const { resetError, resetStatus, resetAllOrders } = orderSlice.actions;
+export const { resetStatus, resetAllOrders } = orderSlice.actions;
 
 export default orderSlice.reducer;

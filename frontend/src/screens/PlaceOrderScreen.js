@@ -13,7 +13,7 @@ import {
   Row,
 } from "react-bootstrap";
 import Message from "../components/Message";
-import { createOrder, resetError, resetStatus } from "../store/orderSlice";
+import { createOrder, resetStatus } from "../store/orderSlice";
 import { clearCart } from "../store/cartSlice";
 
 const PlaceOrderScreen = () => {
@@ -39,7 +39,7 @@ const PlaceOrderScreen = () => {
       dispatch(resetStatus());
     }
 
-    return () => dispatch(resetError());
+    return () => dispatch(resetStatus());
   }, [success]);
 
   useEffect(() => {
