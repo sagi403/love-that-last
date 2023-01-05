@@ -5,6 +5,10 @@
   p {
     max-width: 78%;
   }
+  .image-size {
+    width: 37.5rem;
+    height: 37.5rem;
+  }
 }
 @media (max-width: 1200px) {
   h1 {
@@ -13,15 +17,14 @@
   p {
     max-width: 90%;
   }
+  .image-size {
+    width: 25rem;
+    height: 25rem;
+  }
 }
 
 .text-line-through {
   text-decoration: line-through;
-}
-
-.image-size {
-  width: 64vh;
-  height: 64vh;
 }
 
 .sale-badge {

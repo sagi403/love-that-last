@@ -68,12 +68,19 @@ const ProductEditScreen = () => {
     if (product) {
       setName(product.name);
       setPrice(product.price);
+      setImage(product.image);
       setBrand(product.brand);
       setCategory(product.category);
       setCountInStock(product.countInStock);
       setDescription(product.description);
       setLongDescription(product.longDescription);
-      product.beforeSalePrice && setBeforeSalePrice(product.beforeSalePrice);
+
+      if (product.beforeSalePrice) {
+        setBeforeSalePrice(product.beforeSalePrice);
+        setAddSalePrice(true);
+      } else {
+        setAddSalePrice(false);
+      }
     }
   }, [product]);
 
@@ -107,7 +114,7 @@ const ProductEditScreen = () => {
     const updatedProduct = {
       name,
       price,
-      beforeSalePrice,
+      beforeSalePrice: addSalePrice ? beforeSalePrice : undefined,
       brand,
       category,
       countInStock,
@@ -121,7 +128,7 @@ const ProductEditScreen = () => {
       setErrorsMessage(errors);
       return;
     }
-    if (imageError || !productImage) return;
+    if (imageError) return;
 
     setErrorsMessage({
       name: null,
@@ -175,6 +182,7 @@ const ProductEditScreen = () => {
               id="custom-switch"
               label="Add Sale Price"
               className="mb-3"
+              checked={addSalePrice}
               onChange={e => setAddSalePrice(e.target.checked)}
             />
             {addSalePrice && (

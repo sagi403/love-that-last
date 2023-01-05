@@ -4,7 +4,9 @@ import validate from "./validate";
 const productUpdateSchema = Joi.object({
   name: Joi.string().min(2).max(255).required().label("Name"),
   price: Joi.number().required().label("Price"),
-  beforeSalePrice: Joi.number().label("Before Sale Price"),
+  beforeSalePrice: Joi.number()
+    .greater(Joi.ref("price"))
+    .label("Price Before Sale"),
   brand: Joi.string().min(2).max(255).required().label("Brand"),
   category: Joi.string().min(2).max(255).required().label("Category"),
   countInStock: Joi.number().required().label("Count In Stock"),
