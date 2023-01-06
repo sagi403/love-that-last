@@ -1,4 +1,8 @@
-import { param, body } from "express-validator";
+import { param, body, query } from "express-validator";
+
+export const getProductsValidation = [
+  query("pageNumber").isNumeric().optional(),
+];
 
 export const getProductByIdValidation = [
   param("id")

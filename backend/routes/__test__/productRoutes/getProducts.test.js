@@ -5,6 +5,14 @@ it("returns a 404 if no product found", async () => {
   return request(app).get("/api/products").send().expect(404);
 });
 
+it("returns a 400 for not providing a validated query", async () => {
+  const cookie = await global.getCookie();
+
+  await request(app).post("/api/products").set("Cookie", cookie).expect(201);
+
+  await request(app).get("/api/products?pageNumber=notValid").expect(400);
+});
+
 it("returns a 200 on successfully getting products without providing a query", async () => {
   const cookie = await global.getCookie();
 

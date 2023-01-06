@@ -13,13 +13,17 @@ import {
   createProductReviewValidation,
   deleteProductValidation,
   getProductByIdValidation,
+  getProductsValidation,
   updateProductValidation,
 } from "../validation/productValidation.js";
 import validateRequest from "../middleware/validateRequest.js";
 
 const router = express.Router();
 
-router.route("/").get(getProducts).post(protect, admin, createProduct);
+router
+  .route("/")
+  .get(getProductsValidation, validateRequest, getProducts)
+  .post(protect, admin, createProduct);
 router.get("/top4", getTop4Products);
 router.post(
   "/:id/reviews",
