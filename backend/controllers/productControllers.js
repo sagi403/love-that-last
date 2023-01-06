@@ -5,10 +5,17 @@ import Product from "../models/productModel.js";
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}).sort({ updatedAt: -1 });
+  const pageSize = 10;
+  const page = Number(req.query.pageNumber) || 1;
+  const products = await Product.find({})
+    .sort({ updatedAt: -1 })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  const count = await Product.countDocuments({});
 
   if (products.length !== 0) {
-    res.json(products);
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
   } else {
     res.status(404);
     throw new Error("There are no products available");
