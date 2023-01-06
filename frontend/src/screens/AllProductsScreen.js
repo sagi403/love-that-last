@@ -6,21 +6,28 @@ import Message from "../components/Message";
 import { Col, Container, Row } from "react-bootstrap";
 import Product from "../components/Product";
 import { resetStatus } from "../store/productSlice";
+import Paginate from "../components/Paginate";
+import { useLocation } from "react-router-dom";
 
 const AllProductsScreen = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const {
     loadingProducts: loading,
     error,
     products,
+    page,
+    pages,
   } = useSelector(state => state.product);
 
+  const currentPage = +new URLSearchParams(location.search).get("pageNumber");
+
   useEffect(() => {
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(currentPage));
 
     return () => dispatch(resetStatus());
-  }, []);
+  }, [currentPage]);
 
   return (
     <Container>
@@ -37,6 +44,7 @@ const AllProductsScreen = () => {
               </Col>
             ))}
           </Row>
+          <Paginate page={page} pages={pages} />
         </>
       )}
     </Container>
