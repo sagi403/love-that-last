@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../store/userSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import SearchBox from "./SearchBox";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg="light" className="p-2" collapseOnSelect>
+      <Navbar bg="light" className="p-2" expand="lg">
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>LTL</Navbar.Brand>
@@ -28,51 +29,59 @@ const Header = () => {
               <Nav.Link>Necklaces</Nav.Link>
             </LinkContainer>
           </Nav>
-          <Navbar>
-            {loggedIn ? (
-              <NavDropdown title={userInfo?.name} id="adminmenu">
-                <LinkContainer to="/profile">
-                  <NavDropdown.Item>Profile</NavDropdown.Item>
+
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              {loggedIn ? (
+                <NavDropdown
+                  title={userInfo?.name}
+                  id="adminmenu"
+                  className="d-flex align-items-center"
+                >
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <LinkContainer to="/login" className="mx-3 fs-3">
+                  <Nav.Link>
+                    <i className="bi bi-person"></i>
+                  </Nav.Link>
                 </LinkContainer>
-                <NavDropdown.Item onClick={logoutHandler}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-            ) : (
-              <LinkContainer to="/login" className="mx-3 fs-3">
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown
+                  title="Admin Dashboard"
+                  id="adminmenu"
+                  className="d-flex align-items-center"
+                >
+                  <LinkContainer to="/admin/userlist">
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/productlist">
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/orderlist">
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              )}
+              <SearchBox />
+              <LinkContainer
+                to="/cart"
+                state={{ from: location }}
+                className="mx-3 fs-3"
+              >
                 <Nav.Link>
-                  <i className="bi bi-person"></i>
+                  <i className="bi bi-cart"></i>
                 </Nav.Link>
               </LinkContainer>
-            )}
-            {userInfo && userInfo.isAdmin && (
-              <NavDropdown title="Admin Dashboard" id="adminmenu">
-                <LinkContainer to="/admin/userlist">
-                  <NavDropdown.Item>Users</NavDropdown.Item>
-                </LinkContainer>
-                <LinkContainer to="/admin/productlist">
-                  <NavDropdown.Item>Products</NavDropdown.Item>
-                </LinkContainer>
-                <LinkContainer to="/admin/orderlist">
-                  <NavDropdown.Item>Orders</NavDropdown.Item>
-                </LinkContainer>
-              </NavDropdown>
-            )}
-            <LinkContainer to="/search" className="mx-3 fs-3">
-              <Nav.Link>
-                <i className="bi bi-search"></i>
-              </Nav.Link>
-            </LinkContainer>
-            <LinkContainer
-              to="/cart"
-              state={{ from: location }}
-              className="mx-3 fs-3"
-            >
-              <Nav.Link>
-                <i className="bi bi-cart"></i>
-              </Nav.Link>
-            </LinkContainer>
-          </Navbar>
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
     </header>
