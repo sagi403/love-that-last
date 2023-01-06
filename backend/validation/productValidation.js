@@ -19,7 +19,15 @@ export const deleteProductValidation = [
 export const updateProductValidation = [
   body("name").isString().isLength({ min: 2, max: 255 }),
   body("price").isNumeric(),
-  body("beforeSalePrice").isNumeric().optional(),
+  body("beforeSalePrice")
+    .isNumeric()
+    .optional()
+    .custom((value, { req }) => {
+      if (req.body.price >= value) {
+        throw new Error("Price before sale must be greater then price");
+      }
+      return true;
+    }),
   body("image").trim().isString().isLength({ min: 2, max: 255 }),
   body("brand").trim().isString().isLength({ min: 2, max: 255 }),
   body("category").trim().isString().isLength({ min: 2, max: 255 }),

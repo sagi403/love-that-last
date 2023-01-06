@@ -108,6 +108,23 @@ it("responds with 400 for providing invalidated data to change", async () => {
     .expect(400);
 });
 
+it("responds with 400 for providing invalidated beforeSalePrice", async () => {
+  const cookie = await global.getCookie();
+  const id = new mongoose.Types.ObjectId().toHexString();
+
+  await request(app)
+    .put(`/api/products/${id}`)
+    .set("Cookie", cookie)
+    .send({ ...productSample, price: 50, beforeSalePrice: 20 })
+    .expect(400);
+
+  await request(app)
+    .put(`/api/products/${id}`)
+    .set("Cookie", cookie)
+    .send({ ...productSample, price: 50, beforeSalePrice: 50 })
+    .expect(400);
+});
+
 it("responds with 400 for missing a field", async () => {
   const cookie = await global.getCookie();
   const id = new mongoose.Types.ObjectId().toHexString();
