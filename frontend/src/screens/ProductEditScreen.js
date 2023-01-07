@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
@@ -41,6 +42,7 @@ const ProductEditScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     error,
@@ -51,6 +53,13 @@ const ProductEditScreen = () => {
     loadingUpload,
     errorUpload,
   } = useSelector(state => state.product);
+
+  const from =
+    location.state?.from?.pathname && location.state?.from?.search
+      ? `${location.state.from.pathname}${location.state.from.search}`
+      : location.state?.from?.pathname
+      ? location.state?.from?.pathname
+      : "/admin/productlist";
 
   useEffect(() => {
     dispatch(getProductById(id));
@@ -145,7 +154,7 @@ const ProductEditScreen = () => {
 
   return (
     <Container>
-      <Link to="/admin/productlist" className="btn btn-light my-3">
+      <Link to={from} className="btn btn-light my-3">
         Go Back
       </Link>
       <FormContainer>

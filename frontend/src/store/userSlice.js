@@ -15,7 +15,9 @@ const initialState = {
   errorUpdateUser: null,
   errorDeleting: null,
   userInfo: null,
-  users: [],
+  users: null,
+  page: null,
+  pages: null,
   userDetails: null,
   success: false,
   successUpdateUser: false,
@@ -111,9 +113,9 @@ export const updateProfile = createAsyncThunk(
 
 export const usersList = createAsyncThunk(
   "user/usersList",
-  async (_, thunkApi) => {
+  async (page = 1, thunkApi) => {
     try {
-      const { data } = await axios.get("/api/users");
+      const { data } = await axios.get(`/api/users?pageNumber=${page}`);
 
       return data;
     } catch (error) {
@@ -263,7 +265,9 @@ const userSlice = createSlice({
       })
       .addCase(usersList.fulfilled, (state, action) => {
         state.loadingUsers = false;
-        state.users = action.payload;
+        state.users = action.payload.users;
+        state.page = action.payload.page;
+        state.pages = action.payload.pages;
       })
       .addCase(usersList.rejected, (state, action) => {
         state.loadingUsers = false;

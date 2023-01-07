@@ -69,6 +69,7 @@ const ProductListScreen = () => {
         </Col>
       </Row>
       {error && <Message variant="danger">{error}</Message>}
+
       {loadingProducts ? (
         <Loader />
       ) : error ? (
@@ -98,7 +99,10 @@ const ProductListScreen = () => {
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
-                    <LinkContainer to={`/admin/product/${product.id}/edit`}>
+                    <LinkContainer
+                      to={`/admin/product/${product.id}/edit`}
+                      state={{ from: location }}
+                    >
                       <Button variant="light" className="btn-sm">
                         <i className="bi bi-pencil fs-5"></i>
                       </Button>
