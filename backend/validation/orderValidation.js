@@ -58,4 +58,8 @@ export const updateOrderToDeliveredValidation = [
     .trim(),
 ];
 
+export const getMyOrdersValidation = [
+  query("pageNumber").isNumeric().optional(),
+];
+
 export const getOrdersValidation = [query("pageNumber").isNumeric().optional()];

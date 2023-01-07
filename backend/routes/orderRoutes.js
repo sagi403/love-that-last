@@ -10,6 +10,7 @@ import {
 } from "../controllers/orderControllers.js";
 import {
   addOrderItemsValidation,
+  getMyOrdersValidation,
   getOrderByIdValidation,
   getOrdersValidation,
   updateOrderToDeliveredValidation,
@@ -23,7 +24,9 @@ router
   .route("/")
   .post(protect, addOrderItemsValidation, validateRequest, addOrderItems)
   .get(protect, admin, getOrdersValidation, validateRequest, getOrders);
-router.route("/myorders").get(protect, getMyOrders);
+router
+  .route("/myorders")
+  .get(protect, getMyOrdersValidation, validateRequest, getMyOrders);
 router
   .route("/:id")
   .get(protect, getOrderByIdValidation, validateRequest, getOrderById);
