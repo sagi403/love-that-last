@@ -13,6 +13,7 @@ import {
 import { protect, admin } from "../middleware/authMiddleware.js";
 import {
   deleteUserValidation,
+  getAllUsersValidation,
   getUserByIdValidation,
   loginUserValidation,
   registerUserValidation,
@@ -46,6 +47,13 @@ router
     updateUserAsAdmin
   )
   .delete(protect, admin, deleteUserValidation, validateRequest, deleteUser);
-router.get("/", protect, admin, getAllUsers);
+router.get(
+  "/",
+  protect,
+  admin,
+  getAllUsersValidation,
+  validateRequest,
+  getAllUsers
+);
 
 export default router;
