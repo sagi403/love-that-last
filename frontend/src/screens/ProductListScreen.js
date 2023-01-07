@@ -11,27 +11,34 @@ import {
   getAllProducts,
   resetStatus,
 } from "../store/productSlice";
+import Paginate from "../components/Paginate";
+import { useLocation } from "react-router-dom";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     loadingProducts,
     products,
+    page,
+    pages,
     error,
     successCreateProduct,
     successDeleteProduct,
     productId,
   } = useSelector(state => state.product);
 
+  const currentPage = +new URLSearchParams(location.search).get("pageNumber");
+
   useEffect(() => {
     if (successCreateProduct) {
       navigate(`/admin/product/${productId}/edit`);
     }
 
-    dispatch(getAllProducts());
-  }, [successCreateProduct, successDeleteProduct]);
+    dispatch(getAllProducts(currentPage));
+  }, [successCreateProduct, successDeleteProduct, currentPage]);
 
   useEffect(() => {
     return () => dispatch(resetStatus());
@@ -108,6 +115,7 @@ const ProductListScreen = () => {
               ))}
             </tbody>
           </Table>
+          <Paginate page={page} pages={pages} />
         </>
       )}
     </Container>
