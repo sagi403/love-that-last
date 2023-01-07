@@ -107,7 +107,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
-  const count = await Order.countDocuments({});
+  const count = await Order.countDocuments({ user: req.user.id });
 
   if (orders.length !== 0) {
     res.json({ orders, page, pages: Math.ceil(count / pageSize) });
