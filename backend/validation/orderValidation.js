@@ -1,4 +1,4 @@
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
 
 const regex = /^[a-fA-F0-9]{24}$/;
 
@@ -57,3 +57,5 @@ export const updateOrderToDeliveredValidation = [
     .matches(/^[a-fA-F0-9]{24}$/)
     .trim(),
 ];
+
+export const getOrdersValidation = [query("pageNumber").isNumeric().optional()];

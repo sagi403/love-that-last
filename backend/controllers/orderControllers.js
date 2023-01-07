@@ -115,12 +115,19 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @route   GET /api/orders
 // @access  Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
+  const pageSize = 10;
+  const page = +req.query.pageNumber || 1;
+
   const orders = await Order.find({})
     .populate("user", "id name")
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  const count = await Order.countDocuments({});
 
   if (orders.length !== 0) {
-    res.json(orders);
+    res.json({ orders, page, pages: Math.ceil(count / pageSize) });
   } else {
     res.status(404);
     throw new Error("Order not found");

@@ -11,6 +11,7 @@ import {
 import {
   addOrderItemsValidation,
   getOrderByIdValidation,
+  getOrdersValidation,
   updateOrderToDeliveredValidation,
   updateOrderToPaidValidation,
 } from "../validation/orderValidation.js";
@@ -21,7 +22,7 @@ const router = express.Router();
 router
   .route("/")
   .post(protect, addOrderItemsValidation, validateRequest, addOrderItems)
-  .get(protect, admin, getOrders);
+  .get(protect, admin, getOrdersValidation, validateRequest, getOrders);
 router.route("/myorders").get(protect, getMyOrders);
 router
   .route("/:id")
