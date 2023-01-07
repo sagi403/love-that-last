@@ -28,7 +28,12 @@ const OrderScreen = () => {
 
   const [{ isPending }, dispatchPaypal] = usePayPalScriptReducer();
 
-  const from = location.state?.from?.pathname || "/";
+  const from =
+    location.state?.from?.pathname && location.state?.from?.search
+      ? `${location.state.from.pathname}${location.state.from.search}`
+      : location.state?.from?.pathname
+      ? location.state?.from?.pathname
+      : "/";
 
   useEffect(() => {
     dispatch(getOrderDetails(id));

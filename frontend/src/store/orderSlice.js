@@ -15,6 +15,8 @@ const initialState = {
   errorOrders: null,
   errorDeliver: null,
   errorPay: null,
+  page: null,
+  pages: null,
 };
 
 export const createOrder = createAsyncThunk(
@@ -122,9 +124,9 @@ export const getUserOrders = createAsyncThunk(
 
 export const getAllOrders = createAsyncThunk(
   "order/getAllOrders",
-  async (_, thunkApi) => {
+  async (page = 1, thunkApi) => {
     try {
-      const { data } = await axios.get("/api/orders");
+      const { data } = await axios.get(`/api/orders?pageNumber=${page}`);
 
       return data;
     } catch (error) {
@@ -215,7 +217,9 @@ const orderSlice = createSlice({
       })
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state.loadingOrders = false;
-        state.ordersAll = action.payload;
+        state.ordersAll = action.payload.orders;
+        state.page = action.payload.page;
+        state.pages = action.payload.pages;
       })
       .addCase(getAllOrders.rejected, (state, action) => {
         state.loadingOrders = false;
