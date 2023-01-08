@@ -22,12 +22,13 @@ const AllProductsScreen = () => {
   } = useSelector(state => state.product);
 
   const currentPage = +new URLSearchParams(location.search).get("pageNumber");
+  const keyword = new URLSearchParams(location.search).get("keyword") || "";
 
   useEffect(() => {
-    dispatch(getAllProducts(currentPage));
+    dispatch(getAllProducts({ page: currentPage, keyword }));
 
     return () => dispatch(resetStatus());
-  }, [currentPage]);
+  }, [currentPage, keyword]);
 
   return (
     <Container>
@@ -44,7 +45,7 @@ const AllProductsScreen = () => {
               </Col>
             ))}
           </Row>
-          <Paginate page={page} pages={pages} />
+          <Paginate page={page} pages={pages} keyword={keyword} />
         </>
       )}
     </Container>

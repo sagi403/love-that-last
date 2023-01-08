@@ -37,7 +37,7 @@ const ProductListScreen = () => {
       navigate(`/admin/product/${productId}/edit`);
     }
 
-    dispatch(getAllProducts(currentPage));
+    dispatch(getAllProducts({ page: currentPage }));
   }, [successCreateProduct, successDeleteProduct, currentPage]);
 
   useEffect(() => {
