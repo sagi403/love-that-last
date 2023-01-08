@@ -1,8 +1,15 @@
 import { param, body, query } from "express-validator";
 
+const sortOrder = ["name", "rating", "numReviews", "price", "createdAt"];
+
 export const getProductsValidation = [
   query("pageNumber").isNumeric().optional(),
   query("keyword").isString().isLength({ max: 255 }).trim().optional(),
+  query("sortOrder")
+    .isString()
+    .trim()
+    .optional()
+    .custom(value => sortOrder.find(order => order === value)),
 ];
 
 export const getProductByIdValidation = [

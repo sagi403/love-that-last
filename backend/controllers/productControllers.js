@@ -12,8 +12,10 @@ const getProducts = asyncHandler(async (req, res) => {
     ? { name: new RegExp(req.query.keyword, "i") }
     : {};
 
+  const sortOrder = req.query.sortOrder || "updatedAt";
+
   const products = await Product.find({ ...keyword })
-    .sort({ updatedAt: -1 })
+    .sort({ [sortOrder]: -1 })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 

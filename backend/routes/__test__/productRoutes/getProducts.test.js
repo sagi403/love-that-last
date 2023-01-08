@@ -14,6 +14,14 @@ it("returns a 400 for not providing a validated query", async () => {
   await request(app).get("/api/products?pageNumber=notValid").expect(400);
 });
 
+it("returns a 400 for not providing a validated sortOrder query", async () => {
+  const cookie = await global.getCookie();
+
+  await request(app).post("/api/products").set("Cookie", cookie).expect(201);
+
+  await request(app).get("/api/products?sortOrder=notValid").expect(400);
+});
+
 it("returns a 200 on successfully getting products without providing a query", async () => {
   const cookie = await global.getCookie();
 
@@ -80,4 +88,34 @@ it("returns a 200 on successfully getting products according to keyword", async 
   expect(response.body.products.length).toEqual(1);
   expect(response.body.page).toEqual(1);
   expect(response.body.pages).toEqual(1);
+});
+
+it("returns a 200 on successfully sorting products", async () => {
+  const cookie = await global.getCookie();
+
+  for (let i = 0; i < 3; i++) {
+    const res = await request(app)
+      .post("/api/products")
+      .set("Cookie", cookie)
+      .expect(201);
+
+    const id = res.body.id;
+
+    await request(app)
+      .put(`/api/products/${id}`)
+      .set("Cookie", cookie)
+      .send({ ...productSample, price: i })
+      .expect(200);
+  }
+
+  const response = await request(app)
+    .get(`/api/products?sortOrder=price`)
+    .expect(200);
+
+  expect(response.body.products.length).toEqual(3);
+  expect(response.body.page).toEqual(1);
+  expect(response.body.pages).toEqual(1);
+  expect(response.body.products[0].price).toEqual(2);
+  expect(response.body.products[1].price).toEqual(1);
+  expect(response.body.products[2].price).toEqual(0);
 });
