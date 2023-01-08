@@ -2,6 +2,7 @@ import { param, body, query } from "express-validator";
 
 export const getProductsValidation = [
   query("pageNumber").isNumeric().optional(),
+  query("keyword").isString().isLength({ max: 255 }).trim().optional(),
 ];
 
 export const getProductByIdValidation = [

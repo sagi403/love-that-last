@@ -8,12 +8,16 @@ const getProducts = asyncHandler(async (req, res) => {
   const pageSize = 10;
   const page = +req.query.pageNumber || 1;
 
-  const products = await Product.find({})
+  const keyword = req.query.keyword
+    ? { name: new RegExp(req.query.keyword, "i") }
+    : {};
+
+  const products = await Product.find({ ...keyword })
     .sort({ updatedAt: -1 })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
-  const count = await Product.countDocuments({});
+  const count = await Product.countDocuments({ ...keyword });
 
   if (products.length !== 0) {
     res.json({ products, page, pages: Math.ceil(count / pageSize) });
