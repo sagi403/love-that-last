@@ -15,6 +15,7 @@ const FormItem = ({
       <Form.Control
         type={type === "textarea" ? undefined : type}
         as={type === "textarea" ? type : undefined}
+        style={type === "textarea" ? { height: "150px" } : undefined}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
