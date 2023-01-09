@@ -1,8 +1,9 @@
 import { Pagination } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const Paginate = ({ pages, page, keyword = "", sortOrder = "" }) => {
+const Paginate = ({ pages, page, keyword, sortOrder }) => {
   const location = useLocation();
 
   return (
@@ -31,6 +32,18 @@ const Paginate = ({ pages, page, keyword = "", sortOrder = "" }) => {
       </Pagination>
     )
   );
+};
+
+Paginate.defaultProps = {
+  keyword: "",
+  sortOrder: "",
+};
+
+Paginate.prototype = {
+  pages: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  keyword: PropTypes.string,
+  sortOrder: PropTypes.string,
 };
 
 export default Paginate;

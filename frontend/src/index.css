@@ -50,6 +50,10 @@
   color: white;
 }
 
+.line-break {
+  white-space: pre-line;
+}
+
 .footer-input {
   border: 0;
   border-bottom: 1px solid black;
