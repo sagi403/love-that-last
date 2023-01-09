@@ -59,7 +59,9 @@ export const updateOrderToDeliveredValidation = [
 ];
 
 export const getMyOrdersValidation = [
-  query("pageNumber").isNumeric().optional(),
+  query("pageNumber").isNumeric().optional({ checkFalsy: true }),
 ];
 
-export const getOrdersValidation = [query("pageNumber").isNumeric().optional()];
+export const getOrdersValidation = [
+  query("pageNumber").isNumeric().optional({ checkFalsy: true }),
+];

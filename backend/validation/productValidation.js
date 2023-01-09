@@ -3,12 +3,16 @@ import { param, body, query } from "express-validator";
 const sortOrder = ["name", "rating", "numReviews", "price", "createdAt"];
 
 export const getProductsValidation = [
-  query("pageNumber").isNumeric().optional(),
-  query("keyword").isString().isLength({ max: 255 }).trim().optional(),
+  query("pageNumber").isNumeric().optional({ checkFalsy: true }),
+  query("keyword")
+    .isString()
+    .isLength({ max: 255 })
+    .trim()
+    .optional({ checkFalsy: true }),
   query("sortOrder")
     .isString()
     .trim()
-    .optional()
+    .optional({ checkFalsy: true })
     .custom(value => sortOrder.find(order => order === value)),
 ];
 
@@ -29,7 +33,7 @@ export const updateProductValidation = [
   body("price").isNumeric(),
   body("beforeSalePrice")
     .isNumeric()
-    .optional()
+    .optional({ checkFalsy: true })
     .custom((value, { req }) => {
       if (req.body.price >= value) {
         throw new Error("Price before sale must be greater then price");

@@ -1,7 +1,7 @@
 import { body, param, query } from "express-validator";
 
 export const getAllUsersValidation = [
-  query("pageNumber").isNumeric().optional(),
+  query("pageNumber").isNumeric().optional({ checkFalsy: true }),
 ];
 
 export const loginUserValidation = [

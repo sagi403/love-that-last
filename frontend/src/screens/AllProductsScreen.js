@@ -8,6 +8,7 @@ import Product from "../components/Product";
 import { resetStatus } from "../store/productSlice";
 import Paginate from "../components/Paginate";
 import { useLocation } from "react-router-dom";
+import SortDropdown from "../components/SortDropdown";
 
 const AllProductsScreen = () => {
   const dispatch = useDispatch();
@@ -23,12 +24,13 @@ const AllProductsScreen = () => {
 
   const currentPage = +new URLSearchParams(location.search).get("pageNumber");
   const keyword = new URLSearchParams(location.search).get("keyword") || "";
+  const sortOrder = new URLSearchParams(location.search).get("sortOrder") || "";
 
   useEffect(() => {
-    dispatch(getAllProducts({ page: currentPage, keyword }));
+    dispatch(getAllProducts({ page: currentPage, keyword, sortOrder }));
 
     return () => dispatch(resetStatus());
-  }, [currentPage, keyword]);
+  }, [currentPage, keyword, sortOrder]);
 
   return (
     <Container>
@@ -38,6 +40,7 @@ const AllProductsScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          <SortDropdown />
           <Row>
             {products?.map(product => (
               <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
@@ -45,7 +48,12 @@ const AllProductsScreen = () => {
               </Col>
             ))}
           </Row>
-          <Paginate page={page} pages={pages} keyword={keyword} />
+          <Paginate
+            page={page}
+            pages={pages}
+            keyword={keyword}
+            sortOrder={sortOrder}
+          />
         </>
       )}
     </Container>

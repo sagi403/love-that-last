@@ -41,10 +41,10 @@ export const getProductById = createAsyncThunk(
 
 export const getAllProducts = createAsyncThunk(
   "product/getAllProducts",
-  async ({ page = 1, keyword = "" }, thunkApi) => {
+  async ({ page = 1, keyword = "", sortOrder = "" }, thunkApi) => {
     try {
       const { data } = await axios.get(
-        `/api/products?pageNumber=${page}&keyword=${keyword}`
+        `/api/products?pageNumber=${page}&keyword=${keyword}&sortOrder=${sortOrder}`
       );
 
       return data;
