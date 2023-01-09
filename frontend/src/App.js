@@ -24,6 +24,7 @@ import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
 import OrderListScreen from "./screens/OrderListScreen";
+import ShippingPolicyScreen from "./screens/ShippingPolicyScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -80,6 +81,10 @@ const App = () => {
               <Route path="/product/:id" element={<ProductScreen />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
+              <Route
+                path="/shipping-policy"
+                element={<ShippingPolicyScreen />}
+              />
               <Route path="/" element={<HomeScreen />} />
               <Route path="*" element={<NotFoundScreen />} />
             </Routes>
