@@ -40,11 +40,6 @@ const TermsOfServiceScreen = () => {
         access to the website following the posting of any changes constitutes
         acceptance of those changes.
       </p>
-      <p>
-        Our store is hosted on Shopify Inc. They provide us with the online
-        e-commerce platform that allows us to sell our products and services to
-        you.
-      </p>
       {sections &&
         sections.map(section => (
           <div>
