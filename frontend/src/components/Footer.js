@@ -43,7 +43,7 @@ const Footer = () => {
           </Col>
           <Col sm={12} md={4} className="pb-5">
             <h5 className="pb-3">THE TEAM BEHIND THE SCENES</h5>
-            <p>Here at SLEEGG, we are obsessed with two things.</p>
+            <p>Here at LTL, we are obsessed with two things.</p>
             <p>Firstly, we are obsessed with love.</p>
             <p>
               Secondly, we are obsessed with unique, personal products that add
