@@ -26,7 +26,7 @@ const Footer = () => {
             <Link to="/terms-of-service" className="text-decoration-none">
               <div className="py-2">Terms of Service</div>
             </Link>
-            <Link to="/account-login" className="text-decoration-none">
+            <Link to="/login" className="text-decoration-none">
               <div className="py-2">Account Login</div>
             </Link>
           </Col>

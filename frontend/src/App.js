@@ -27,6 +27,7 @@ import OrderListScreen from "./screens/OrderListScreen";
 import ShippingPolicyScreen from "./screens/ShippingPolicyScreen";
 import RefundPolicyScreen from "./screens/RefundPolicyScreen";
 import FaqsScreen from "./screens/FaqsScreen";
+import TermsOfServiceScreen from "./screens/TermsOfServiceScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -83,6 +84,10 @@ const App = () => {
               <Route path="/product/:id" element={<ProductScreen />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
+              <Route
+                path="/terms-of-service"
+                element={<TermsOfServiceScreen />}
+              />
               <Route path="/faqs" element={<FaqsScreen />} />
               <Route path="/refund-policy" element={<RefundPolicyScreen />} />
               <Route
