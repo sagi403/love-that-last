@@ -31,6 +31,8 @@ import TermsOfServiceScreen from "./screens/TermsOfServiceScreen";
 import AboutUsScreen from "./screens/AboutUsScreen";
 import PrivacyPolicyScreen from "./screens/PrivacyPolicyScreen";
 import ContactUsScreen from "./screens/ContactUsScreen";
+import ThankYouContactScreen from "./screens/ThankYouContactScreen";
+import RequireMessageAuth from "./components/RequireMessageAuth";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -55,6 +57,9 @@ const App = () => {
           <Header />
           <main className="py-3">
             <Routes>
+              <Route element={<RequireMessageAuth />}>
+                <Route path="/thank-you" element={<ThankYouContactScreen />} />
+              </Route>
               <Route element={<RequireAuth />}>
                 <Route element={<RequireAdminAuth />}>
                   <Route
