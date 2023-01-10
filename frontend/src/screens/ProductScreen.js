@@ -16,6 +16,7 @@ import Message from "../components/Message";
 import { createReview, getProductById } from "../store/productSlice";
 import { resetStatus } from "../store/productSlice";
 import Rating from "../components/Rating";
+import Meta from "../components/Meta";
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
@@ -72,6 +73,7 @@ const ProductScreen = () => {
 
   return (
     <Container>
+      <Meta title={product.name} />
       <Link className="btn btn-light my-3" to={from}>
         Go Back
       </Link>
@@ -81,7 +83,6 @@ const ProductScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          {/* <Meta title={product.name} /> */}
           <Row className="mb-4">
             <Col lg={6} md={8}>
               <Image

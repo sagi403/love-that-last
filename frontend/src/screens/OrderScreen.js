@@ -15,6 +15,7 @@ import {
   Row,
 } from "react-bootstrap";
 import PaypalCheckoutButton from "../components/PaypalCheckoutButton";
+import Meta from "../components/Meta";
 
 const OrderScreen = () => {
   const [paypalError, setPaypalError] = useState(null);
@@ -67,6 +68,7 @@ const OrderScreen = () => {
     <Message variant="danger">{errorOrder}</Message>
   ) : (
     <Container>
+      <Meta title="Order" />
       {from !== "/placeorder" && (
         <Link to={from} className="btn btn-light my-3">
           Go Back

@@ -11,6 +11,7 @@ import validateProfileUpdate from "../validation/profileUpdateValidation";
 import validatePasswordUpdate from "../validation/passwordUpdateValidation";
 import { useLocation } from "react-router-dom";
 import Paginate from "../components/Paginate";
+import Meta from "../components/Meta";
 
 const ProfileScreen = () => {
   const { userInfo, success, error, loadingUpdates } = useSelector(
@@ -84,6 +85,7 @@ const ProfileScreen = () => {
 
   return (
     <Container>
+      <Meta title="Profile" />
       <Row>
         <Col md={3}>
           <h2>User Profile</h2>

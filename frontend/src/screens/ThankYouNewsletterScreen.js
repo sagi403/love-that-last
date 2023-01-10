@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { resetStatus } from "../store/messageSlice";
+import Meta from "../components/Meta";
 
 const ThankYouContactScreen = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const ThankYouContactScreen = () => {
 
   return (
     <Container className="my-5">
+      <Meta title="Thank You" />
       <h1>Thank You For Signing Up</h1>
       <p className="fs-4">
         Thanks for subscribing to our newsletter! You'll be the first to know

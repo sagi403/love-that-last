@@ -13,6 +13,7 @@ import {
   updateUserDetails,
 } from "../store/userSlice";
 import validateUserUpdate from "../validation/userUpdateValidation";
+import Meta from "../components/Meta";
 
 const UserEditScreen = () => {
   const [name, setName] = useState("");
@@ -72,6 +73,7 @@ const UserEditScreen = () => {
 
   return (
     <Container>
+      <Meta title="Edit User" />
       <Link to={from} className="btn btn-light my-3">
         Go Back
       </Link>

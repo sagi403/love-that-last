@@ -9,6 +9,8 @@ import { resetStatus } from "../store/productSlice";
 import Paginate from "../components/Paginate";
 import { useLocation } from "react-router-dom";
 import SortDropdown from "../components/SortDropdown";
+import Meta from "../components/Meta";
+import { productsMeta } from "../data/metadata";
 
 const AllProductsScreen = () => {
   const dispatch = useDispatch();
@@ -34,6 +36,7 @@ const AllProductsScreen = () => {
 
   return (
     <Container>
+      <Meta title={productsMeta.title} description={productsMeta.description} />
       {loading ? (
         <Loader />
       ) : error ? (

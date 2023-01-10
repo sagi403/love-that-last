@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import validateSubscribe from "../validation/subscribeValidation";
 import { useDispatch } from "react-redux";
 import { messageReceive } from "../store/messageSlice";
+import Meta from "../components/Meta";
 
 const HomeScreen = () => {
   const [products, setProducts] = useState([]);
@@ -42,6 +43,7 @@ const HomeScreen = () => {
 
   return (
     <>
+      <Meta />
       <img
         className="img-fluid"
         src=".\images\homepage\Necklace-Slide.jpg"
@@ -77,7 +79,9 @@ const HomeScreen = () => {
               <h6>NEW DESIGN</h6>
               <h2>New Arrival</h2>
               <h5>We are adding new unique design every week</h5>
-              <Button className="mt-3">SHOP NOW</Button>
+              <Link to="/products">
+                <Button className="mt-3">SHOP NOW</Button>
+              </Link>
             </div>
           </Col>
         </Row>

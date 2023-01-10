@@ -1,8 +1,14 @@
 import { Container, Table } from "react-bootstrap";
+import Meta from "../components/Meta";
+import { shippingPolicyMeta } from "../data/metadata";
 
 const ShippingPolicyScreen = () => {
   return (
     <Container className="my-5">
+      <Meta
+        title={shippingPolicyMeta.title}
+        description={shippingPolicyMeta.description}
+      />
       <h1>Shipping Policy</h1>
       <p>
         At LTL our goal is to offer you the best shipping options, no matter

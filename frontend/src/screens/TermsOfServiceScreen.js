@@ -1,9 +1,15 @@
 import { Container } from "react-bootstrap";
 import { sections } from "../data/termsOfService";
+import Meta from "../components/Meta";
+import { termsOfServiceMeta } from "../data/metadata";
 
 const TermsOfServiceScreen = () => {
   return (
     <Container className="my-5">
+      <Meta
+        title={termsOfServiceMeta.title}
+        description={termsOfServiceMeta.description}
+      />
       <h1>OVERVIEW</h1>
       <p>
         This website is operated by LTL. Throughout the site, the terms “we”,

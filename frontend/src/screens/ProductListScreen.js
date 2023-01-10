@@ -13,6 +13,7 @@ import {
 } from "../store/productSlice";
 import Paginate from "../components/Paginate";
 import { useLocation } from "react-router-dom";
+import Meta from "../components/Meta";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const ProductListScreen = () => {
 
   return (
     <Container>
+      <Meta title="Products List" />
       <Row className="align-items-center">
         <Col>
           <h1>Products</h1>

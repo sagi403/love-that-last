@@ -7,6 +7,8 @@ import { login, resetStatus } from "../store/userSlice";
 import Message from "../components/Message";
 import validateLogin from "../validation/loginValidation";
 import FormItem from "../components/FormItem";
+import Meta from "../components/Meta";
+import { loginMeta } from "../data/metadata";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -49,6 +51,7 @@ const LoginScreen = () => {
 
   return (
     <FormContainer>
+      <Meta title={loginMeta.title} description={loginMeta.description} />
       <h1>Login</h1>
       {error && <Message variant="danger">{error}</Message>}
       <Form onSubmit={submitHandler}>

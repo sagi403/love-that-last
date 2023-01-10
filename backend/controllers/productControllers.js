@@ -12,7 +12,7 @@ const getProducts = asyncHandler(async (req, res) => {
     ? { name: new RegExp(req.query.keyword, "i") }
     : {};
 
-  const sortOrder = req.query.sortOrder || "updatedAt";
+  const sortOrder = req.query.sortOrder || "createdAt";
 
   const products = await Product.find({ ...keyword })
     .sort({ [sortOrder]: -1 })

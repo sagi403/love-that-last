@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { register, resetStatus } from "../store/userSlice";
 import validateRegister from "../validation/registerValidation";
 import Message from "../components/Message";
+import Meta from "../components/Meta";
+import { registerMeta } from "../data/metadata";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
@@ -63,6 +65,7 @@ const RegisterScreen = () => {
 
   return (
     <FormContainer>
+      <Meta title={registerMeta.title} description={registerMeta.description} />
       <h1>Register</h1>
       {error && <Message variant="danger">{error}</Message>}
       <Form onSubmit={submitHandler}>

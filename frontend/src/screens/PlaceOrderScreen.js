@@ -15,6 +15,7 @@ import {
 import Message from "../components/Message";
 import { createOrder, resetStatus } from "../store/orderSlice";
 import { clearCart } from "../store/cartSlice";
+import Meta from "../components/Meta";
 
 const PlaceOrderScreen = () => {
   const [itemsPrice, setItemsPrice] = useState(0);
@@ -90,6 +91,7 @@ const PlaceOrderScreen = () => {
 
   return (
     <Container className="py-5">
+      <Meta title="Place Order" />
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>

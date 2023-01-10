@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { deleteUser, resetStatus, usersList } from "../store/userSlice";
 import Paginate from "../components/Paginate";
+import Meta from "../components/Meta";
 
 const UserListScreen = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const UserListScreen = () => {
 
   return (
     <Container>
+      <Meta title="Users List" />
       <h1>Users</h1>
       {errorDeleting && <Message variant="danger">{errorDeleting}</Message>}
 

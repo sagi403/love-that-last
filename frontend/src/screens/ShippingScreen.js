@@ -7,6 +7,7 @@ import validateAddress from "../validation/addressValidation";
 import FormItem from "../components/FormItem";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { saveShippingAddress } from "../store/cartSlice";
+import Meta from "../components/Meta";
 
 const ShippingScreen = () => {
   const { shippingAddress } = useSelector(state => state.cart);
@@ -49,6 +50,7 @@ const ShippingScreen = () => {
 
   return (
     <FormContainer>
+      <Meta title="Shipping Details" />
       <CheckoutSteps step1 step2 />
       <h1>Shipping</h1>
       <Form onSubmit={submitHandler}>

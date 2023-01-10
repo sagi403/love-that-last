@@ -6,6 +6,8 @@ import FormContainer from "../components/FormContainer";
 import FormItem from "../components/FormItem";
 import validateContact from "../validation/contactValidation";
 import { messageReceive } from "../store/messageSlice";
+import Meta from "../components/Meta";
+import { contactUsMeta } from "../data/metadata";
 
 const ContactUsScreen = () => {
   const [name, setName] = useState("");
@@ -37,6 +39,10 @@ const ContactUsScreen = () => {
 
   return (
     <FormContainer>
+      <Meta
+        title={contactUsMeta.title}
+        description={contactUsMeta.description}
+      />
       <h1 className="my-4">Contact Us</h1>
       <Form onSubmit={submitHandler}>
         <Row>

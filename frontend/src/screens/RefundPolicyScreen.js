@@ -1,8 +1,14 @@
 import { Container } from "react-bootstrap";
+import Meta from "../components/Meta";
+import { refundPolicyMeta } from "../data/metadata";
 
 const RefundPolicyScreen = () => {
   return (
     <Container className="my-5">
+      <Meta
+        title={refundPolicyMeta.title}
+        description={refundPolicyMeta.description}
+      />
       <h1>Refund Policy</h1>
       <p>
         Any claims for misprinted/damaged/defective items must be submitted

@@ -1,7 +1,28 @@
+import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import validateSubscribe from "../validation/subscribeValidation";
+import { messageReceive } from "../store/messageSlice";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSubscribeClick = () => {
+    const errors = validateSubscribe({ email });
+
+    if (Object.keys(errors).length !== 0) {
+      return;
+    }
+
+    setEmail("");
+    dispatch(messageReceive());
+    navigate("/thank-you-newsletter");
+  };
+
   return (
     <footer>
       <hr className="footer-hr" />
@@ -65,8 +86,13 @@ const Footer = () => {
                 type="text"
                 className="footer-input"
                 placeholder="Enter your email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
               />
-              <i className="bi bi-envelope envelope-icon"></i>
+              <i
+                className="bi bi-envelope envelope-icon"
+                onClick={handleSubscribeClick}
+              ></i>
             </div>
           </Col>
         </Row>

@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { getAllOrders, resetStatus } from "../store/orderSlice";
 import { useLocation } from "react-router-dom";
 import Paginate from "../components/Paginate";
+import Meta from "../components/Meta";
 
 const OrderListScreen = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const OrderListScreen = () => {
 
   return (
     <Container>
+      <Meta title="Order List" />
       <h1>Orders</h1>
       {loadingOrders ? (
         <Loader />

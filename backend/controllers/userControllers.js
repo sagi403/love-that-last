@@ -110,7 +110,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
   const page = +req.query.pageNumber || 1;
 
   const users = await User.find({})
-    .sort({ updatedAt: -1 })
+    .sort({ createdAt: -1 })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 

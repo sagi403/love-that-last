@@ -1,8 +1,10 @@
 import { Container } from "react-bootstrap";
+import Meta from "../components/Meta";
 
 const AboutUsScreen = () => {
   return (
     <Container className="my-5">
+      <Meta title="About Us" />
       <h1>About Us</h1>
       <p>
         Do you have someone you love? So do we! That is why we have spent

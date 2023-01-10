@@ -1,8 +1,10 @@
 import { Container } from "react-bootstrap";
+import Meta from "../components/Meta";
 
 const PrivacyPolicyScreen = () => {
   return (
     <Container className="my-5">
+      <Meta title="Privacy Policy" />
       <h1>Privacy Policy</h1>
       <p>
         This Privacy Policy describes how your personal information is

@@ -15,6 +15,7 @@ import {
 } from "../store/productSlice";
 import validateProductUpdate from "../validation/productUpdateValidation";
 import FormItem from "../components/FormItem";
+import Meta from "../components/Meta";
 
 const ProductEditScreen = () => {
   const [name, setName] = useState("");
@@ -154,6 +155,7 @@ const ProductEditScreen = () => {
 
   return (
     <Container>
+      <Meta title="Edit Product" />
       <Link to={from} className="btn btn-light my-3">
         Go Back
       </Link>
