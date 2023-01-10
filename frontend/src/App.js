@@ -32,6 +32,7 @@ import AboutUsScreen from "./screens/AboutUsScreen";
 import PrivacyPolicyScreen from "./screens/PrivacyPolicyScreen";
 import ContactUsScreen from "./screens/ContactUsScreen";
 import ThankYouContactScreen from "./screens/ThankYouContactScreen";
+import ThankYouNewsletterScreen from "./screens/ThankYouNewsletterScreen";
 import RequireMessageAuth from "./components/RequireMessageAuth";
 
 const App = () => {
@@ -58,6 +59,10 @@ const App = () => {
           <main className="py-3">
             <Routes>
               <Route element={<RequireMessageAuth />}>
+                <Route
+                  path="/thank-you-newsletter"
+                  element={<ThankYouNewsletterScreen />}
+                />
                 <Route path="/thank-you" element={<ThankYouContactScreen />} />
               </Route>
               <Route element={<RequireAuth />}>

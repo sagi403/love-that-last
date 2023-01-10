@@ -1,11 +1,18 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
 import Product from "../components/Product";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import validateSubscribe from "../validation/subscribeValidation";
+import { useDispatch } from "react-redux";
+import { messageReceive } from "../store/messageSlice";
 
 const HomeScreen = () => {
   const [products, setProducts] = useState([]);
+  const [email, setEmail] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const productsStored = JSON.parse(sessionStorage.getItem("products"));
@@ -21,6 +28,17 @@ const HomeScreen = () => {
       })();
     }
   }, []);
+
+  const handleSubscribeClick = () => {
+    const errors = validateSubscribe({ email });
+
+    if (Object.keys(errors).length !== 0) {
+      return;
+    }
+
+    dispatch(messageReceive());
+    navigate("/thank-you-newsletter");
+  };
 
   return (
     <>
@@ -88,8 +106,12 @@ const HomeScreen = () => {
             className="newsletter-input"
             type="text"
             placeholder="Enter your email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
-          <Button variant="dark">SUBSCRIBE</Button>
+          <Button variant="dark" onClick={handleSubscribeClick}>
+            SUBSCRIBE
+          </Button>
         </div>
       </div>
       <Container className="py-5">

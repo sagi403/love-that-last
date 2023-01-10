@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import FormItem from "../components/FormItem";
 import validateContact from "../validation/contactValidation";
-import { contactUsAnswer } from "../store/messageSlice";
+import { messageReceive } from "../store/messageSlice";
 
 const ContactUsScreen = () => {
   const [name, setName] = useState("");
@@ -20,14 +20,6 @@ const ContactUsScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { contactUsMessage } = useSelector(state => state.message);
-
-  useEffect(() => {
-    if (contactUsMessage) {
-      navigate("/thank-you", { replace: true });
-    }
-  }, [contactUsMessage]);
-
   const submitHandler = e => {
     e.preventDefault();
 
@@ -39,7 +31,8 @@ const ContactUsScreen = () => {
     }
 
     setErrorsMessage({ name: null, email: null, message: null });
-    dispatch(contactUsAnswer());
+    dispatch(messageReceive());
+    navigate("/thank-you", { replace: true });
   };
 
   return (
