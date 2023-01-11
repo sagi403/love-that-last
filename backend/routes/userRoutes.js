@@ -15,10 +15,12 @@ import {
 import { protect, admin } from "../middleware/authMiddleware.js";
 import {
   deleteUserValidation,
+  forgotPasswordValidation,
   getAllUsersValidation,
   getUserByIdValidation,
   loginUserValidation,
   registerUserValidation,
+  resetPasswordValidation,
   updateUserAsAdminValidation,
   updateUserProfileValidation,
 } from "../validation/userValidation.js";
@@ -57,7 +59,17 @@ router.get(
   validateRequest,
   getAllUsers
 );
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password/:id/:token", resetPassword);
+router.post(
+  "/forgot-password",
+  forgotPasswordValidation,
+  validateRequest,
+  forgotPassword
+);
+router.post(
+  "/reset-password/:id/:token",
+  resetPasswordValidation,
+  validateRequest,
+  resetPassword
+);
 
 export default router;

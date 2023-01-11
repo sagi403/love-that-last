@@ -209,7 +209,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   res.json({ message: "Check your email for a password reset link" });
 });
 
-// @desc    Forgot password
+// @desc    Reset password
 // @route   POST /api/users/reset-password/:id/:token
 // @access  Public
 const resetPassword = asyncHandler(async (req, res) => {
@@ -234,8 +234,9 @@ const resetPassword = asyncHandler(async (req, res) => {
   oldUser.password = password;
   await oldUser.save();
 
-  res.json({ msg: "password updated" });
+  res.json({ message: "Password updated" });
 });
+
 export {
   loginUser,
   registerUser,
