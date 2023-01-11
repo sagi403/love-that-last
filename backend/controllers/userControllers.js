@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 
@@ -21,7 +22,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
   });
 
-  req.session = { jwt: generateToken(user) };
+  req.session = { jwt: generateToken({ id: user.id, isAdmin: user.isAdmin }) };
 
   res.status(201).json({ success: true });
 });
@@ -35,7 +36,9 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    req.session = { jwt: generateToken(user) };
+    req.session = {
+      jwt: generateToken({ id: user.id, isAdmin: user.isAdmin }),
+    };
 
     res.json({ success: true });
   } else {
@@ -92,7 +95,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
   const updatedUser = await req.user.save();
 
-  req.session = { jwt: generateToken(req.user) };
+  req.session = {
+    jwt: generateToken({ id: req.user.id, isAdmin: req.user.isAdmin }),
+  };
 
   res.json({
     id: updatedUser.id,
@@ -183,6 +188,54 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Forgot password
+// @route   POST /api/users/forgot-password
+// @access  Public
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  const oldUser = await User.findOne({ email });
+
+  if (!oldUser) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  const { id, password } = oldUser;
+
+  const secret = process.env.JWT_SECRET + password;
+  const token = generateToken({ id }, secret, "10m");
+  const link = `${process.env.URL}/reset-password/${id}/${token}`;
+
+  res.json({ message: "Check your email for a password reset link" });
+});
+
+// @desc    Forgot password
+// @route   POST /api/users/reset-password/:id/:token
+// @access  Public
+const resetPassword = asyncHandler(async (req, res) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+
+  const oldUser = await User.findById(id);
+
+  if (!oldUser) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const secret = process.env.JWT_SECRET + oldUser.password;
+  const { id: userId } = jwt.verify(token, secret);
+
+  if (userId !== id) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  oldUser.password = password;
+  await oldUser.save();
+
+  res.json({ msg: "password updated" });
+});
 export {
   loginUser,
   registerUser,
@@ -193,4 +246,6 @@ export {
   getUserById,
   updateUserAsAdmin,
   deleteUser,
+  forgotPassword,
+  resetPassword,
 };

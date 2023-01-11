@@ -73,7 +73,7 @@ const ProductScreen = () => {
 
   return (
     <Container>
-      <Meta title={product.name} />
+      <Meta title={product?.name} />
       <Link className="btn btn-light my-3" to={from}>
         Go Back
       </Link>

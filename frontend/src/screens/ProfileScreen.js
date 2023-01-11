@@ -18,8 +18,8 @@ const ProfileScreen = () => {
     state => state.user
   );
 
-  const [name, setName] = useState(userInfo.name || "");
-  const [email, setEmail] = useState(userInfo.email || "");
+  const [name, setName] = useState(userInfo?.name || "");
+  const [email, setEmail] = useState(userInfo?.email || "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userDetailsForm, setUserDetailsForm] = useState(true);
