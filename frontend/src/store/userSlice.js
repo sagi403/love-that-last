@@ -10,10 +10,13 @@ const initialState = {
   loadingUpdates: false,
   loadingUsers: false,
   loadingUserDetails: false,
+  loadingAuthResetPassword: false,
   loggedIn: false,
   error: null,
   errorUpdateUser: null,
   errorDeleting: null,
+  errorForgotPassword: null,
+  errorAuthResetPassword: null,
   userInfo: null,
   users: null,
   page: null,
@@ -22,6 +25,8 @@ const initialState = {
   success: false,
   successUpdateUser: false,
   successDeletingUser: false,
+  successForgotPasswordLink: false,
+  successAuthResetPassword: false,
 };
 
 export const login = createAsyncThunk("user/login", async (user, thunkApi) => {
@@ -188,6 +193,49 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+export const forgotPassword = createAsyncThunk(
+  "user/forgotPassword",
+  async (email, thunkApi) => {
+    try {
+      const config = { headers: { "Content-Type": "application/json" } };
+      const { data } = await axios.post(
+        `/api/users/forgot-password`,
+        { email },
+        config
+      );
+
+      return data.message;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const authResetPassword = createAsyncThunk(
+  "user/authResetPassword",
+  async ({ id, token }, thunkApi) => {
+    try {
+      const { data } = await axios.get(
+        `/api/users/reset-password/${id}/${token}`
+      );
+
+      return data.message;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -196,9 +244,13 @@ const userSlice = createSlice({
       state.error = null;
       state.errorUpdateUser = null;
       state.errorDeleting = null;
+      state.errorForgotPassword = null;
+      state.errorAuthResetPassword = null;
       state.success = false;
       state.successUpdateUser = false;
       state.successDeletingUser = false;
+      state.successForgotPasswordLink = false;
+      state.successAuthResetPassword = false;
     },
     resetAllUser: () => initialState,
   },
@@ -302,6 +354,24 @@ const userSlice = createSlice({
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.errorDeleting = action.payload;
+      })
+      .addCase(forgotPassword.pending, () => {})
+      .addCase(forgotPassword.fulfilled, (state, action) => {
+        state.successForgotPasswordLink = action.payload;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.errorForgotPassword = action.payload;
+      })
+      .addCase(authResetPassword.pending, state => {
+        state.loadingAuthResetPassword = true;
+      })
+      .addCase(authResetPassword.fulfilled, state => {
+        state.successAuthResetPassword = true;
+        state.loadingAuthResetPassword = false;
+      })
+      .addCase(authResetPassword.rejected, (state, action) => {
+        state.loadingAuthResetPassword = false;
+        state.errorAuthResetPassword = action.payload;
       });
   },
 });

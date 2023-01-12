@@ -205,8 +205,33 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const secret = process.env.JWT_SECRET + password;
   const token = generateToken({ id }, secret, "10m");
   const link = `${process.env.URL}/reset-password/${id}/${token}`;
+  console.log(link);
 
   res.json({ message: "Check your email for a password reset link" });
+});
+
+// @desc    Reset password
+// @route   GET /api/users/reset-password/:id/:token
+// @access  Private
+const authResetPassword = asyncHandler(async (req, res) => {
+  const { id, token } = req.params;
+
+  const oldUser = await User.findById(id);
+
+  if (!oldUser) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const secret = process.env.JWT_SECRET + oldUser.password;
+  const { id: userId } = jwt.verify(token, secret);
+
+  if (userId !== id) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  res.json({ message: "Verified" });
 });
 
 // @desc    Reset password
@@ -248,5 +273,6 @@ export {
   updateUserAsAdmin,
   deleteUser,
   forgotPassword,
+  authResetPassword,
   resetPassword,
 };
