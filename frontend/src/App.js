@@ -35,6 +35,8 @@ import ThankYouContactScreen from "./screens/ThankYouContactScreen";
 import ThankYouNewsletterScreen from "./screens/ThankYouNewsletterScreen";
 import RequireMessageAuth from "./components/RequireMessageAuth";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
+import ResetPasswordScreen from "./screens/ResetPasswordScreen";
+import ResetPasswordAuth from "./components/ResetPasswordAuth";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -96,6 +98,12 @@ const App = () => {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/products" element={<AllProductsScreen />} />
               <Route path="/product/:id" element={<ProductScreen />} />
+              <Route element={<ResetPasswordAuth />}>
+                <Route
+                  path="/reset-password/:id/:token"
+                  element={<ResetPasswordScreen />}
+                />
+              </Route>
               <Route
                 path="/forgot-password"
                 element={<ForgotPasswordScreen />}

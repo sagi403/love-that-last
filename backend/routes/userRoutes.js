@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  authResetPassword,
   deleteUser,
   forgotPassword,
   getAllUsers,
@@ -65,11 +66,9 @@ router.post(
   validateRequest,
   forgotPassword
 );
-router.post(
-  "/reset-password/:id/:token",
-  resetPasswordValidation,
-  validateRequest,
-  resetPassword
-);
+router
+  .route("/reset-password/:id/:token")
+  .get(authResetPassword)
+  .post(resetPasswordValidation, validateRequest, resetPassword);
 
 export default router;

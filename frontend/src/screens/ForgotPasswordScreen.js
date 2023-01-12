@@ -31,7 +31,7 @@ const ForgotPasswordScreen = () => {
     }
 
     setErrorsMessage({ email: null });
-    dispatch(forgotPassword({ email }));
+    dispatch(forgotPassword(email));
   };
 
   return (
@@ -43,7 +43,7 @@ const ForgotPasswordScreen = () => {
       <FormContainer>
         <h1>Trouble logging in?</h1>
         {error && <Message variant="danger">{error}</Message>}
-        {success && <Message variant="danger">{success}</Message>}
+        {success && <Message variant="success">{success}</Message>}
         <Form onSubmit={submitHandler}>
           <FormItem
             controlId="email"

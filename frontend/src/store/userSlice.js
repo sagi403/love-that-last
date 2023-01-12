@@ -10,7 +10,7 @@ const initialState = {
   loadingUpdates: false,
   loadingUsers: false,
   loadingUserDetails: false,
-  loadingAuthResetPassword: false,
+  loadingAuthResetPassword: true,
   loggedIn: false,
   error: null,
   errorUpdateUser: null,
