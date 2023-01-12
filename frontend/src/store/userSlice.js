@@ -11,12 +11,14 @@ const initialState = {
   loadingUsers: false,
   loadingUserDetails: false,
   loadingAuthResetPassword: true,
+  loadingResetPassword: false,
   loggedIn: false,
   error: null,
   errorUpdateUser: null,
   errorDeleting: null,
   errorForgotPassword: null,
   errorAuthResetPassword: null,
+  errorResetPassword: null,
   userInfo: null,
   users: null,
   page: null,
@@ -27,6 +29,7 @@ const initialState = {
   successDeletingUser: false,
   successForgotPasswordLink: false,
   successAuthResetPassword: false,
+  successResetPassword: false,
 };
 
 export const login = createAsyncThunk("user/login", async (user, thunkApi) => {
@@ -236,6 +239,29 @@ export const authResetPassword = createAsyncThunk(
   }
 );
 
+export const resetPassword = createAsyncThunk(
+  "user/resetPassword",
+  async ({ id, token, password }, thunkApi) => {
+    try {
+      const config = { headers: { "Content-Type": "application/json" } };
+      const { data } = await axios.post(
+        `/api/users/reset-password/${id}/${token}`,
+        { password },
+        config
+      );
+
+      return data.message;
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -250,7 +276,6 @@ const userSlice = createSlice({
       state.successUpdateUser = false;
       state.successDeletingUser = false;
       state.successForgotPasswordLink = false;
-      state.successAuthResetPassword = false;
     },
     resetAllUser: () => initialState,
   },
@@ -372,6 +397,17 @@ const userSlice = createSlice({
       .addCase(authResetPassword.rejected, (state, action) => {
         state.loadingAuthResetPassword = false;
         state.errorAuthResetPassword = action.payload;
+      })
+      .addCase(resetPassword.pending, state => {
+        state.loadingResetPassword = true;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.successResetPassword = action.payload;
+        state.loadingResetPassword = false;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.loadingResetPassword = false;
+        state.errorResetPassword = action.payload;
       });
   },
 });

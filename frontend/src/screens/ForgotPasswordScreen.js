@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,10 @@ const ForgotPasswordScreen = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => dispatch(resetStatus());
+  }, []);
 
   const submitHandler = e => {
     e.preventDefault();
@@ -54,7 +58,7 @@ const ForgotPasswordScreen = () => {
             onChange={e => setEmail(e.target.value)}
             message={errorsMessage && errorsMessage.email}
           />
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" disabled={success}>
             Send login link
           </Button>
         </Form>

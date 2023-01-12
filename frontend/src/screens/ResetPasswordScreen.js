@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
 import Meta from "../components/Meta";
 import FormItem from "../components/FormItem";
-import { forgotPassword, resetStatus } from "../store/userSlice";
+import { resetPassword, resetStatus } from "../store/userSlice";
+import validateResetPassword from "../validation/resetPasswordValidation";
 
 const ResetPasswordScreen = () => {
   const [password, setPassword] = useState("");
@@ -16,25 +17,25 @@ const ResetPasswordScreen = () => {
     confirmPassword: null,
   });
 
-  // const { successForgotPasswordLink: success, errorForgotPassword: error } =
-  //   useSelector(state => state.user);
+  const { successResetPassword: success, errorResetPassword: error } =
+    useSelector(state => state.user);
 
-  const navigate = useNavigate();
+  const { id, token } = useParams();
   const dispatch = useDispatch();
 
   const submitHandler = e => {
     e.preventDefault();
     dispatch(resetStatus());
 
-    // const errors = validateResetPassword({ password, confirmPassword });
+    const errors = validateResetPassword({ password, confirmPassword });
 
-    // if (Object.keys(errors).length !== 0) {
-    //   setErrorsMessage(errors);
-    //   return;
-    // }
+    if (Object.keys(errors).length !== 0) {
+      setErrorsMessage(errors);
+      return;
+    }
 
     setErrorsMessage({ password: null, confirmPassword: null });
-    // dispatch(forgotPassword(password));
+    dispatch(resetPassword({ id, token, password }));
   };
 
   return (
@@ -42,8 +43,8 @@ const ResetPasswordScreen = () => {
       <Meta title="Forgot Password" />
       <FormContainer>
         <h1>Reset Password</h1>
-        {/* {error && <Message variant="danger">{error}</Message>}
-        {success && <Message variant="danger">{success}</Message>} */}
+        {error && <Message variant="danger">{error}</Message>}
+        {success && <Message variant="success">{success}</Message>}
         <Form onSubmit={submitHandler}>
           <FormItem
             controlId="password"
@@ -63,7 +64,7 @@ const ResetPasswordScreen = () => {
             onChange={e => setConfirmPassword(e.target.value)}
             message={errorsMessage && errorsMessage.confirmPassword}
           />
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" disabled={success}>
             Reset Password
           </Button>
         </Form>
