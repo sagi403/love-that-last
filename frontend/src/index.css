@@ -1,5 +1,5 @@
 @media (min-width: 1200px) {
-  h1 {
+  .header {
     max-width: 60%;
   }
   p {
@@ -11,7 +11,7 @@
   }
 }
 @media (max-width: 1200px) {
-  h1 {
+  .header {
     max-width: 100%;
   }
   p {

@@ -51,7 +51,7 @@ const HomeScreen = () => {
       />
       <Container className="py-5">
         <div className="text-center py-5">
-          <h1 className="mx-auto">
+          <h1 className="mx-auto header">
             Here At LTL, Our Customers Are Our #1 Priority
           </h1>
           <p className="mx-auto">

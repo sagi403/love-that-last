@@ -69,7 +69,7 @@ const OrderScreen = () => {
   ) : (
     <Container>
       <Meta title="Order" />
-      {from !== "/placeorder" && (
+      {from !== "/place-order" && (
         <Link to={from} className="btn btn-light my-3">
           Go Back
         </Link>
