@@ -1,15 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Badge, Card } from "react-bootstrap";
 
 const Product = ({ product }) => {
-  const location = useLocation();
-
   return (
-    <Link
-      to={`/product/${product.id}`}
-      state={{ from: location }}
-      className="text-decoration-none"
-    >
+    <Link to={`/product/${product.id}`} className="text-decoration-none">
       <Card className="my-3 border-0">
         <div className="position-relative">
           <Card.Img src={product.image} />

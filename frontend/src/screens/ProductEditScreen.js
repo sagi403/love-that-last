@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import Loader from "../components/Loader";
@@ -43,7 +41,6 @@ const ProductEditScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const {
     error,
@@ -54,13 +51,6 @@ const ProductEditScreen = () => {
     loadingUpload,
     errorUpload,
   } = useSelector(state => state.product);
-
-  const from =
-    location.state?.from?.pathname && location.state?.from?.search
-      ? `${location.state.from.pathname}${location.state.from.search}`
-      : location.state?.from?.pathname
-      ? location.state?.from?.pathname
-      : "/admin/productlist";
 
   useEffect(() => {
     dispatch(getProductById(id));
@@ -156,9 +146,9 @@ const ProductEditScreen = () => {
   return (
     <Container>
       <Meta title="Edit Product" />
-      <Link to={from} className="btn btn-light my-3">
+      <Button className="btn btn-light my-3" onClick={() => navigate(-1)}>
         Go Back
-      </Link>
+      </Button>
       <FormContainer>
         <h1>Edit Product</h1>
         {errorUpload && <Message variant="danger">{errorUpload}</Message>}

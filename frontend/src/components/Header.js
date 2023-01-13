@@ -2,12 +2,11 @@ import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../store/userSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SearchBox from "./SearchBox";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const { loggedIn, userInfo } = useSelector(state => state.user);
@@ -71,11 +70,7 @@ const Header = () => {
                 </NavDropdown>
               )}
               <SearchBox />
-              <LinkContainer
-                to="/cart"
-                state={{ from: location }}
-                className="mx-3 fs-3"
-              >
+              <LinkContainer to="/cart" className="mx-3 fs-3">
                 <Nav.Link>
                   <i className="bi bi-cart"></i>
                 </Nav.Link>

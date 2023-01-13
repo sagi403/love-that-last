@@ -129,10 +129,7 @@ const PlaceOrderScreen = () => {
                           />
                         </Col>
                         <Col>
-                          <Link
-                            to={`/product/${item.product}`}
-                            state={{ from: location }}
-                          >
+                          <Link to={`/product/${item.product}`}>
                             {item.name}
                           </Link>
                         </Col>

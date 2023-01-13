@@ -25,8 +25,6 @@ const CartScreen = () => {
   const { product } = useSelector(state => state.product);
   const { cartItems } = useSelector(state => state.cart);
 
-  const from = location.state?.from?.pathname || "/";
-
   const qty = location.search
     ? Number(new URLSearchParams(location.search).get("qty"))
     : 1;
@@ -57,7 +55,14 @@ const CartScreen = () => {
           <h1>Shopping Cart</h1>
           {cartItems.length === 0 ? (
             <Message>
-              Your cart is empty <Link to={from}>Go Back</Link>
+              Your cart is empty{" "}
+              <Button
+                variant="link"
+                className="p-0"
+                onClick={() => navigate(-1)}
+              >
+                Go Back
+              </Button>
             </Message>
           ) : (
             <ListGroup variant="flush">
@@ -68,12 +73,7 @@ const CartScreen = () => {
                       <Image src={item.image} alt={item.name} fluid rounded />
                     </Col>
                     <Col md={3}>
-                      <Link
-                        to={`/product/${item.product}`}
-                        state={{ from: location }}
-                      >
-                        {item.name}
-                      </Link>
+                      <Link to={`/product/${item.product}`}>{item.name}</Link>
                     </Col>
                     <Col md={2}>${item.price}</Col>
                     <Col md={2}>

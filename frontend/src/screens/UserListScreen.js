@@ -85,10 +85,7 @@ const UserListScreen = () => {
                     )}
                   </td>
                   <td>
-                    <LinkContainer
-                      to={`/admin/user/${user.id}/edit`}
-                      state={{ from: location }}
-                    >
+                    <LinkContainer to={`/admin/user/${user.id}/edit`}>
                       <Button variant="light" className="btn-sm">
                         <i className="bi bi-pencil fs-5"></i>
                       </Button>

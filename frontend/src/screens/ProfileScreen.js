@@ -196,10 +196,7 @@ const ProfileScreen = () => {
                         )}
                       </td>
                       <td>
-                        <LinkContainer
-                          to={`/order/${order.id}`}
-                          state={{ from: location }}
-                        >
+                        <LinkContainer to={`/order/${order.id}`}>
                           <Button className="btn-sm" variant="light">
                             Details
                           </Button>

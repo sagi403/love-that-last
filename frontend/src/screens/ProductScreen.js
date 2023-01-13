@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
@@ -25,20 +25,12 @@ const ProductScreen = () => {
 
   const { id } = useParams();
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const { loggedIn } = useSelector(state => state.user);
   const { successProductReview, errorProductReview } = useSelector(
     state => state.product
   );
-
-  const from =
-    location.state?.from?.pathname && location.state?.from?.search
-      ? `${location.state.from.pathname}${location.state.from.search}`
-      : location.state?.from?.pathname
-      ? location.state?.from?.pathname
-      : "/";
 
   const {
     loadingProduct: loading,
@@ -66,17 +58,15 @@ const ProductScreen = () => {
   };
 
   const addToCart = () => {
-    navigate(`/cart/${id}?qty=${qty}`, {
-      state: { from: location },
-    });
+    navigate(`/cart/${id}?qty=${qty}`);
   };
 
   return (
     <Container>
       <Meta title={product?.name} />
-      <Link className="btn btn-light my-3" to={from}>
+      <Button className="btn btn-light my-3" onClick={() => navigate(-1)}>
         Go Back
-      </Link>
+      </Button>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -225,11 +215,7 @@ const ProductScreen = () => {
                     </Form>
                   ) : (
                     <Message>
-                      Please{" "}
-                      <Link to="/login" state={{ from: location }}>
-                        login
-                      </Link>{" "}
-                      to write a review
+                      Please <Link to="/login">login</Link> to write a review
                     </Message>
                   )}
                 </ListGroup>

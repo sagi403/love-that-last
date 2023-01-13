@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { deliverOrder, getOrderDetails, payOrder } from "../store/orderSlice";
 import Loader from "../components/Loader";
@@ -23,18 +23,14 @@ const OrderScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const { order, loading, errorOrder } = useSelector(state => state.order);
   const { userInfo } = useSelector(state => state.user);
 
   const [{ isPending }, dispatchPaypal] = usePayPalScriptReducer();
 
-  const from =
-    location.state?.from?.pathname && location.state?.from?.search
-      ? `${location.state.from.pathname}${location.state.from.search}`
-      : location.state?.from?.pathname
-      ? location.state?.from?.pathname
-      : "/";
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     dispatch(getOrderDetails(id));
@@ -70,9 +66,9 @@ const OrderScreen = () => {
     <Container>
       <Meta title="Order" />
       {from !== "/place-order" && (
-        <Link to={from} className="btn btn-light my-3">
+        <Button className="btn btn-light my-3" onClick={() => navigate(-1)}>
           Go Back
-        </Link>
+        </Button>
       )}
 
       <h1>Order {order.id}</h1>
@@ -139,10 +135,7 @@ const OrderScreen = () => {
                           />
                         </Col>
                         <Col>
-                          <Link
-                            to={`/product/${item.product}`}
-                            state={{ from: location }}
-                          >
+                          <Link to={`/product/${item.product}`}>
                             {item.name}
                           </Link>
                         </Col>

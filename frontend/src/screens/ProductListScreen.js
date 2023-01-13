@@ -101,10 +101,7 @@ const ProductListScreen = () => {
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
-                    <LinkContainer
-                      to={`/admin/product/${product.id}/edit`}
-                      state={{ from: location }}
-                    >
+                    <LinkContainer to={`/admin/product/${product.id}/edit`}>
                       <Button variant="light" className="btn-sm">
                         <i className="bi bi-pencil fs-5"></i>
                       </Button>

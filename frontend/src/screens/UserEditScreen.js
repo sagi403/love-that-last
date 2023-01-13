@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
@@ -27,18 +25,10 @@ const UserEditScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { userDetails, errorUpdateUser, successUpdateUser } = useSelector(
     state => state.user
   );
-
-  const from =
-    location.state?.from?.pathname && location.state?.from?.search
-      ? `${location.state.from.pathname}${location.state.from.search}`
-      : location.state?.from?.pathname
-      ? location.state?.from?.pathname
-      : "/admin/userlist";
 
   useEffect(() => {
     dispatch(getUserDetails(id));
@@ -74,9 +64,9 @@ const UserEditScreen = () => {
   return (
     <Container>
       <Meta title="Edit User" />
-      <Link to={from} className="btn btn-light my-3">
+      <Button onClick={() => navigate(-1)} className="btn btn-light my-3">
         Go Back
-      </Link>
+      </Button>
       <FormContainer>
         <h1>Edit User</h1>
         {errorUpdateUser && (
