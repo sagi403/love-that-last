@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 // @desc    Register a new user
 // @route   POST /api/users/register
@@ -206,6 +207,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const token = generateToken({ id }, secret, "10m");
   const link = `${process.env.URL}/reset-password/${id}/${token}`;
   console.log(link);
+
+  sendEmail({ email, userName: oldUser.name, link });
 
   res.json({ message: "Check your email for a password reset link" });
 });
