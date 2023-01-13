@@ -15,6 +15,7 @@ import {
 } from "../controllers/userControllers.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 import {
+  authResetPasswordValidation,
   deleteUserValidation,
   forgotPasswordValidation,
   getAllUsersValidation,
@@ -68,7 +69,7 @@ router.post(
 );
 router
   .route("/reset-password/:id/:token")
-  .get(authResetPassword)
+  .get(authResetPasswordValidation, validateRequest, authResetPassword)
   .post(resetPasswordValidation, validateRequest, resetPassword);
 
 export default router;

@@ -15,7 +15,7 @@ export const sendEmail = async ({
   });
 
   await transporter.sendMail({
-    from: "sagilevi92@gmail.com>",
+    from: process.env.EMAIL,
     to: email,
     subject: "Reset you password!",
     text: `Hello ${userName},

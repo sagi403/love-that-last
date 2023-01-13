@@ -53,9 +53,18 @@ export const forgotPasswordValidation = [body("email").isEmail()];
 
 export const resetPasswordValidation = [
   param("id").matches(/^[a-fA-F0-9]{24}$/),
-  param("token").matches(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/),
+  param("token").matches(
+    /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/
+  ),
   body("password")
     .trim()
     .isLength({ min: 6, max: 30 })
-    .matches(/[a-z]{1,}[A-Z]{1,}[0-9]{1,}[!@#$%&*]{1,}/)
+    .matches(/[a-z]{1,}[A-Z]{1,}[0-9]{1,}[!@#$%&*]{1,}/),
+];
+
+export const authResetPasswordValidation = [
+  param("id").matches(/^[a-fA-F0-9]{24}$/),
+  param("token").matches(
+    /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/
+  ),
 ];
