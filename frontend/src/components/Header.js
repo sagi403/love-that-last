@@ -21,7 +21,7 @@ const Header = () => {
       <Navbar bg="light" className="p-2" expand="lg">
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>LTL</Navbar.Brand>
+            <Navbar.Brand className="logo">Love That Last</Navbar.Brand>
           </LinkContainer>
           <Nav className="me-auto">
             <LinkContainer to="/products" className="mx-3 fs-3">

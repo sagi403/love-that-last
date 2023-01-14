@@ -23,6 +23,10 @@
   }
 }
 
+.logo {
+  font-family: "Poiret One", cursive;
+}
+
 .text-line-through {
   text-decoration: line-through;
 }

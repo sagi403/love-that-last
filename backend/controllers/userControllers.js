@@ -206,7 +206,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const secret = process.env.JWT_SECRET + password;
   const token = generateToken({ id }, secret, "10m");
   const link = `${process.env.URL}/reset-password/${id}/${token}`;
-  console.log(link);
 
   sendEmail({ email, userName: oldUser.name, link });
 
