@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import path from "path";
 import cookieSession from "cookie-session";
+import helmet from "helmet";
+import logger from "./config/winston.js";
+import { loggerHandler } from "./middleware/loggerMiddleware.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
@@ -22,6 +25,8 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(helmet());
+app.use(morgan("combined", { stream: logger.stream.write }));
 app.set("trust proxy", true);
 app.use(express.json());
 app.use(
@@ -33,10 +38,12 @@ app.use(
   })
 );
 
+// Rate Limiter
 app.use("/api", longApiLimiter);
 app.use("/api", mediumApiLimiter);
 app.use("/api", shortApiLimiter);
 
+// Routes
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
@@ -49,6 +56,8 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
+// Middleware
+app.use(loggerHandler);
 app.use(notFound);
 app.use(errorHandler);
 
