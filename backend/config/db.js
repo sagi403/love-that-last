@@ -6,6 +6,7 @@ const logger = debug("ltl:database");
 
 const connectDB = async () => {
   try {
+    mongoose.set("strictQuery", true);
     const conn = await mongoose.connect(keys.mongoUri);
     logger(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {

@@ -7,5 +7,5 @@ export const loggerHandler = (err, req, res, next) => {
     });
   }
 
-  next();
+  next(err);
 };
