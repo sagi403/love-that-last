@@ -24,7 +24,10 @@ if (keys.nodeEnv === "development") {
 }
 
 app.use(helmet());
-app.use(morgan("combined", { stream: logger.stream.write }));
+
+keys.nodeEnv !== "test" &&
+  app.use(morgan("combined", { stream: logger.stream.write }));
+
 app.set("trust proxy", true);
 app.use(express.json());
 app.use(
@@ -53,7 +56,7 @@ app.get("/", (req, res) => {
 });
 
 // Middleware
-app.use(loggerHandler);
+keys.nodeEnv !== "test" && app.use(loggerHandler);
 app.use(notFound);
 app.use(errorHandler);
 

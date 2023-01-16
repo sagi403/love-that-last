@@ -10,24 +10,21 @@ const logLevels = {
   trace: 5,
 };
 
-let logger = null;
-if (keys.nodeEnv !== "test") {
-  logger = winston.createLogger({
-    levels: logLevels,
-    format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.json()
-    ),
-    transports: [
-      new winston.transports.Console(),
-      new winston.transports.File({
-        filename: "log.log",
-      }),
-    ],
-  });
-}
+const logger = winston.createLogger({
+  levels: logLevels,
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({
+      filename: "log.log",
+    }),
+  ],
+});
 
-if (keys.nodeEnv !== "production" || keys.nodeEnv !== "test") {
+if (keys.nodeEnv === "development") {
   logger.add(
     new winston.transports.Console({
       format: winston.format.simple(),
