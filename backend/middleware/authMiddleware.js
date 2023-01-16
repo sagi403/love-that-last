@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
+import { keys } from "../keys.js";
 
 const protect = asyncHandler(async (req, res, next) => {
   if (!req.session?.jwt) {
@@ -9,7 +10,7 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(req.session.jwt, process.env.JWT_SECRET);
+    const decoded = jwt.verify(req.session.jwt, keys.jwtSecret);
 
     req.user = await User.findById(decoded.id);
 

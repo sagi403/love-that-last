@@ -1,17 +1,16 @@
-import dotenv from "dotenv";
 import debug from "debug";
 import connectDB from "./config/db.js";
 import { app } from "./app.js";
-
-dotenv.config();
+import { keys, checkEnvVariables } from "./keys.js";
 
 connectDB();
+checkEnvVariables(keys);
 
 const logger = debug("ltl:server");
 
-const PORT = process.env.PORT || 5000;
+const PORT = keys.port || 5000;
 
 app.listen(
   PORT,
-  logger(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+  logger(`Server running in ${keys.nodeEnv} mode on port ${PORT}`)
 );

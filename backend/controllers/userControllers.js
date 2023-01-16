@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
+import { keys } from "../keys.js";
 
 // @desc    Register a new user
 // @route   POST /api/users/register
@@ -203,9 +204,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
   const { id, password } = oldUser;
 
-  const secret = process.env.JWT_SECRET + password;
+  const secret = keys.jwtSecret + password;
   const token = generateToken({ id }, secret, "10m");
-  const link = `${process.env.URL}/reset-password/${id}/${token}`;
+  const link = `${keys.url}/reset-password/${id}/${token}`;
 
   sendEmail({ email, userName: oldUser.name, link });
 
@@ -225,7 +226,7 @@ const authResetPassword = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 
-  const secret = process.env.JWT_SECRET + oldUser.password;
+  const secret = keys.jwtSecret + oldUser.password;
   const { id: userId } = jwt.verify(token, secret);
 
   if (userId !== id) {
@@ -250,7 +251,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 
-  const secret = process.env.JWT_SECRET + oldUser.password;
+  const secret = keys.jwtSecret + oldUser.password;
   const { id: userId } = jwt.verify(token, secret);
 
   if (userId !== id) {

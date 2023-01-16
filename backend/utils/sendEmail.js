@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { keys } from "../keys.js";
 
 export const sendEmail = async ({
   email,
@@ -9,13 +10,13 @@ export const sendEmail = async ({
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
+      user: keys.emailUser,
+      pass: keys.emailPassword,
     },
   });
 
   await transporter.sendMail({
-    from: process.env.EMAIL,
+    from: keys.email,
     to: email,
     subject: "Reset you password!",
     text: `Hello ${userName},

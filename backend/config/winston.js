@@ -1,4 +1,5 @@
 import winston from "winston";
+import { keys } from "../keys.js";
 
 const logLevels = {
   fatal: 0,
@@ -9,21 +10,24 @@ const logLevels = {
   trace: 5,
 };
 
-const logger = winston.createLogger({
-  levels: logLevels,
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({
-      filename: "log.log",
-    }),
-  ],
-});
+let logger = null;
+if (keys.nodeEnv !== "test") {
+  logger = winston.createLogger({
+    levels: logLevels,
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json()
+    ),
+    transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({
+        filename: "log.log",
+      }),
+    ],
+  });
+}
 
-if (process.env.NODE_ENV !== "production") {
+if (keys.nodeEnv !== "production" || keys.nodeEnv !== "test") {
   logger.add(
     new winston.transports.Console({
       format: winston.format.simple(),

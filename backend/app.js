@@ -1,5 +1,4 @@
 import express from "express";
-import dotenv from "dotenv";
 import morgan from "morgan";
 import path from "path";
 import cookieSession from "cookie-session";
@@ -16,12 +15,11 @@ import {
   mediumApiLimiter,
   shortApiLimiter,
 } from "./middleware/rateLimitMiddleware.js";
-
-dotenv.config();
+import { keys } from "./keys.js";
 
 const app = express();
 
-if (process.env.NODE_ENV === "development") {
+if (keys.nodeEnv === "development") {
   app.use(morgan("dev"));
 }
 
@@ -32,9 +30,7 @@ app.use(express.json());
 app.use(
   cookieSession({
     signed: false,
-    secure: !(
-      process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development"
-    ),
+    secure: !(keys.nodeEnv === "test" || keys.nodeEnv === "development"),
   })
 );
 

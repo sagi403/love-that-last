@@ -24,3 +24,5 @@ yarn-error.log*
 .vscode
 
 /backend/uploads
+
+/backend/log.log
