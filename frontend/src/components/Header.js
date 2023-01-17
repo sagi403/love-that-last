@@ -1,4 +1,4 @@
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../store/userSlice";
@@ -10,6 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { loggedIn, userInfo } = useSelector(state => state.user);
+  const { cartItems } = useSelector(state => state.cart);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -73,6 +74,11 @@ const Header = () => {
               <LinkContainer to="/cart" className="mx-3 fs-3">
                 <Nav.Link>
                   <i className="bi bi-cart"></i>
+                  {cartItems?.length > 0 && (
+                    <Badge pill bg="danger" className="position-absolute fs-6">
+                      {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                    </Badge>
+                  )}
                 </Nav.Link>
               </LinkContainer>
             </Nav>
