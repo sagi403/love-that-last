@@ -5,7 +5,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "set DEBUG=ltl:* & node server.js",
+    "start": "node server.js",
     "server": "set DEBUG=ltl:* & nodemon server.js",
     "client": "npm start --prefix ../frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",

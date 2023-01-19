@@ -1,0 +1,10 @@
+version: "3"
+services:
+  nginx:
+    image: "sagi403/ltl-nginx"
+    ports:
+      - '3050:80'
+  backend:
+    image: "sagi403/ltl-backend"
+  frontend:
+    image: "sagi403/ltl-frontend"
