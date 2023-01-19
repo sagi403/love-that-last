@@ -52,7 +52,7 @@ const HomeScreen = () => {
       <Container className="py-5">
         <div className="text-center py-5">
           <h1 className="mx-auto header">
-            TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
+            TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
           </h1>
           <p className="mx-auto">
             Yes: We love our customers more than anything! And that's saying
