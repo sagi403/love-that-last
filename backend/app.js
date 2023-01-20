@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import path from "path";
 import cookieSession from "cookie-session";
+import cors from "cors"
 import helmet from "helmet";
 import logger from "./config/winston.js";
 import { loggerHandler } from "./middleware/loggerMiddleware.js";
@@ -23,6 +24,7 @@ if (keys.nodeEnv === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(cors())
 app.use(helmet());
 
 keys.nodeEnv !== "test" &&
