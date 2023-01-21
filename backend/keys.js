@@ -11,6 +11,7 @@ const keys = {
   emailUser: process.env.EMAIL_USER,
   emailPassword: process.env.EMAIL_PASSWORD,
   email: process.env.EMAIL,
+  paypalClientId: process.env.PAYPAL_CLIENT_ID,
 };
 
 const checkEnvVariables = keys => {

@@ -37,6 +37,7 @@ import RequireMessageAuth from "./components/RequireMessageAuth";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import ResetPasswordAuth from "./components/ResetPasswordAuth";
+import { getPaypalClientId } from "./store/paypalSlice";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -44,6 +45,11 @@ const App = () => {
   const { userInfo, loadingAutoLogin, loggedIn } = useSelector(
     state => state.user
   );
+  const { paypalId, loadingClient } = useSelector(state => state.paypal);
+
+  useEffect(() => {
+    dispatch(getPaypalClientId());
+  }, []);
 
   useEffect(() => {
     if (!userInfo) {
@@ -52,10 +58,11 @@ const App = () => {
   }, [loggedIn]);
 
   return (
-    !loadingAutoLogin && (
+    !loadingAutoLogin &&
+    !loadingClient && (
       <PayPalScriptProvider
         deferLoading={true}
-        options={{ "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID }}
+        options={{ "client-id": paypalId }}
       >
         <Router>
           <Header />
