@@ -19,9 +19,8 @@ services:
       - EMAIL_USER=$EMAIL_USER
       - EMAIL_PASSWORD=$EMAIL_PASSWORD
       - EMAIL=$EMAIL
+      - PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID
   frontend:
     image: "sagi403/ltl-frontend"
     mem_limit: 128m
     hostname: frontend
-    environment:
-      - REACT_APP_PAYPAL_CLIENT_ID=$REACT_APP_PAYPAL_CLIENT_ID

@@ -4,6 +4,7 @@ import productReducer from "./store/productSlice";
 import cartReducer from "./store/cartSlice";
 import orderReducer from "./store/orderSlice";
 import messageReducer from "./store/messageSlice";
+import paypalReducer from "./store/paypalSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     cart: cartReducer,
     order: orderReducer,
     message: messageReducer,
+    paypal: paypalReducer,
   },
 });
 
