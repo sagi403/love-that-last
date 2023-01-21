@@ -9,7 +9,7 @@ const PrivacyPolicyScreen = () => {
       <p>
         This Privacy Policy describes how your personal information is
         collected, used, and shared when you visit or make a purchase from
-        love-that-last.com (the “Site”).
+        love-that-last.shop (the “Site”).
       </p>
       <h4 className="mt-4">Personal information we collect</h4>
       <p>
