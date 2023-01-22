@@ -2,7 +2,7 @@ import request from "supertest";
 import { app } from "../../../app.js";
 
 it("returns a 400 when a invalid email is provided", async () => {
-  await request(app)
+  return request(app)
     .post("/api/users/forgot-password")
     .send({
       email: "notValid",
@@ -11,7 +11,7 @@ it("returns a 400 when a invalid email is provided", async () => {
 });
 
 it("returns a 404 when a email that does not exist is supplied", async () => {
-  await request(app)
+  return request(app)
     .post("/api/users/forgot-password")
     .send({
       email: "notExist@test.com",
