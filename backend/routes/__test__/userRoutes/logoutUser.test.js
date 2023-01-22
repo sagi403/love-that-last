@@ -2,7 +2,7 @@ import request from "supertest";
 import { app } from "../../../app.js";
 
 it("clears the cookie after logging out", async () => {
-  await request(app)
+  const res = await request(app)
     .post("/api/users/register")
     .send({
       email: "test@test.com",
@@ -11,9 +11,11 @@ it("clears the cookie after logging out", async () => {
     })
     .expect(201);
 
+  const cookie = res.get("Set-Cookie");
+
   const response = await request(app)
     .post("/api/users/logout")
-    .send()
+    .set("Cookie", cookie)
     .expect(200);
 
   expect(response.get("Set-Cookie")[0].split(";")[0]).toEqual("session=");
