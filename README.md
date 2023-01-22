@@ -23,6 +23,7 @@
 - Tests for backend routes (+130 tests)
 - Auth guard for selected routes
 - Limited request rate
+- Full deployment with Docker 
 
 ## Usage
 
@@ -47,14 +48,8 @@ URL = http://localhost:3000
 EMAIL_USER = your email address
 EMAIL_PASSWORD = your email password
 EMAIL = an email to send from
+PAYPAL_CLIENT_ID = your paypal client id
 ```
-
-Create a .env file in the frontend directory and add the following:
-
-```
-REACT_APP_PAYPAL_CLIENT_ID = your paypal client id
-```
-
 
 ### Install Dependencies (frontend & backend)
 
